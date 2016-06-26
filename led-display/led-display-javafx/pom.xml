@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>led-display</groupId>
+    <artifactId>led-display</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>led-display-javafx</groupId>
+  <artifactId>led-display-javafx</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>led-display-framework</groupId>
+  		<artifactId>led-display-framework</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.google.inject</groupId>
+  		<artifactId>guice</artifactId>
+  	</dependency>
+  </dependencies>
+</project>
