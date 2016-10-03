@@ -5,15 +5,15 @@ package me.hmasrafchi.leddisplay.jfx;
 
 import javax.inject.Provider;
 
-import me.hmasrafchi.leddisplay.api.LED;
+import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin
  *
  */
-public final class ProviderLEDJFx implements Provider<LED> {
+public final class ProviderLEDJFx implements Provider<Led> {
 	@Override
-	public LED get() {
+	public Led get() {
 		return new LEDJFx();
 	}
 }

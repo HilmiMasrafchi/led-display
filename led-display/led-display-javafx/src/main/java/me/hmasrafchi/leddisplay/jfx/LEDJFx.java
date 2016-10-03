@@ -7,18 +7,15 @@ import javafx.geometry.VPos;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import me.hmasrafchi.leddisplay.api.LED;
+import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin
  *
  */
-public final class LEDJFx extends Text implements LED {
+public final class LEDJFx extends Text implements Led {
 	public LEDJFx() {
-		if (Math.random() > 0.5)
-			setText("◌");
-		else
-			setText("●");
+		setText("◌");
 		setFont(Font.font(30));
 		setTextOrigin(VPos.TOP);
 		setBoundsType(TextBoundsType.VISUAL);

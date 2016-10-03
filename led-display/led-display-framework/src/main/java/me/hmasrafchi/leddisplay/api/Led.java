@@ -7,7 +7,7 @@ package me.hmasrafchi.leddisplay.api;
  * @author michelin
  *
  */
-public interface LED {
+public interface Led {
 	void setCoordinateX(double x);
 
 	double getCoordinateX();
