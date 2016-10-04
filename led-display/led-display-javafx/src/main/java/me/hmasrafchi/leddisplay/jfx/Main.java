@@ -13,8 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.framework.Board;
+import me.hmasrafchi.leddisplay.framework.Led;
 
 /**
  * @author michelin
@@ -29,7 +29,7 @@ public final class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(final Stage primaryStage) throws Exception {
 		final Injector injector = Guice.createInjector(new DefaultModule());
 		final Board board = injector.getInstance(Board.class);
 
@@ -46,5 +46,8 @@ public final class Main extends Application {
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
+
+		final AnimationJavaFX animation = new AnimationJavaFX(board);
+		animation.start();
 	}
 }

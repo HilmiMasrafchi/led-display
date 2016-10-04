@@ -15,4 +15,5 @@ import lombok.Getter;
 public final class Configuration {
 	private final int boardRowsCount;
 	private final int boardColumnsCount;
+	private final int delayBetweenScans;
 }

@@ -4,10 +4,11 @@
 package me.hmasrafchi.leddisplay.jfx;
 
 import javafx.geometry.VPos;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.framework.Led;
 
 /**
  * @author michelin
@@ -15,7 +16,7 @@ import me.hmasrafchi.leddisplay.api.Led;
  */
 public final class LEDJFx extends Text implements Led {
 	public LEDJFx() {
-		setText("◌");
+		setText("●");
 		setFont(Font.font(30));
 		setTextOrigin(VPos.TOP);
 		setBoundsType(TextBoundsType.VISUAL);
@@ -49,5 +50,15 @@ public final class LEDJFx extends Text implements Led {
 	@Override
 	public double getWidth() {
 		return getLayoutBounds().getWidth();
+	}
+
+	@Override
+	public void setOpacityLevels(double opacity) {
+		setOpacity(opacity);
+	}
+
+	@Override
+	public void setRgbColor(final RgbColor rgbColor) {
+		setFill(Color.rgb(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
 	}
 }
