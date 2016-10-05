@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework;
+package me.hmasrafchi.leddisplay.jfx;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,10 +10,10 @@ import lombok.Getter;
  * @author michelin
  *
  */
-@Builder
 @Getter
+@Builder
 public final class Configuration {
-	private final int boardRowsCount;
-	private final int boardColumnsCount;
+	private final int matrixRowsCount;
+	private final int matrixColumnsCount;
 	private final int delayBetweenScans;
 }

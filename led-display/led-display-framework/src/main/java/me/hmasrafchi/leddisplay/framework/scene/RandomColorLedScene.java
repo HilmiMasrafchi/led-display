@@ -6,9 +6,8 @@ package me.hmasrafchi.leddisplay.framework.scene;
 import java.util.Arrays;
 import java.util.List;
 
-import me.hmasrafchi.leddisplay.framework.Led;
-import me.hmasrafchi.leddisplay.framework.Led.RgbColor;
-import me.hmasrafchi.leddisplay.framework.Scene;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 
 /**
  * @author michelin
@@ -26,16 +25,12 @@ public final class RandomColorLedScene implements Scene {
 	}
 
 	@Override
-	public void iterateLeds(final List<? extends List<? extends Led>> leds) {
-		for (final List<? extends Led> currentRow : leds) {
-			for (final Led currentLed : currentRow) {
-				final int randomRainbowIndex1 = (int) (Math.random() * (RAINBOW_COLORS.size() - 1));
-				final RgbColor rgbColor = RAINBOW_COLORS.get(randomRainbowIndex1);
-				currentLed.setRgbColor(rgbColor);
+	public void nextFrame(final Led led, int x, int y) {
+		final int randomRainbowIndex1 = (int) (Math.random() * (RAINBOW_COLORS.size() - 1));
+		final RgbColor rgbColor = RAINBOW_COLORS.get(randomRainbowIndex1);
+		led.setRgbColor(rgbColor);
 
-				final int randomRainbowIndex2 = (int) (Math.random() * (RAINBOW_COLORS.size() - 1));
-				currentLed.setOpacityLevels(OPACITY_VALUES.get(randomRainbowIndex2));
-			}
-		}
+		final int randomRainbowIndex2 = (int) (Math.random() * (RAINBOW_COLORS.size() - 1));
+		led.setOpacityLevels(OPACITY_VALUES.get(randomRainbowIndex2));
 	}
 }

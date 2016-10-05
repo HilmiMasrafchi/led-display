@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework;
+package me.hmasrafchi.leddisplay.api;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
