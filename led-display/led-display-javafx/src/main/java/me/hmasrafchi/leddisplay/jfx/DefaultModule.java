@@ -13,6 +13,7 @@ import com.google.inject.name.Names;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Board;
 import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.framework.scene.RightToLeftCanvasScene;
 import me.hmasrafchi.leddisplay.framework.scene.RandomColorLedScene;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
 
@@ -31,8 +32,10 @@ public final class DefaultModule extends AbstractModule {
 		bind(Integer.class).annotatedWith(Names.named("rowsCount")).toInstance(configuration.getMatrixRowsCount());
 
 		bind(Led.class).toProvider(ProviderLEDJFx.class);
+		final Scene canvasScene = new RightToLeftCanvasScene(0, configuration.getMatrixColumnsCount());
+		final Scene randomColorsScene = new RandomColorLedScene();
 		bind(new TypeLiteral<Collection<Scene>>() {
-		}).toInstance(Arrays.asList(new RandomColorLedScene()));
+		}).toInstance(Arrays.asList(canvasScene, randomColorsScene));
 
 		bind(Board.class).to(BoardJFX.class);
 	}

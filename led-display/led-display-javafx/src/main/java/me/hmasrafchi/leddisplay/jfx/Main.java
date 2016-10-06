@@ -27,7 +27,7 @@ public final class Main extends Application {
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		final Configuration configuration = Configuration.builder().matrixColumnsCount(50).matrixRowsCount(25)
-				.delayBetweenScans(25).build();
+				.delayBetweenScans(100).build();
 		final Injector injector = Guice.createInjector(new DefaultModule(configuration));
 		final Board board = injector.getInstance(Board.class);
 
@@ -35,6 +35,10 @@ public final class Main extends Application {
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
+
+		// for (int i = 1; i <= 10; i++) {
+		// board.nextFrame();
+		// }
 
 		board.startAnimation();
 	}

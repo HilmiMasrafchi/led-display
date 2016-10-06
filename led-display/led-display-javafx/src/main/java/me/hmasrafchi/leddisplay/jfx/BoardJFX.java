@@ -41,7 +41,7 @@ public final class BoardJFX extends Pane implements Board {
 		this.matrix = matrix;
 
 		this.timeline = new Timeline();
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(30), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				nextFrame();
@@ -64,12 +64,7 @@ public final class BoardJFX extends Pane implements Board {
 			currentScene = scenesIterator.next();
 		}
 
-		for (int currentRowIndex = 0; currentRowIndex < matrix.getRowsCount(); currentRowIndex++) {
-			for (int currentColumnIndex = 0; currentColumnIndex < matrix.getColumnsCount(); currentColumnIndex++) {
-				final Led led = matrix.getLedAt(currentColumnIndex, currentRowIndex);
-				currentScene.nextFrame(led, currentColumnIndex, currentRowIndex);
-			}
-		}
+		currentScene.nextFrame(matrix);
 	}
 
 	@Override

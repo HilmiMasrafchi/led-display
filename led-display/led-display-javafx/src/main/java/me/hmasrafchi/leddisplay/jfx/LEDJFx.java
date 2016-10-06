@@ -17,7 +17,8 @@ import me.hmasrafchi.leddisplay.api.Led;
 public final class LEDJFx extends Text implements Led {
 	public LEDJFx() {
 		setText("●");
-		setFont(Font.font(30));
+		setRgbColor(RgbColor.WHITE);
+		setFont(Font.font(16));
 		setTextOrigin(VPos.TOP);
 		setBoundsType(TextBoundsType.VISUAL);
 	}

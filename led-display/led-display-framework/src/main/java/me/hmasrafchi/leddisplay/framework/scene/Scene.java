@@ -3,7 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.framework.scene;
 
-import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.framework.Matrix;
 
 /**
  * @author michelin
@@ -12,5 +12,5 @@ import me.hmasrafchi.leddisplay.api.Led;
 public interface Scene {
 	boolean hasNext();
 
-	void nextFrame(Led led, int x, int y);
+	void nextFrame(Matrix matrix);
 }
