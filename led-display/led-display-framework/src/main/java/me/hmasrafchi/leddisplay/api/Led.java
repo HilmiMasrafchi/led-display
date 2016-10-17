@@ -27,6 +27,8 @@ public interface Led {
 
 	void setRgbColor(RgbColor rgbColor);
 
+	void reset();
+
 	@Getter
 	@RequiredArgsConstructor
 	class RgbColor {

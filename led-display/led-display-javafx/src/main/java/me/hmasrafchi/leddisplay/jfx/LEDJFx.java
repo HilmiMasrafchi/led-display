@@ -16,11 +16,9 @@ import me.hmasrafchi.leddisplay.api.Led;
  */
 public final class LEDJFx extends Text implements Led {
 	public LEDJFx() {
-		setText("●");
-		setRgbColor(RgbColor.WHITE);
-		setFont(Font.font(16));
 		setTextOrigin(VPos.TOP);
 		setBoundsType(TextBoundsType.VISUAL);
+		reset();
 	}
 
 	@Override
@@ -61,5 +59,13 @@ public final class LEDJFx extends Text implements Led {
 	@Override
 	public void setRgbColor(final RgbColor rgbColor) {
 		setFill(Color.rgb(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
+	}
+
+	@Override
+	public void reset() {
+		setText("●");
+		setOpacity(1);
+		setRgbColor(RgbColor.BLACK);
+		setFont(Font.font(200));
 	}
 }

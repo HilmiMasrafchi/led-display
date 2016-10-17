@@ -6,6 +6,7 @@ package me.hmasrafchi.leddisplay.jfx;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import com.google.common.base.Preconditions;
 
@@ -34,14 +35,15 @@ public final class BoardJFX extends Pane implements Board {
 	private Scene currentScene;
 
 	@Inject
-	public BoardJFX(final Matrix matrix, final Collection<Scene> scenes) {
+	public BoardJFX(final Matrix matrix, final Collection<Scene> scenes,
+			@Named("delayBetweenFrames") final int delayBetweenFrames) {
 		Preconditions.checkNotNull(scenes);
 		Preconditions.checkArgument(!scenes.isEmpty());
 
 		this.matrix = matrix;
 
 		this.timeline = new Timeline();
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(30), new EventHandler<ActionEvent>() {
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delayBetweenFrames), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				nextFrame();
@@ -60,7 +62,8 @@ public final class BoardJFX extends Pane implements Board {
 
 	@Override
 	public void nextFrame() {
-		if (!currentScene.hasNext()) {
+		if (!currentScene.hasNextFrame()) {
+			currentScene.reset(matrix);
 			currentScene = scenesIterator.next();
 		}
 

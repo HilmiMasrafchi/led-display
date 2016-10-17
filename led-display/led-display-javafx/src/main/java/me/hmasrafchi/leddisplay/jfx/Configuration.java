@@ -15,5 +15,6 @@ import lombok.Getter;
 public final class Configuration {
 	private final int matrixRowsCount;
 	private final int matrixColumnsCount;
-	private final int delayBetweenScans;
+	private final int canvasYPosition;
+	private final int delayBetweenFrames;
 }
