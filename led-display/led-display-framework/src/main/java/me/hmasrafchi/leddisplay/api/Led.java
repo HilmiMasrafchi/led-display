@@ -3,8 +3,10 @@
  */
 package me.hmasrafchi.leddisplay.api;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * @author michelin
@@ -27,9 +29,13 @@ public interface Led {
 
 	void setRgbColor(RgbColor rgbColor);
 
+	RgbColor getRgbColor();
+
 	void reset();
 
 	@Getter
+	@ToString
+	@EqualsAndHashCode
 	@RequiredArgsConstructor
 	class RgbColor {
 		public static final RgbColor WHITE = new RgbColor(255, 255, 255);
