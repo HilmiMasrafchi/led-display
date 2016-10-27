@@ -18,7 +18,6 @@ public final class LEDJFx extends Text implements Led {
 	public LEDJFx() {
 		setTextOrigin(VPos.TOP);
 		setBoundsType(TextBoundsType.VISUAL);
-		// setEffect(new GaussianBlur(50));
 		reset();
 	}
 
@@ -28,18 +27,8 @@ public final class LEDJFx extends Text implements Led {
 	}
 
 	@Override
-	public double getCoordinateX() {
-		return getX();
-	}
-
-	@Override
 	public void setCoordinateY(double y) {
 		setY(y);
-	}
-
-	@Override
-	public double getCoordinateY() {
-		return getY();
 	}
 
 	@Override
@@ -64,15 +53,18 @@ public final class LEDJFx extends Text implements Led {
 
 	@Override
 	public void reset() {
-		setText("●");
 		setOpacity(1);
 		setRgbColor(RgbColor.BLACK);
-		setFont(Font.font(100));
 	}
 
 	@Override
 	public RgbColor getRgbColor() {
-		Color c = (Color) getFill();
+		final Color c = (Color) getFill();
 		return new RgbColor((int) c.getRed() * 255, (int) c.getGreen() * 255, (int) c.getBlue() * 255);
+	}
+
+	@Override
+	public void setTextFontSize(final double ledTextFontSize) {
+		setFont(Font.font(ledTextFontSize));
 	}
 }

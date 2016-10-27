@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Board;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
+import me.hmasrafchi.leddisplay.framework.generator.GeneratorLedUniformText;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRoll;
@@ -24,12 +26,17 @@ public final class DefaultModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(Integer.class).annotatedWith(Names.named("columnsCount"))
+		bind(Integer.class).annotatedWith(Names.named("matrixColumnsCount"))
 				.toInstance(configuration.getMatrixColumnsCount());
-		bind(Integer.class).annotatedWith(Names.named("rowsCount")).toInstance(configuration.getMatrixRowsCount());
+		bind(Integer.class).annotatedWith(Names.named("matrixRowsCount"))
+				.toInstance(configuration.getMatrixRowsCount());
 		bind(Integer.class).annotatedWith(Names.named("delayBetweenFrames"))
 				.toInstance(configuration.getDelayBetweenFrames());
 
+		bind(String.class).annotatedWith(Names.named("generatorLedUniformText")).toInstance("●");
+		bind(Double.class).annotatedWith(Names.named("ledTextFontSize")).toInstance(140d);
+
+		bind(GeneratorLed.class).to(GeneratorLedUniformText.class);
 		bind(Led.class).toProvider(ProviderLEDJFx.class);
 
 		final List<List<Overlay.State>> statesOverlay1 = Arrays.asList(

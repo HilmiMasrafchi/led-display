@@ -3,7 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
-import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin
@@ -12,7 +12,7 @@ import me.hmasrafchi.leddisplay.framework.Matrix;
 public interface Overlay {
 	Overlay.State getStateAt(int columnIndex, int rowIndex);
 
-	void changeLed(Matrix matrix, int ledColumndIndex, int ledRowIndex);
+	void changeLed(Led led, int ledColumndIndex, int ledRowIndex);
 
 	void matrixIterationEnded();
 

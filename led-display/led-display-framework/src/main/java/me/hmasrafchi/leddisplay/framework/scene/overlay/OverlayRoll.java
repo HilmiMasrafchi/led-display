@@ -7,7 +7,6 @@ import java.util.List;
 
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.framework.Matrix;
 
 /**
  * @author michelin
@@ -31,12 +30,10 @@ public final class OverlayRoll implements Overlay {
 	}
 
 	@Override
-	public void changeLed(final Matrix matrix, final int currentLedColumnIndex, final int currentLedRowIndex) {
-		final Led currentLed = matrix.getLedAt(currentLedColumnIndex, currentLedRowIndex);
-
+	public void changeLed(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
 		final State state = getStateAt(currentLedColumnIndex, currentLedRowIndex);
 		if (state.equals(State.ROLL_ON)) {
-			currentLed.setRgbColor(color);
+			led.setRgbColor(color);
 		}
 	}
 

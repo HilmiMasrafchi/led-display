@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
 import java.util.List;
 
+import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.framework.Matrix;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
@@ -41,10 +42,11 @@ public final class OverlayedScene extends Scene {
 			}
 		}
 
+		final Led led = matrix.getLedAt(ledColumnIndex, ledRowIndex);
 		if (winnerOverlay != null) {
-			winnerOverlay.changeLed(matrix, ledColumnIndex, ledRowIndex);
+			winnerOverlay.changeLed(led, ledColumnIndex, ledRowIndex);
 		} else {
-			matrix.getLedAt(ledColumnIndex, ledRowIndex).reset();
+			led.reset();
 		}
 	}
 

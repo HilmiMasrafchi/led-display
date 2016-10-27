@@ -36,26 +36,6 @@ public final class Main extends Application {
 
 		primaryStage.show();
 
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		board.nextFrame();
-		// board.nextFrame();
-
-		// board.nextFrame();
-
-		// board.nextFrame();
-		// board.nextFrame();
-		// board.startAnimation();
+		board.startAnimation();
 	}
 }

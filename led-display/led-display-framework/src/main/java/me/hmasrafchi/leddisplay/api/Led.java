@@ -15,21 +15,21 @@ import lombok.ToString;
 public interface Led {
 	void setCoordinateX(double x);
 
-	double getCoordinateX();
-
 	void setCoordinateY(double y);
-
-	double getCoordinateY();
-
-	double getHeight();
-
-	double getWidth();
 
 	void setOpacityLevels(double opacity);
 
 	void setRgbColor(RgbColor rgbColor);
 
+	double getHeight();
+
+	double getWidth();
+
 	RgbColor getRgbColor();
+
+	void setText(String text);
+
+	void setTextFontSize(double ledTextFontSize);
 
 	void reset();
 
@@ -52,4 +52,5 @@ public interface Led {
 		private final int g;
 		private final int b;
 	}
+
 }

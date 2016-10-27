@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Provider;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,6 +14,7 @@ import org.junit.Test;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRoll;
@@ -246,14 +245,24 @@ public final class TestOverlayedScene {
 	}
 
 	private Matrix getMatrix(final int width, final int height) {
-		final Provider<Led> ledProvider = new Provider<Led>() {
+		final GeneratorLed ledGenerator = new GeneratorLed() {
 			@Override
-			public Led get() {
+			public Led next() {
 				return new DummyLed();
+			}
+
+			@Override
+			public double getLedMaximumHeight() {
+				return 10;
+			}
+
+			@Override
+			public double getLedMaximumWidth() {
+				return 10;
 			}
 		};
 
-		return new Matrix(width, height, ledProvider);
+		return new Matrix(ledGenerator, width, height);
 	}
 
 	private void sceneNextFrame(final Scene scene, final Matrix matrix) {
@@ -277,17 +286,7 @@ class DummyLed implements Led {
 	}
 
 	@Override
-	public double getCoordinateX() {
-		return 0;
-	}
-
-	@Override
 	public void setCoordinateY(double y) {
-	}
-
-	@Override
-	public double getCoordinateY() {
-		return 0;
 	}
 
 	@Override
@@ -317,5 +316,13 @@ class DummyLed implements Led {
 	@Override
 	public RgbColor getRgbColor() {
 		return color;
+	}
+
+	@Override
+	public void setText(String text) {
+	}
+
+	@Override
+	public void setTextFontSize(double ledTextFontSize) {
 	}
 }
