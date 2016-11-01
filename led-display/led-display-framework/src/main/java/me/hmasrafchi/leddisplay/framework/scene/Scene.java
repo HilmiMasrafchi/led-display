@@ -11,6 +11,10 @@ import me.hmasrafchi.leddisplay.framework.Matrix;
  *
  */
 public abstract class Scene {
+	public Scene() {
+
+	}
+
 	public void nextFrame(final Matrix matrix) {
 		for (int currentLedRowIndex = 0; currentLedRowIndex < matrix.getRowsCount(); currentLedRowIndex++) {
 			for (int currentLedColumnIndex = 0; currentLedColumnIndex < matrix

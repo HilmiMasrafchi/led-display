@@ -1,0 +1,112 @@
+[
+  {
+    "type": "OverlayedScene",
+    "overlays": [
+      {
+        "type": "me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRoll",
+        "data": {
+          "states": [
+            [
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON"
+            ],
+            [
+              "ROLL_ON",
+              "TRANSPARENT",
+              "ROLL_ON",
+              "TRANSPARENT",
+              "ROLL_ON",
+              "TRANSPARENT",
+              "ROLL_ON"
+            ],
+            [
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON",
+              "ROLL_ON"
+            ]
+          ],
+          "color": {
+            "r": 0,
+            "g": 255,
+            "b": 0
+          },
+          "yPosition": 1,
+          "matrixWidth": 10,
+          "currentIndexMark": 10
+        }
+      },
+      {
+        "type": "me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary",
+        "data": {
+          "states": [
+            [
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON"
+            ],
+            [
+              "STATIONARY_OFF",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "STATIONARY_OFF"
+            ],
+            [
+              "STATIONARY_ON",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "STATIONARY_ON"
+            ],
+            [
+              "STATIONARY_OFF",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "STATIONARY_OFF"
+            ],
+            [
+              "STATIONARY_ON",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "TRANSPARENT",
+              "STATIONARY_ON"
+            ],
+            [
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON",
+              "STATIONARY_ON"
+            ]
+          ],
+          "onColor": {
+            "r": 255,
+            "g": 0,
+            "b": 0
+          },
+          "offColor": {
+            "r": 255,
+            "g": 127,
+            "b": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "RandomColorScene",
+    "counter": 0
+  }
+]

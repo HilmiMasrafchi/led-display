@@ -22,6 +22,10 @@ public final class RandomColorScene extends Scene {
 
 	private int counter = 0;
 
+	public RandomColorScene() {
+		super();
+	}
+
 	@Override
 	public boolean hasNextFrame() {
 		return counter < 10;

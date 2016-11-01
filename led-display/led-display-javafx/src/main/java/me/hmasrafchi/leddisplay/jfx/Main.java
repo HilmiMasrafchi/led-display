@@ -27,7 +27,8 @@ public final class Main extends Application {
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		final Configuration configuration = Configuration.builder().matrixColumnsCount(5).matrixRowsCount(6)
-				.canvasYPosition(2).delayBetweenFrames(30).build();
+				.canvasYPosition(1).delayBetweenFrames(50).build();
+
 		final Injector injector = Guice.createInjector(new DefaultModule(configuration));
 		final Board board = injector.getInstance(Board.class);
 

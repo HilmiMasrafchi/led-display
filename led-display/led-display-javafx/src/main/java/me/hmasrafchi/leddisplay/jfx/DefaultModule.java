@@ -14,6 +14,7 @@ import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLedUniformText;
+import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRoll;
@@ -62,12 +63,14 @@ public final class DefaultModule extends AbstractModule {
 						Overlay.State.ROLL_ON),
 				Arrays.asList(Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON,
 						Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON));
-		final Overlay overlay2 = new OverlayRoll(statesOverlay2, RgbColor.GREEN, 1,
+		final Overlay overlay2 = new OverlayRoll(statesOverlay2, RgbColor.GREEN, configuration.getCanvasYPosition(),
 				configuration.getMatrixColumnsCount());
 
-		final Scene secondScene = new OverlayedScene(Arrays.asList(overlay2, overlay1));
+		final Scene firstScene = new OverlayedScene(Arrays.asList(overlay2, overlay1));
+
+		final Scene secondScene = new RandomColorScene();
 		bind(new TypeLiteral<Collection<Scene>>() {
-		}).toInstance(Arrays.asList(secondScene));
+		}).toInstance(Arrays.asList(firstScene, secondScene));
 
 		bind(Board.class).to(BoardJFX.class);
 	}

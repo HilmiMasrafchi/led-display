@@ -15,15 +15,19 @@ import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
  *
  */
 public final class OverlayedScene extends Scene {
-	private final List<Overlay> overlays;
+	private List<Overlay> overlays;
 
-	public OverlayedScene(List<Overlay> overlays) {
+	public OverlayedScene() {
+		super();
+	}
+
+	public OverlayedScene(final List<Overlay> overlays) {
 		this.overlays = overlays;
 	}
 
 	@Override
 	public boolean hasNextFrame() {
-		for (Overlay overlay : overlays) {
+		for (final Overlay overlay : overlays) {
 			if (overlay.isEndReached()) {
 				return true;
 			}
