@@ -13,9 +13,9 @@ import lombok.ToString;
  *
  */
 public interface Led {
-	void setCoordinateX(double x);
+	void setCoordinateX(double coordinateX);
 
-	void setCoordinateY(double y);
+	void setCoordinateY(double coordinateY);
 
 	void setOpacityLevels(double opacity);
 

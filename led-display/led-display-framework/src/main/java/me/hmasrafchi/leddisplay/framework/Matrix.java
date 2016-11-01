@@ -10,7 +10,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import lombok.Getter;
+import com.google.common.base.Preconditions;
+
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
 
@@ -19,9 +20,7 @@ import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
  *
  */
 public final class Matrix {
-	@Getter
 	private final int columnsCount;
-	@Getter
 	private final int rowsCount;
 
 	private final List<List<Led>> leds;
@@ -29,9 +28,13 @@ public final class Matrix {
 	@Inject
 	public Matrix(final GeneratorLed ledGenerator, @Named("matrixColumnsCount") final int columnsCount,
 			@Named("matrixRowsCount") final int rowsCount) {
+		Preconditions.checkArgument(columnsCount > 0);
 		this.columnsCount = columnsCount;
+
+		Preconditions.checkArgument(rowsCount > 0);
 		this.rowsCount = rowsCount;
-		this.leds = generateLedCollections(ledGenerator, columnsCount, rowsCount);
+
+		this.leds = generateLedCollections(Preconditions.checkNotNull(ledGenerator), columnsCount, rowsCount);
 	}
 
 	private List<List<Led>> generateLedCollections(final GeneratorLed ledGenerator, final int columnsCount,
@@ -72,5 +75,13 @@ public final class Matrix {
 		}
 
 		return flattenedLedsList;
+	}
+
+	public int getColumnsCount() {
+		return columnsCount;
+	}
+
+	public int getRowsCount() {
+		return rowsCount;
 	}
 }

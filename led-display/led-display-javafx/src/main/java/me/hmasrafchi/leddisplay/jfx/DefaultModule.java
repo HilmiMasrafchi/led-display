@@ -34,7 +34,7 @@ public final class DefaultModule extends AbstractModule {
 				.toInstance(configuration.getDelayBetweenFrames());
 
 		bind(String.class).annotatedWith(Names.named("generatorLedUniformText")).toInstance("●");
-		bind(Double.class).annotatedWith(Names.named("ledTextFontSize")).toInstance(140d);
+		bind(Double.class).annotatedWith(Names.named("generatorLedUniformTextSize")).toInstance(140d);
 
 		bind(GeneratorLed.class).to(GeneratorLedUniformText.class);
 		bind(Led.class).toProvider(ProviderLEDJFx.class);
