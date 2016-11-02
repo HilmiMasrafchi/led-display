@@ -52,5 +52,4 @@ public interface Led {
 		private final int g;
 		private final int b;
 	}
-
 }

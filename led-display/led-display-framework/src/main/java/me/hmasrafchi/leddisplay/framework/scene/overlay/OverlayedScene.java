@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
 import java.util.List;
 
+import lombok.Getter;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.framework.Matrix;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
@@ -15,11 +16,8 @@ import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
  *
  */
 public final class OverlayedScene extends Scene {
+	@Getter
 	private List<Overlay> overlays;
-
-	public OverlayedScene() {
-		super();
-	}
 
 	public OverlayedScene(final List<Overlay> overlays) {
 		this.overlays = overlays;
@@ -66,5 +64,10 @@ public final class OverlayedScene extends Scene {
 		for (final Overlay overlay : overlays) {
 			overlay.reset();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "OverlayedScene";
 	}
 }

@@ -5,6 +5,9 @@ package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
+import lombok.Getter;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 
@@ -12,18 +15,31 @@ import me.hmasrafchi.leddisplay.api.Led.RgbColor;
  * @author michelin
  *
  */
-public final class OverlayRoll implements Overlay {
+public final class OverlayRollHorizontal implements Overlay {
+	@Getter
 	private final List<List<Overlay.State>> states;
+	@Getter
 	private final Led.RgbColor color;
+	@Getter
 	private final int yPosition;
+	@Getter
 	private final int matrixWidth;
 
 	private int currentIndexMark;
 
-	public OverlayRoll(List<List<State>> states, RgbColor color, int yPosition, int matrixWidth) {
+	public OverlayRollHorizontal(final List<List<State>> states, final RgbColor color, final int yPosition,
+			final int matrixWidth) {
+		Preconditions.checkNotNull(states);
+		Preconditions.checkArgument(states.size() > 0);
+		states.stream().forEach(row -> Preconditions.checkArgument(row.size() > 0));
 		this.states = states;
-		this.color = color;
+
+		this.color = Preconditions.checkNotNull(color);
+
+		Preconditions.checkArgument(yPosition >= 0);
 		this.yPosition = yPosition;
+
+		Preconditions.checkArgument(matrixWidth > 0);
 		this.matrixWidth = matrixWidth;
 
 		this.currentIndexMark = matrixWidth;
@@ -32,7 +48,7 @@ public final class OverlayRoll implements Overlay {
 	@Override
 	public void changeLed(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
 		final State state = getStateAt(currentLedColumnIndex, currentLedRowIndex);
-		if (state.equals(State.ROLL_ON)) {
+		if (state.equals(State.ON)) {
 			led.setRgbColor(color);
 		}
 	}
@@ -68,5 +84,10 @@ public final class OverlayRoll implements Overlay {
 
 	private int getHeight() {
 		return states.size();
+	}
+
+	@Override
+	public String toString() {
+		return "OverlayRollHorizontal";
 	}
 }

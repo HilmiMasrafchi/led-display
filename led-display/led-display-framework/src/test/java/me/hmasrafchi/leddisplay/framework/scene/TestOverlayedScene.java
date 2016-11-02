@@ -17,7 +17,7 @@ import me.hmasrafchi.leddisplay.framework.Matrix;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRoll;
+import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayedScene;
 
@@ -32,29 +32,27 @@ public final class TestOverlayedScene {
 		final Matrix matrix = getMatrix(matrixWidth, 6);
 
 		final List<List<State>> statesRoll = Arrays.asList(
-				Arrays.asList(Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON,
-						Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON),
-				Arrays.asList(Overlay.State.ROLL_ON, Overlay.State.TRANSPARENT, Overlay.State.ROLL_ON,
-						Overlay.State.TRANSPARENT, Overlay.State.ROLL_ON, Overlay.State.TRANSPARENT,
-						Overlay.State.ROLL_ON),
-				Arrays.asList(Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON,
-						Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON, Overlay.State.ROLL_ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON, Overlay.State.TRANSPARENT,
+						Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRoll(statesRoll, expectedRollColor, 1, matrixWidth);
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, 1, matrixWidth);
 
 		final List<List<State>> statesStationary = Arrays.asList(
-				Arrays.asList(Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON,
-						Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON),
-				Arrays.asList(Overlay.State.STATIONARY_OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.STATIONARY_OFF),
-				Arrays.asList(Overlay.State.STATIONARY_ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.STATIONARY_ON),
-				Arrays.asList(Overlay.State.STATIONARY_OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.STATIONARY_OFF),
-				Arrays.asList(Overlay.State.STATIONARY_ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.STATIONARY_ON),
-				Arrays.asList(Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON,
-						Overlay.State.STATIONARY_ON, Overlay.State.STATIONARY_ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.OFF),
+				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.ON),
+				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.OFF),
+				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON));
 		final RgbColor expectedStationaryForegroundColor = RgbColor.RED;
 		final RgbColor expectedStationaryBackgroundColor = RgbColor.YELLOW;
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, expectedStationaryForegroundColor,

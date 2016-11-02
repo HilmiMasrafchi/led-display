@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
+import java.util.List;
+
 import me.hmasrafchi.leddisplay.api.Led;
 
 /**
@@ -11,6 +13,8 @@ import me.hmasrafchi.leddisplay.api.Led;
  */
 public interface Overlay {
 	Overlay.State getStateAt(int columnIndex, int rowIndex);
+
+	List<List<Overlay.State>> getStates();
 
 	void changeLed(Led led, int ledColumndIndex, int ledRowIndex);
 
@@ -21,6 +25,6 @@ public interface Overlay {
 	void reset();
 
 	enum State {
-		TRANSPARENT, STATIONARY_ON, STATIONARY_OFF, ROLL_ON;
+		TRANSPARENT, ON, OFF;
 	}
 }

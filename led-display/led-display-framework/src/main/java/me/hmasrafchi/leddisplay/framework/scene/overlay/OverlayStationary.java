@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.framework.scene.overlay;
 
 import java.util.List;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Led;
 
@@ -12,6 +13,7 @@ import me.hmasrafchi.leddisplay.api.Led;
  * @author michelin
  *
  */
+@Getter
 @RequiredArgsConstructor
 public final class OverlayStationary implements Overlay {
 	private final List<List<Overlay.State>> states;
@@ -21,9 +23,9 @@ public final class OverlayStationary implements Overlay {
 	@Override
 	public void changeLed(final Led led, final int ledColumndIndex, final int ledRowIndex) {
 		final Overlay.State state = states.get(ledRowIndex).get(ledColumndIndex);
-		if (state.equals(Overlay.State.STATIONARY_ON)) {
+		if (state.equals(Overlay.State.ON)) {
 			led.setRgbColor(onColor);
-		} else if (state.equals(Overlay.State.STATIONARY_OFF)) {
+		} else if (state.equals(Overlay.State.OFF)) {
 			led.setRgbColor(offColor);
 		}
 	}
@@ -58,5 +60,10 @@ public final class OverlayStationary implements Overlay {
 
 	private int getHeight() {
 		return states.size();
+	}
+
+	@Override
+	public String toString() {
+		return "OverlayedStationary";
 	}
 }
