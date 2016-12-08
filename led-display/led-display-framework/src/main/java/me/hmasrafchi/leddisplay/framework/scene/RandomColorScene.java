@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.framework.Matrix;
 
 /**
  * @author michelin
@@ -32,10 +31,8 @@ public final class RandomColorScene extends Scene {
 	}
 
 	@Override
-	protected void changeLed(final Matrix matrix, final int ledColumnIndex, final int ledRowIndex) {
-		final Led led = matrix.getLedAt(ledColumnIndex, ledRowIndex);
-
-		final int randomRainbowIndex1 = (int) (Math.random() * (colors.size() - 1));
+	protected void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
+		final int randomRainbowIndex1 = (int) (Math.random() * (colors.size()));
 		final RgbColor rgbColor = colors.get(randomRainbowIndex1);
 		led.setRgbColor(rgbColor);
 

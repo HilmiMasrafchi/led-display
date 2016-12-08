@@ -3,12 +3,11 @@
  */
 package me.hmasrafchi.leddisplay.jfx;
 
+import java.time.Duration;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
-import javax.inject.Named;
-
-import com.google.common.base.Preconditions;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,58 +15,31 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import me.hmasrafchi.leddisplay.api.Board;
-import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.framework.Matrix;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
-import me.hmasrafchi.leddisplay.util.CyclicIterator;
 
 /**
  * @author michelin
  *
  */
 public final class BoardJFX extends Pane implements Board {
-	private final Matrix matrix;
 	private final Timeline timeline;
 
-	private CyclicIterator<Scene> scenesIterator;
-	private Scene currentScene;
-
 	@Inject
-	public BoardJFX(final Matrix matrix, final Collection<Scene> scenes,
-			@Named("delayBetweenFrames") final int delayBetweenFrames) {
-		Preconditions.checkNotNull(scenes);
-		Preconditions.checkArgument(!scenes.isEmpty());
-
-		this.matrix = matrix;
-
+	public BoardJFX(final Matrix matrix, final Duration delayBetweenFrames) {
 		this.timeline = new Timeline();
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delayBetweenFrames), new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				nextFrame();
-			}
-		}));
+		final EventHandler<ActionEvent> eventHandler = event -> matrix.nextFrame();
+		final KeyFrame keyFrame = new KeyFrame(convertToJavaFxDuration(delayBetweenFrames), eventHandler);
+		timeline.getKeyFrames().add(keyFrame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
-		this.scenesIterator = new CyclicIterator<>(scenes);
-		this.currentScene = scenesIterator.next();
-
-		final Collection<Led> allLeds = this.matrix.getAllLeds();
-		for (final Led currentLed : allLeds) {
-			getChildren().add((Text) currentLed);
-		}
+		final Collection<Text> textNodes = matrix.getAllLeds().stream().map(led -> (Text) led)
+				.collect(Collectors.toList());
+		getChildren().addAll(textNodes);
 	}
 
-	@Override
-	public void nextFrame() {
-		if (!currentScene.hasNextFrame()) {
-			currentScene.reset(matrix);
-			currentScene = scenesIterator.next();
-		}
-
-		currentScene.nextFrame(matrix);
+	private javafx.util.Duration convertToJavaFxDuration(final Duration duration) {
+		return new javafx.util.Duration(duration.toMillis());
 	}
 
 	@Override

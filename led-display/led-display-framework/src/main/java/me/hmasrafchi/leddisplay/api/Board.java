@@ -8,8 +8,6 @@ package me.hmasrafchi.leddisplay.api;
  *
  */
 public interface Board {
-	void nextFrame();
-
 	void startAnimation();
 
 	void pauseAnimation();
