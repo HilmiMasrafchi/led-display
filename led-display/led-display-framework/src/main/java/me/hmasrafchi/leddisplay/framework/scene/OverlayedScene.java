@@ -1,25 +1,26 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene.overlay;
+package me.hmasrafchi.leddisplay.framework.scene;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 import lombok.Getter;
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
+import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
 
 /**
  * @author michelin
  *
  */
-public final class OverlayedScene extends Scene {
+public final class OverlayedScene extends AbstractScene {
 	@Getter
-	private List<Overlay> overlays;
+	private Collection<Overlay> overlays;
 
-	public OverlayedScene(final List<Overlay> overlays) {
-		this.overlays = overlays;
+	public OverlayedScene(final Collection<? extends Overlay> overlays) {
+		this.overlays = Collections.unmodifiableCollection(overlays);
 	}
 
 	@Override
@@ -51,14 +52,14 @@ public final class OverlayedScene extends Scene {
 	}
 
 	@Override
-	protected void matrixIterationEnded() {
+	protected void ledIterationEnded() {
 		for (final Overlay overlay : overlays) {
 			overlay.matrixIterationEnded();
 		}
 	}
 
 	@Override
-	protected void resetInternalState() {
+	protected void resetSceneState() {
 		for (final Overlay overlay : overlays) {
 			overlay.reset();
 		}

@@ -39,9 +39,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Data;
 import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.framework.scene.OverlayedScene;
 import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayedScene;
 import me.hmasrafchi.leddisplay.jfx.RuntimeTypeAdapterFactory;
 
 /**
@@ -56,7 +56,7 @@ public final class Playground extends Application {
 
 	private BorderPane borderPane = new BorderPane();
 	private ButtonGrid matrixButtonGrid;
-	private Map<me.hmasrafchi.leddisplay.framework.scene.Scene, Model<me.hmasrafchi.leddisplay.framework.scene.Scene>> scenesToGuiMap;
+	private Map<me.hmasrafchi.leddisplay.framework.scene.AbstractScene, Model<me.hmasrafchi.leddisplay.framework.scene.AbstractScene>> scenesToGuiMap;
 
 	public static void main(final String[] args) {
 		launch(args);
@@ -88,11 +88,11 @@ public final class Playground extends Application {
 			borderPane.setCenter(matrixButtonGrid);
 		});
 
-		final ListView<me.hmasrafchi.leddisplay.framework.scene.Scene> scenesListView = new ListView<>(
+		final ListView<me.hmasrafchi.leddisplay.framework.scene.AbstractScene> scenesListView = new ListView<>(
 				FXCollections.observableArrayList(scenesToGuiMap.keySet()));
 
 		scenesListView.setOnMouseClicked(event -> {
-			final me.hmasrafchi.leddisplay.framework.scene.Scene clickedScene = scenesListView.getSelectionModel()
+			final me.hmasrafchi.leddisplay.framework.scene.AbstractScene clickedScene = scenesListView.getSelectionModel()
 					.getSelectedItem();
 
 			final Node selectedPane = (Node) scenesToGuiMap.get(clickedScene);
@@ -102,22 +102,22 @@ public final class Playground extends Application {
 		return new VBox(matrixListView, scenesListView);
 	}
 
-	private Map<me.hmasrafchi.leddisplay.framework.scene.Scene, Model<me.hmasrafchi.leddisplay.framework.scene.Scene>> initScenesPaneMap(
+	private Map<me.hmasrafchi.leddisplay.framework.scene.AbstractScene, Model<me.hmasrafchi.leddisplay.framework.scene.AbstractScene>> initScenesPaneMap(
 			final GUIModel persistedGUIConfiguration) {
-		final Map<me.hmasrafchi.leddisplay.framework.scene.Scene, Model<me.hmasrafchi.leddisplay.framework.scene.Scene>> map = new HashMap<>();
+		final Map<me.hmasrafchi.leddisplay.framework.scene.AbstractScene, Model<me.hmasrafchi.leddisplay.framework.scene.AbstractScene>> map = new HashMap<>();
 
-		final Collection<? extends me.hmasrafchi.leddisplay.framework.scene.Scene> loadedScenes = persistedGUIConfiguration
+		final Collection<? extends me.hmasrafchi.leddisplay.framework.scene.AbstractScene> loadedScenes = persistedGUIConfiguration
 				.getScenes();
-		for (final me.hmasrafchi.leddisplay.framework.scene.Scene currentScene : loadedScenes) {
-			final Model<me.hmasrafchi.leddisplay.framework.scene.Scene> pane = determinePaneBasedOnScene(currentScene);
+		for (final me.hmasrafchi.leddisplay.framework.scene.AbstractScene currentScene : loadedScenes) {
+			final Model<me.hmasrafchi.leddisplay.framework.scene.AbstractScene> pane = determinePaneBasedOnScene(currentScene);
 			map.put(currentScene, pane);
 		}
 
 		return map;
 	}
 
-	private Model<me.hmasrafchi.leddisplay.framework.scene.Scene> determinePaneBasedOnScene(
-			final me.hmasrafchi.leddisplay.framework.scene.Scene scene) {
+	private Model<me.hmasrafchi.leddisplay.framework.scene.AbstractScene> determinePaneBasedOnScene(
+			final me.hmasrafchi.leddisplay.framework.scene.AbstractScene scene) {
 		if (scene instanceof RandomColorScene) {
 			final RandomColorScene randomColorScene = (RandomColorScene) scene;
 			final List<Led.RgbColor> colors = randomColorScene.getColors();
@@ -133,8 +133,8 @@ public final class Playground extends Application {
 	}
 
 	private GUIModel loadGuiConfigurationFromFile(final String fileName) {
-		final RuntimeTypeAdapterFactory<me.hmasrafchi.leddisplay.framework.scene.Scene> typeAdapterFactory = RuntimeTypeAdapterFactory
-				.of(me.hmasrafchi.leddisplay.framework.scene.Scene.class).registerSubtype(OverlayedScene.class)
+		final RuntimeTypeAdapterFactory<me.hmasrafchi.leddisplay.framework.scene.AbstractScene> typeAdapterFactory = RuntimeTypeAdapterFactory
+				.of(me.hmasrafchi.leddisplay.framework.scene.AbstractScene.class).registerSubtype(OverlayedScene.class)
 				.registerSubtype(RandomColorScene.class);
 		final Gson gson = new GsonBuilder().registerTypeAdapterFactory(typeAdapterFactory)
 				.registerTypeAdapter(Overlay.class, new InterfaceAdapter<Overlay>()).create();
@@ -152,7 +152,7 @@ public final class Playground extends Application {
 		button.setOnAction(event -> {
 			final Gson gson = new GsonBuilder().setPrettyPrinting()
 					.registerTypeAdapterFactory(
-							RuntimeTypeAdapterFactory.of(me.hmasrafchi.leddisplay.framework.scene.Scene.class)
+							RuntimeTypeAdapterFactory.of(me.hmasrafchi.leddisplay.framework.scene.AbstractScene.class)
 									.registerSubtype(OverlayedScene.class).registerSubtype(RandomColorScene.class))
 					.registerTypeAdapter(Overlay.class, new InterfaceAdapter<Overlay>()).create();
 			final String json = gson.toJson(getModel());
@@ -172,7 +172,7 @@ public final class Playground extends Application {
 		guiModel.setMatrixRowsCount(matrixButtonGrid.getRowsCount());
 		guiModel.setMatrixColumnsCount(matrixButtonGrid.getColumnsCount());
 
-		final Collection<me.hmasrafchi.leddisplay.framework.scene.Scene> collect = scenesToGuiMap.values().stream()
+		final Collection<me.hmasrafchi.leddisplay.framework.scene.AbstractScene> collect = scenesToGuiMap.values().stream()
 				.map(model -> model.getModel()).collect(Collectors.toList());
 		guiModel.setScenes(collect);
 
@@ -218,7 +218,7 @@ public final class Playground extends Application {
 final class GUIModel {
 	private int matrixColumnsCount;
 	private int matrixRowsCount;
-	private Collection<? extends me.hmasrafchi.leddisplay.framework.scene.Scene> scenes = new ArrayList<>();
+	private Collection<? extends me.hmasrafchi.leddisplay.framework.scene.AbstractScene> scenes = new ArrayList<>();
 }
 
 // private Pane getButtonPane() {

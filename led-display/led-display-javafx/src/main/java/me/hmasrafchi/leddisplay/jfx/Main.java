@@ -6,6 +6,9 @@ package me.hmasrafchi.leddisplay.jfx;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Provider;
 
@@ -19,12 +22,13 @@ import me.hmasrafchi.leddisplay.framework.Matrix;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorLedUniformText;
 import me.hmasrafchi.leddisplay.framework.generator.GeneratorMatrix;
+import me.hmasrafchi.leddisplay.framework.scene.CompositeScene;
+import me.hmasrafchi.leddisplay.framework.scene.OverlayedScene;
 import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
 import me.hmasrafchi.leddisplay.framework.scene.Scene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayedScene;
 
 /**
  * @author michelin
@@ -48,14 +52,8 @@ public final class Main extends Application {
 		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed);
 		final Matrix matrix = generatorMatrix.next(configuration.getMatrixColumnsCount(),
 				configuration.getMatrixRowsCount());
-		final Board board = new BoardJFX(matrix, Duration.ofMillis(configuration.getDelayBetweenFrames()));
-
-		final javafx.scene.Scene scene = new javafx.scene.Scene((Pane) board, WINDOW_WIDTH, WINDOW_HEIGHT, true);
-		primaryStage.setScene(scene);
 
 		primaryStage.show();
-
-		board.startAnimation();
 
 		final List<List<Overlay.State>> statesOverlay1 = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
@@ -82,8 +80,22 @@ public final class Main extends Application {
 				configuration.getCanvasYPosition(), configuration.getMatrixColumnsCount());
 
 		final Scene firstScene = new OverlayedScene(Arrays.asList(overlay2, overlay1));
-		matrix.addScene(firstScene);
 
-		matrix.addScene(new RandomColorScene(Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE)));
+		final CompositeScene compositeScene = new CompositeScene(Arrays.asList(firstScene));
+
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		scheduler.schedule(() -> {
+			final List<RgbColor> colors = Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE);
+			final Scene randomColorScene = new RandomColorScene(colors);
+			compositeScene.addScene(randomColorScene);
+		}, 1, TimeUnit.SECONDS);
+
+		final Board board = new BoardJFX(compositeScene, matrix,
+				Duration.ofMillis(configuration.getDelayBetweenFrames()));
+
+		final javafx.scene.Scene scene = new javafx.scene.Scene((Pane) board, WINDOW_WIDTH, WINDOW_HEIGHT, true);
+		primaryStage.setScene(scene);
+
+		board.startAnimation();
 	}
 }

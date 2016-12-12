@@ -16,7 +16,7 @@ import me.hmasrafchi.leddisplay.api.Led.RgbColor;
  *
  */
 @RequiredArgsConstructor
-public final class RandomColorScene extends Scene {
+public final class RandomColorScene extends AbstractScene {
 	private final static List<Double> OPACITY_VALUES = Arrays.asList(new Double(0.3), new Double(0.4), new Double(0.5),
 			new Double(0.6), new Double(0.7), new Double(0.8), new Double(0.9), new Double(1));
 
@@ -41,12 +41,12 @@ public final class RandomColorScene extends Scene {
 	}
 
 	@Override
-	protected void matrixIterationEnded() {
+	protected void ledIterationEnded() {
 		counter++;
 	}
 
 	@Override
-	protected void resetInternalState() {
+	protected void resetSceneState() {
 		counter = 0;
 	}
 

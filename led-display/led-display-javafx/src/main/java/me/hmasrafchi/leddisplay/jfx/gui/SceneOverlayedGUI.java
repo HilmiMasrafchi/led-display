@@ -5,26 +5,25 @@ package me.hmasrafchi.leddisplay.jfx.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
+import me.hmasrafchi.leddisplay.framework.scene.AbstractScene;
+import me.hmasrafchi.leddisplay.framework.scene.OverlayedScene;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayedScene;
 
 /**
  * @author michelin
  *
  */
-public final class SceneOverlayedGUI extends Accordion implements Model<Scene> {
+public final class SceneOverlayedGUI extends Accordion implements Model<AbstractScene> {
 	private final Collection<Model<Overlay>> overlayModels = new ArrayList<>();
 
 	public SceneOverlayedGUI(final OverlayedScene overlayedScene) {
-		final List<Overlay> overlays = overlayedScene.getOverlays();
+		final Collection<Overlay> overlays = overlayedScene.getOverlays();
 		for (final Overlay currentOverlay : overlays) {
 			if (currentOverlay instanceof OverlayStationary) {
 				final OverlayStationary overlayStationary = (OverlayStationary) currentOverlay;
@@ -48,7 +47,7 @@ public final class SceneOverlayedGUI extends Accordion implements Model<Scene> {
 	}
 
 	@Override
-	public Scene getModel() {
+	public AbstractScene getModel() {
 		return new OverlayedScene(overlayModels.stream().map(model -> model.getModel()).collect(Collectors.toList()));
 	}
 }

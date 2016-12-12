@@ -18,13 +18,13 @@ import javafx.scene.paint.Color;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
+import me.hmasrafchi.leddisplay.framework.scene.AbstractScene;
 
 /**
  * @author michelin
  *
  */
-public final class SceneRandomColorGUI extends BorderPane implements Model<Scene> {
+public final class SceneRandomColorGUI extends BorderPane implements Model<AbstractScene> {
 	private final static Insets INSETS = new Insets(5);
 	private final static int CONTROL_PANEL_BUTTONS_MIN_SIZE = 40;
 
@@ -87,7 +87,7 @@ public final class SceneRandomColorGUI extends BorderPane implements Model<Scene
 	}
 
 	@Override
-	public Scene getModel() {
+	public AbstractScene getModel() {
 		return new RandomColorScene(getColors());
 	}
 }

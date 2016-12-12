@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import me.hmasrafchi.leddisplay.api.Board;
 import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.framework.scene.Scene;
 
 /**
  * @author michelin
@@ -26,15 +27,14 @@ public final class BoardJFX extends Pane implements Board {
 	private final Timeline timeline;
 
 	@Inject
-	public BoardJFX(final Matrix matrix, final Duration delayBetweenFrames) {
+	public BoardJFX(final Scene scene, final Matrix matrix, final Duration delayBetweenFrames) {
 		this.timeline = new Timeline();
-		final EventHandler<ActionEvent> eventHandler = event -> matrix.nextFrame();
+		final EventHandler<ActionEvent> eventHandler = event -> scene.nextFrame(matrix);
 		final KeyFrame keyFrame = new KeyFrame(convertToJavaFxDuration(delayBetweenFrames), eventHandler);
 		timeline.getKeyFrames().add(keyFrame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 
-		final Collection<Text> textNodes = matrix.getAllLeds().stream().map(led -> (Text) led)
-				.collect(Collectors.toList());
+		final Collection<Text> textNodes = matrix.stream().map(led -> (Text) led).collect(Collectors.toList());
 		getChildren().addAll(textNodes);
 	}
 
