@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 
 /**
@@ -38,18 +37,18 @@ public final class CompositeScene extends Scene {
 	}
 
 	@Override
-	public void nextFrame(final Matrix matrix) {
+	public void nextFrame(final MatrixIterator matrixIterator) {
 		if (!currentScene.hasNextFrame()) {
-			currentScene.reset(matrix);
+			currentScene.reset(matrixIterator);
 			currentScene = scenesIterator.next();
 		}
 
-		currentScene.nextFrame(matrix);
+		currentScene.nextFrame(matrixIterator);
 	}
 
 	@Override
-	public void reset(final Matrix matrix) {
-		scenes.forEach(scene -> scene.reset(matrix));
+	public void reset(final MatrixIterator matrixIterator) {
+		scenes.forEach(scene -> scene.reset(matrixIterator));
 	}
 
 	public void addScene(final Scene scene) {

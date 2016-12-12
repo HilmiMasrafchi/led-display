@@ -23,15 +23,16 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.model.scene.CompositeScene;
+import me.hmasrafchi.leddisplay.model.scene.MatrixIterator;
 import me.hmasrafchi.leddisplay.model.scene.OverlayedScene;
 import me.hmasrafchi.leddisplay.model.scene.Scene;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayStationary;
-import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 
 /**
  * @author michelin
@@ -40,12 +41,14 @@ import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 public final class TestCompositeScene {
 	private Scene scene;
 	private Matrix matrix;
+	private MatrixIterator matrixIterator;
 
 	@Before
 	public void init() {
 		final int matrixColumnsCount = 5;
 		final int matrixRowsCount = 6;
 		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount);
+		this.matrixIterator = new MatrixIterator(this.matrix);
 		this.scene = getScene(matrixColumnsCount);
 	}
 
@@ -198,7 +201,7 @@ public final class TestCompositeScene {
 	}
 
 	private void verifyNextFrame(final List<List<RgbColor>> expectedColors) {
-		this.scene.nextFrame(this.matrix);
+		this.scene.nextFrame(this.matrixIterator);
 		final List<List<Led>> expectedLeds1 = getExpectedLeds(expectedColors);
 		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1)));
 	}

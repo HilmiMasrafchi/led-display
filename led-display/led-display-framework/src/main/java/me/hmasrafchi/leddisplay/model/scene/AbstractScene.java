@@ -5,7 +5,6 @@ package me.hmasrafchi.leddisplay.model.scene;
 
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Matrix;
 
 /**
  * @author michelin
@@ -14,21 +13,14 @@ import me.hmasrafchi.leddisplay.model.Matrix;
 @RequiredArgsConstructor
 abstract class AbstractScene extends Scene {
 	@Override
-	public final void nextFrame(final Matrix matrix) {
-		for (int currentLedRowIndex = 0; currentLedRowIndex < matrix.getRowCount(); currentLedRowIndex++) {
-			for (int currentLedColumnIndex = 0; currentLedColumnIndex < matrix
-					.getColumnCount(); currentLedColumnIndex++) {
-				final Led led = matrix.getLedAt(currentLedColumnIndex, currentLedRowIndex);
-				changeLed(led, currentLedColumnIndex, currentLedRowIndex);
-			}
-		}
-
+	public final void nextFrame(final MatrixIterator matrixIterator) {
+		matrixIterator.iterate((led, columnIndex, rowIndex) -> changeLed(led, columnIndex, rowIndex));
 		ledIterationEnded();
 	}
 
 	@Override
-	public final void reset(final Matrix matrix) {
-		matrix.stream().forEach(led -> led.reset());
+	public final void reset(final MatrixIterator matrixIterator) {
+		matrixIterator.iterate((led, columnIndex, rowIndex) -> led.reset());
 		resetSceneState();
 	}
 
