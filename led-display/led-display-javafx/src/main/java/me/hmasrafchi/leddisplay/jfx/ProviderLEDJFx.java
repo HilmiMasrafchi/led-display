@@ -5,7 +5,7 @@ package me.hmasrafchi.leddisplay.jfx;
 
 import javax.inject.Provider;
 
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 
@@ -24,7 +24,7 @@ public final class OverlayedScene extends AbstractScene {
 	}
 
 	@Override
-	public boolean hasNextFrame() {
+	boolean hasNextFrame() {
 		for (final Overlay overlay : overlays) {
 			if (overlay.isEndReached()) {
 				return true;
@@ -35,7 +35,7 @@ public final class OverlayedScene extends AbstractScene {
 	}
 
 	@Override
-	protected void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
+	void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
 		Overlay winnerOverlay = null;
 		for (final Overlay currentOverlay : overlays) {
 			final State currentState = currentOverlay.getStateAt(ledColumnIndex, ledRowIndex);
@@ -52,14 +52,14 @@ public final class OverlayedScene extends AbstractScene {
 	}
 
 	@Override
-	protected void ledIterationEnded() {
+	void ledIterationEnded() {
 		for (final Overlay overlay : overlays) {
 			overlay.matrixIterationEnded();
 		}
 	}
 
 	@Override
-	protected void resetSceneState() {
+	void resetSceneState() {
 		for (final Overlay overlay : overlays) {
 			overlay.reset();
 		}

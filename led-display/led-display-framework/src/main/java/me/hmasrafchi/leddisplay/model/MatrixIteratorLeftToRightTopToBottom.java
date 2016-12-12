@@ -1,21 +1,21 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Matrix;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin
  *
  */
 @RequiredArgsConstructor
-public class MatrixIterator {
+public final class MatrixIteratorLeftToRightTopToBottom extends MatrixIterator {
 	private final Matrix matrix;
 
-	public void iterate(final MatrixIteratorCallback callback) {
+	@Override
+	void iterate(final MatrixIteratorCallback callback) {
 		for (int currentLedRowIndex = 0; currentLedRowIndex < matrix.getRowCount(); currentLedRowIndex++) {
 			for (int currentLedColumnIndex = 0; currentLedColumnIndex < matrix
 					.getColumnCount(); currentLedColumnIndex++) {
@@ -24,10 +24,4 @@ public class MatrixIterator {
 			}
 		}
 	}
-
-}
-
-@FunctionalInterface
-interface MatrixIteratorCallback {
-	void apply(Led led, int currentColumnIndex, int currentRowIndex);
 }

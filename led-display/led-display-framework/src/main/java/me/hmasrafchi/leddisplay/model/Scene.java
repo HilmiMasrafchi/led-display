@@ -1,14 +1,14 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 /**
  * @author michelin
  *
  */
 public abstract class Scene {
-	public abstract void nextFrame(final MatrixIterator matrixIterator);
+	public abstract void nextFrame(MatrixIterator matrixIterator);
 
 	abstract boolean hasNextFrame();
 

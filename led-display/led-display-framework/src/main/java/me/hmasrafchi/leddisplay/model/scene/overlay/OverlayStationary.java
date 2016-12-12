@@ -7,7 +7,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

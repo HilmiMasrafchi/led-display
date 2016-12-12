@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

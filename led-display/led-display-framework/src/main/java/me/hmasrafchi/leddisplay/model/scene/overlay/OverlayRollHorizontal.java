@@ -8,8 +8,8 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 
 /**
  * @author michelin

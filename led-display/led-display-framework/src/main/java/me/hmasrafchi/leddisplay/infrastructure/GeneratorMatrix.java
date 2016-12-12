@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.infrastructure.generator;
+package me.hmasrafchi.leddisplay.infrastructure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import javax.inject.Inject;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.Led;
 import me.hmasrafchi.leddisplay.model.Matrix;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

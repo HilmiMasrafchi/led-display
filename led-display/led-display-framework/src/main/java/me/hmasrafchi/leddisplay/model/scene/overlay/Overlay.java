@@ -5,7 +5,7 @@ package me.hmasrafchi.leddisplay.model.scene.overlay;
 
 import java.util.List;
 
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

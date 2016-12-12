@@ -1,15 +1,15 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 import java.util.Arrays;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 
 /**
  * @author michelin
@@ -26,12 +26,12 @@ public final class RandomColorScene extends AbstractScene {
 	private int counter = 0;
 
 	@Override
-	public boolean hasNextFrame() {
+	boolean hasNextFrame() {
 		return counter < 10;
 	}
 
 	@Override
-	protected void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
+	void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
 		final int randomRainbowIndex1 = (int) (Math.random() * (colors.size()));
 		final RgbColor rgbColor = colors.get(randomRainbowIndex1);
 		led.setRgbColor(rgbColor);
@@ -41,12 +41,12 @@ public final class RandomColorScene extends AbstractScene {
 	}
 
 	@Override
-	protected void ledIterationEnded() {
+	void ledIterationEnded() {
 		counter++;
 	}
 
 	@Override
-	protected void resetSceneState() {
+	void resetSceneState() {
 		counter = 0;
 	}
 

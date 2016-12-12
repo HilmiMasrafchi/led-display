@@ -1,10 +1,10 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin
@@ -19,7 +19,7 @@ abstract class AbstractScene extends Scene {
 	}
 
 	@Override
-	public final void reset(final MatrixIterator matrixIterator) {
+	final void reset(final MatrixIterator matrixIterator) {
 		matrixIterator.iterate((led, columnIndex, rowIndex) -> led.reset());
 		resetSceneState();
 	}

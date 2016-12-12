@@ -15,10 +15,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.scene.RandomColorScene;
-import me.hmasrafchi.leddisplay.model.scene.Scene;
+import me.hmasrafchi.leddisplay.model.RandomColorScene;
+import me.hmasrafchi.leddisplay.model.Scene;
+import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 
 /**
  * @author michelin

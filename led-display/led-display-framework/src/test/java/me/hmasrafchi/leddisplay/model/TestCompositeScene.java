@@ -1,12 +1,12 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene;
+package me.hmasrafchi.leddisplay.model;
 
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.BLACK;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.GREEN;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.RED;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.RED;
+import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,13 +22,8 @@ import org.junit.Test;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.Matrix;
-import me.hmasrafchi.leddisplay.model.scene.CompositeScene;
-import me.hmasrafchi.leddisplay.model.scene.MatrixIterator;
-import me.hmasrafchi.leddisplay.model.scene.OverlayedScene;
-import me.hmasrafchi.leddisplay.model.scene.Scene;
+import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
@@ -48,7 +43,7 @@ public final class TestCompositeScene {
 		final int matrixColumnsCount = 5;
 		final int matrixRowsCount = 6;
 		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount);
-		this.matrixIterator = new MatrixIterator(this.matrix);
+		this.matrixIterator = new MatrixIteratorLeftToRightTopToBottom(this.matrix);
 		this.scene = getScene(matrixColumnsCount);
 	}
 

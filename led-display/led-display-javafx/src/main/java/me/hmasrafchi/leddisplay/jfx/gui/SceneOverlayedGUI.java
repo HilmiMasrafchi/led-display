@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import me.hmasrafchi.leddisplay.model.scene.OverlayedScene;
-import me.hmasrafchi.leddisplay.model.scene.Scene;
+import me.hmasrafchi.leddisplay.model.OverlayedScene;
+import me.hmasrafchi.leddisplay.model.Scene;
 import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayStationary;

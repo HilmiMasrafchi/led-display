@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene;
+package me.hmasrafchi.leddisplay.model;
 
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;

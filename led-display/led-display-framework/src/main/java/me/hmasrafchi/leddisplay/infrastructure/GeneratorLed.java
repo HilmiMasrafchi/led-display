@@ -1,9 +1,9 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.infrastructure.generator;
+package me.hmasrafchi.leddisplay.infrastructure;
 
-import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

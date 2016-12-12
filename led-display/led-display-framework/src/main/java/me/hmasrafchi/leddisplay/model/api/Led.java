@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model;
+package me.hmasrafchi.leddisplay.model.api;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

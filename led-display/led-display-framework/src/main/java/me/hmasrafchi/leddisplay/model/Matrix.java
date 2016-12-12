@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin
@@ -20,15 +21,15 @@ import lombok.ToString;
 public final class Matrix {
 	private final List<List<Led>> leds;
 
-	public Led getLedAt(final int columnsCount, final int rowsCount) {
+	Led getLedAt(final int columnsCount, final int rowsCount) {
 		return leds.get(rowsCount).get(columnsCount);
 	}
 
-	public int getColumnCount() {
+	int getColumnCount() {
 		return leds.get(0).size();
 	}
 
-	public int getRowCount() {
+	int getRowCount() {
 		return leds.size();
 	}
 
