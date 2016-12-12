@@ -6,29 +6,26 @@ package me.hmasrafchi.leddisplay.jfx;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Provider;
 
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import me.hmasrafchi.leddisplay.api.Board;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.framework.Matrix;
-import me.hmasrafchi.leddisplay.framework.generator.GeneratorLed;
-import me.hmasrafchi.leddisplay.framework.generator.GeneratorLedUniformText;
-import me.hmasrafchi.leddisplay.framework.generator.GeneratorMatrix;
-import me.hmasrafchi.leddisplay.framework.scene.CompositeScene;
-import me.hmasrafchi.leddisplay.framework.scene.OverlayedScene;
-import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRollHorizontal;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary;
+import me.hmasrafchi.leddisplay.infrastructure.generator.GeneratorLed;
+import me.hmasrafchi.leddisplay.infrastructure.generator.GeneratorLedWithUniformText;
+import me.hmasrafchi.leddisplay.infrastructure.generator.GeneratorMatrix;
+import me.hmasrafchi.leddisplay.model.Board;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.Matrix;
+import me.hmasrafchi.leddisplay.model.scene.CompositeScene;
+import me.hmasrafchi.leddisplay.model.scene.OverlayedScene;
+import me.hmasrafchi.leddisplay.model.scene.RandomColorScene;
+import me.hmasrafchi.leddisplay.model.scene.Scene;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
+import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayStationary;
 
 /**
  * @author michelin
@@ -45,15 +42,14 @@ public final class Main extends Application {
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		final Configuration configuration = Configuration.builder().matrixColumnsCount(5).matrixRowsCount(6)
-				.canvasYPosition(1).delayBetweenFrames(100).build();
+				.canvasYPosition(1).delayBetweenFrames(100).matrixLedHorizontalGap(1).matrixLedVerticalGap(1).build();
 
 		final Provider<Led> provider = new ProviderLEDJFx();
-		final GeneratorLed generatorLed = new GeneratorLedUniformText(provider, "●", 140d);
-		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed);
+		final GeneratorLed generatorLed = new GeneratorLedWithUniformText(provider, "●", 140d);
+		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed,
+				configuration.getMatrixLedHorizontalGap(), configuration.getMatrixLedVerticalGap());
 		final Matrix matrix = generatorMatrix.next(configuration.getMatrixColumnsCount(),
 				configuration.getMatrixRowsCount());
-
-		primaryStage.show();
 
 		final List<List<Overlay.State>> statesOverlay1 = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
@@ -81,14 +77,10 @@ public final class Main extends Application {
 
 		final Scene firstScene = new OverlayedScene(Arrays.asList(overlay2, overlay1));
 
-		final CompositeScene compositeScene = new CompositeScene(Arrays.asList(firstScene));
+		final List<RgbColor> colors = Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE);
+		final Scene secondScene = new RandomColorScene(colors);
 
-		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-		scheduler.schedule(() -> {
-			final List<RgbColor> colors = Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE);
-			final Scene randomColorScene = new RandomColorScene(colors);
-			compositeScene.addScene(randomColorScene);
-		}, 1, TimeUnit.SECONDS);
+		final CompositeScene compositeScene = new CompositeScene(Arrays.asList(firstScene, secondScene));
 
 		final Board board = new BoardJFX(compositeScene, matrix,
 				Duration.ofMillis(configuration.getDelayBetweenFrames()));
@@ -96,6 +88,7 @@ public final class Main extends Application {
 		final javafx.scene.Scene scene = new javafx.scene.Scene((Pane) board, WINDOW_WIDTH, WINDOW_HEIGHT, true);
 		primaryStage.setScene(scene);
 
+		primaryStage.show();
 		board.startAnimation();
 	}
 }

@@ -1,20 +1,20 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene;
+package me.hmasrafchi.leddisplay.model.scene;
 
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Matrix;
 
 /**
  * @author michelin
  *
  */
 @RequiredArgsConstructor
-public abstract class AbstractScene implements Scene {
+abstract class AbstractScene extends Scene {
 	@Override
-	public void nextFrame(final Matrix matrix) {
+	public final void nextFrame(final Matrix matrix) {
 		for (int currentLedRowIndex = 0; currentLedRowIndex < matrix.getRowCount(); currentLedRowIndex++) {
 			for (int currentLedColumnIndex = 0; currentLedColumnIndex < matrix
 					.getColumnCount(); currentLedColumnIndex++) {
@@ -27,7 +27,7 @@ public abstract class AbstractScene implements Scene {
 	}
 
 	@Override
-	public void reset(final Matrix matrix) {
+	public final void reset(final Matrix matrix) {
 		matrix.stream().forEach(led -> led.reset());
 		resetSceneState();
 	}

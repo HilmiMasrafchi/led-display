@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.generator;
+package me.hmasrafchi.leddisplay.infrastructure.generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,8 @@ import javax.inject.Inject;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Matrix;
 
 /**
  * @author michelin
@@ -19,11 +19,15 @@ import me.hmasrafchi.leddisplay.framework.Matrix;
  */
 public final class GeneratorMatrix {
 	private final GeneratorLed ledGenerator;
+	private final int horizontalGap;
+	private final int verticalGap;
 
 	@Inject
-	public GeneratorMatrix(final GeneratorLed ledGenerator) {
+	public GeneratorMatrix(final GeneratorLed ledGenerator, final int horizontalGap, final int verticalGap) {
 		Preconditions.checkNotNull(ledGenerator);
 		this.ledGenerator = ledGenerator;
+		this.horizontalGap = horizontalGap;
+		this.verticalGap = verticalGap;
 	}
 
 	public Matrix next(final int columnsCount, final int rowsCount) {
@@ -42,11 +46,11 @@ public final class GeneratorMatrix {
 				currentLed.setCoordinateY(currentCoordinateY);
 				currentLedRow.add(currentLed);
 
-				currentCoordinateX += ledGenerator.getLedMaximumWidth() + 1;
+				currentCoordinateX += ledGenerator.getLedMaximumWidth() + horizontalGap;
 			}
 			leds.add(currentLedRow);
 
-			currentCoordinateY += ledGenerator.getLedMaximumHeight();
+			currentCoordinateY += ledGenerator.getLedMaximumHeight() + verticalGap;
 			currentCoordinateX = 0;
 		}
 

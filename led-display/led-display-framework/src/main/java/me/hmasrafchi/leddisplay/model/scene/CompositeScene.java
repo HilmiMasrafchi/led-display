@@ -1,21 +1,21 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene;
+package me.hmasrafchi.leddisplay.model.scene;
 
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.framework.Matrix;
+import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 
 /**
  * @author michelin
  *
  */
-public final class CompositeScene implements Scene {
+public final class CompositeScene extends Scene {
 	private final CopyOnWriteArrayList<Scene> scenes;
 
 	private final CyclicIterator<Scene> scenesIterator;

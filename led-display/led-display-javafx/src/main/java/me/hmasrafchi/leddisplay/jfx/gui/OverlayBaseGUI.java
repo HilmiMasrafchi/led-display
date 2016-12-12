@@ -13,7 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
 
 /**
  * @author michelin

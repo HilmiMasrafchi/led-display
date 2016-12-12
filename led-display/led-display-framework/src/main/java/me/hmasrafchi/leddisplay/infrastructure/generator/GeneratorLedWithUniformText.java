@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.generator;
+package me.hmasrafchi.leddisplay.infrastructure.generator;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,20 +9,20 @@ import javax.inject.Provider;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Led.RgbColor;
 
 /**
  * @author michelin
  *
  */
-public final class GeneratorLedUniformText implements GeneratorLed {
+public final class GeneratorLedWithUniformText extends GeneratorLed {
 	private final Provider<Led> provider;
 	private final String text;
 	private final double ledTextFontSize;
 
 	@Inject
-	public GeneratorLedUniformText(final Provider<Led> provider, @Named("generatorLedUniformText") final String text,
+	public GeneratorLedWithUniformText(final Provider<Led> provider, @Named("generatorLedUniformText") final String text,
 			@Named("generatorLedUniformTextSize") final double ledTextFontSize) {
 		this.provider = Preconditions.checkNotNull(provider);
 

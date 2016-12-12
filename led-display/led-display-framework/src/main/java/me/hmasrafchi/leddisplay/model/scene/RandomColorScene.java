@@ -1,15 +1,15 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene;
+package me.hmasrafchi.leddisplay.model.scene;
 
 import java.util.Arrays;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Led.RgbColor;
 
 /**
  * @author michelin

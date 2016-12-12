@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework;
+package me.hmasrafchi.leddisplay.model;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin

@@ -9,17 +9,17 @@ import java.util.stream.Collectors;
 
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import me.hmasrafchi.leddisplay.framework.scene.AbstractScene;
-import me.hmasrafchi.leddisplay.framework.scene.OverlayedScene;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayRollHorizontal;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.OverlayStationary;
+import me.hmasrafchi.leddisplay.model.scene.OverlayedScene;
+import me.hmasrafchi.leddisplay.model.scene.Scene;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
+import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayStationary;
 
 /**
  * @author michelin
  *
  */
-public final class SceneOverlayedGUI extends Accordion implements Model<AbstractScene> {
+public final class SceneOverlayedGUI extends Accordion implements Model<Scene> {
 	private final Collection<Model<Overlay>> overlayModels = new ArrayList<>();
 
 	public SceneOverlayedGUI(final OverlayedScene overlayedScene) {
@@ -47,7 +47,7 @@ public final class SceneOverlayedGUI extends Accordion implements Model<Abstract
 	}
 
 	@Override
-	public AbstractScene getModel() {
+	public Scene getModel() {
 		return new OverlayedScene(overlayModels.stream().map(model -> model.getModel()).collect(Collectors.toList()));
 	}
 }

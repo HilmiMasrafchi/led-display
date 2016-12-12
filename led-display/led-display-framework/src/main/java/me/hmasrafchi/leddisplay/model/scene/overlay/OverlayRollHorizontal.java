@@ -1,15 +1,15 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene.overlay;
+package me.hmasrafchi.leddisplay.model.scene.overlay;
 
 import java.util.List;
 
 import com.google.common.base.Preconditions;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Led.RgbColor;
 
 /**
  * @author michelin

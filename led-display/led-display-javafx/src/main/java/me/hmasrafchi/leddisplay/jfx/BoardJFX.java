@@ -15,9 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import me.hmasrafchi.leddisplay.api.Board;
-import me.hmasrafchi.leddisplay.framework.Matrix;
-import me.hmasrafchi.leddisplay.framework.scene.Scene;
+import me.hmasrafchi.leddisplay.model.Board;
+import me.hmasrafchi.leddisplay.model.Matrix;
+import me.hmasrafchi.leddisplay.model.scene.Scene;
 
 /**
  * @author michelin

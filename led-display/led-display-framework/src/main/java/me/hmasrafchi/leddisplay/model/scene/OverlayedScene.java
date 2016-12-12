@@ -1,15 +1,15 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene;
+package me.hmasrafchi.leddisplay.model.scene;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.framework.scene.overlay.Overlay.State;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
 
 /**
  * @author michelin

@@ -1,11 +1,11 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.framework.scene.overlay;
+package me.hmasrafchi.leddisplay.model.scene.overlay;
 
 import java.util.List;
 
-import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.model.Led;
 
 /**
  * @author michelin

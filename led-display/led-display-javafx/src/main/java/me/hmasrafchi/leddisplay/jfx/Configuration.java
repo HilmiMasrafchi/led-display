@@ -21,4 +21,7 @@ public final class Configuration {
 	private final int delayBetweenFrames;
 
 	private final double ledTextFontSize;
+
+	private final int matrixLedHorizontalGap;
+	private final int matrixLedVerticalGap;
 }

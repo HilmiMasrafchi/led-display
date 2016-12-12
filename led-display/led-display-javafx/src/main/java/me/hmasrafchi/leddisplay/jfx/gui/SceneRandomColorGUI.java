@@ -15,16 +15,16 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.framework.scene.RandomColorScene;
-import me.hmasrafchi.leddisplay.framework.scene.AbstractScene;
+import me.hmasrafchi.leddisplay.model.Led;
+import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.model.scene.RandomColorScene;
+import me.hmasrafchi.leddisplay.model.scene.Scene;
 
 /**
  * @author michelin
  *
  */
-public final class SceneRandomColorGUI extends BorderPane implements Model<AbstractScene> {
+public final class SceneRandomColorGUI extends BorderPane implements Model<Scene> {
 	private final static Insets INSETS = new Insets(5);
 	private final static int CONTROL_PANEL_BUTTONS_MIN_SIZE = 40;
 
@@ -87,7 +87,7 @@ public final class SceneRandomColorGUI extends BorderPane implements Model<Abstr
 	}
 
 	@Override
-	public AbstractScene getModel() {
+	public Scene getModel() {
 		return new RandomColorScene(getColors());
 	}
 }

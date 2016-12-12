@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.api;
+package me.hmasrafchi.leddisplay.model;
 
 /**
  * @author michelin
