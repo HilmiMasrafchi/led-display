@@ -14,6 +14,6 @@ public abstract class MatrixIterator {
 
 	@FunctionalInterface
 	interface MatrixIteratorCallback {
-		void apply(Led led, int currentColumnIndex, int currentRowIndex);
+		void ledVisited(Led led, int currentColumnIndex, int currentRowIndex);
 	}
 }

@@ -24,7 +24,7 @@ public final class OverlayedScene extends AbstractScene {
 	}
 
 	@Override
-	boolean hasNextFrame() {
+	public boolean hasNextFrame() {
 		for (final Overlay overlay : overlays) {
 			if (overlay.isEndReached()) {
 				return true;

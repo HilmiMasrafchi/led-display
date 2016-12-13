@@ -26,7 +26,7 @@ public final class RandomColorScene extends AbstractScene {
 	private int counter = 0;
 
 	@Override
-	boolean hasNextFrame() {
+	public boolean hasNextFrame() {
 		return counter < 10;
 	}
 

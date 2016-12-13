@@ -6,30 +6,37 @@ package me.hmasrafchi.leddisplay.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.google.common.base.Preconditions;
+
 /**
  * @author michelin
  *
  */
 public final class CyclicIterator<T> {
-	private final Collection<? extends T> iterable;
+	private final Collection<? extends T> collection;
 
 	private Iterator<? extends T> iterator;
 
-	public CyclicIterator(final Collection<? extends T> iterable) {
-		this.iterable = iterable;
-		this.iterator = iterable.iterator();
+	private T currentElement;
+
+	public CyclicIterator(final Collection<? extends T> collection) {
+		Preconditions.checkNotNull(collection);
+		Preconditions.checkArgument(!collection.isEmpty());
+
+		this.collection = collection;
+		this.iterator = collection.iterator();
+		this.currentElement = iterator.next();
 	}
 
 	public T next() {
-		if (iterable.isEmpty()) {
-			return null;
-		} else {
-			if (iterator.hasNext()) {
-				return iterator.next();
-			} else {
-				iterator = iterable.iterator();
-				return iterator.next();
-			}
+		if (!iterator.hasNext()) {
+			iterator = collection.iterator();
 		}
+		this.currentElement = iterator.next();
+		return this.currentElement;
+	}
+
+	public T getCurrentElement() {
+		return this.currentElement;
 	}
 }

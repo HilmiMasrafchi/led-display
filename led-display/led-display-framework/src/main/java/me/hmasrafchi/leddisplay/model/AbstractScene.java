@@ -4,7 +4,6 @@
 package me.hmasrafchi.leddisplay.model;
 
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin
@@ -13,9 +12,7 @@ import me.hmasrafchi.leddisplay.model.api.Led;
 @RequiredArgsConstructor
 abstract class AbstractScene extends Scene {
 	@Override
-	public final void nextFrame(final MatrixIterator matrixIterator) {
-		matrixIterator.iterate((led, columnIndex, rowIndex) -> changeLed(led, columnIndex, rowIndex));
-		ledIterationEnded();
+	public final void nextFrame() {
 	}
 
 	@Override
@@ -25,8 +22,4 @@ abstract class AbstractScene extends Scene {
 	}
 
 	abstract void resetSceneState();
-
-	abstract void ledIterationEnded();
-
-	abstract void changeLed(final Led led, int ledColumnIndex, int ledRowIndex);
 }

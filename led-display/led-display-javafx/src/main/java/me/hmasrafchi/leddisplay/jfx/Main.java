@@ -5,18 +5,24 @@ package me.hmasrafchi.leddisplay.jfx;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Provider;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import me.hmasrafchi.leddisplay.infrastructure.GeneratorLed;
 import me.hmasrafchi.leddisplay.infrastructure.GeneratorLedWithUniformText;
 import me.hmasrafchi.leddisplay.infrastructure.GeneratorMatrix;
 import me.hmasrafchi.leddisplay.model.CompositeScene;
 import me.hmasrafchi.leddisplay.model.Matrix;
+import me.hmasrafchi.leddisplay.model.MatrixIterator;
+import me.hmasrafchi.leddisplay.model.MatrixIteratorLeftToRightTopToBottom;
 import me.hmasrafchi.leddisplay.model.OverlayedScene;
 import me.hmasrafchi.leddisplay.model.RandomColorScene;
 import me.hmasrafchi.leddisplay.model.Scene;
@@ -35,7 +41,7 @@ public final class Main extends Application {
 	private final static double WINDOW_WIDTH = 1200d;
 	private final static double WINDOW_HEIGHT = 600d;
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		launch(args);
 	}
 
@@ -43,13 +49,6 @@ public final class Main extends Application {
 	public void start(final Stage primaryStage) throws Exception {
 		final Configuration configuration = Configuration.builder().matrixColumnsCount(5).matrixRowsCount(6)
 				.canvasYPosition(1).delayBetweenFrames(100).matrixLedHorizontalGap(1).matrixLedVerticalGap(1).build();
-
-		final Provider<Led> provider = new ProviderLEDJFx();
-		final GeneratorLed generatorLed = new GeneratorLedWithUniformText(provider, "●", 140d);
-		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed,
-				configuration.getMatrixLedHorizontalGap(), configuration.getMatrixLedVerticalGap());
-		final Matrix matrix = generatorMatrix.next(configuration.getMatrixColumnsCount(),
-				configuration.getMatrixRowsCount());
 
 		final List<List<Overlay.State>> statesOverlay1 = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
@@ -80,12 +79,25 @@ public final class Main extends Application {
 		final List<RgbColor> colors = Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE);
 		final Scene secondScene = new RandomColorScene(colors);
 
-		final CompositeScene compositeScene = new CompositeScene(Arrays.asList(firstScene, secondScene));
+		final Provider<Led> provider = new ProviderLEDJFx();
+		final GeneratorLed generatorLed = new GeneratorLedWithUniformText(provider, "●", 140d);
+		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed,
+				configuration.getMatrixLedHorizontalGap(), configuration.getMatrixLedVerticalGap());
+		final Matrix matrix = generatorMatrix.next(configuration.getMatrixColumnsCount(),
+				configuration.getMatrixRowsCount());
 
-		final Board board = new BoardJFX(compositeScene, matrix,
-				Duration.ofMillis(configuration.getDelayBetweenFrames()));
+		final MatrixIterator matrixIterator = new MatrixIteratorLeftToRightTopToBottom(matrix);
 
-		final javafx.scene.Scene scene = new javafx.scene.Scene((Pane) board, WINDOW_WIDTH, WINDOW_HEIGHT, true);
+		final CompositeScene compositeScene = new CompositeScene(Arrays.asList(firstScene, secondScene),
+				matrixIterator);
+
+		final Board board = new BoardJFX(compositeScene, Duration.ofMillis(configuration.getDelayBetweenFrames()));
+
+		final Pane pane = new Pane();
+		final Collection<? extends Node> textNodes = matrix.stream().map(led -> (Text) led)
+				.collect(Collectors.toList());
+		pane.getChildren().addAll(textNodes);
+		final javafx.scene.Scene scene = new javafx.scene.Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT, true);
 		primaryStage.setScene(scene);
 
 		primaryStage.show();

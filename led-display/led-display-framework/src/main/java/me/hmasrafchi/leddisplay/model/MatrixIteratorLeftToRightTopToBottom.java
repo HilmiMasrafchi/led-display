@@ -19,8 +19,8 @@ public final class MatrixIteratorLeftToRightTopToBottom extends MatrixIterator {
 		for (int currentLedRowIndex = 0; currentLedRowIndex < matrix.getRowCount(); currentLedRowIndex++) {
 			for (int currentLedColumnIndex = 0; currentLedColumnIndex < matrix
 					.getColumnCount(); currentLedColumnIndex++) {
-				Led led = matrix.getLedAt(currentLedColumnIndex, currentLedRowIndex);
-				callback.apply(led, currentLedColumnIndex, currentLedRowIndex);
+				final Led led = matrix.getLedAt(currentLedColumnIndex, currentLedRowIndex);
+				callback.ledVisited(led, currentLedColumnIndex, currentLedRowIndex);
 			}
 		}
 	}
