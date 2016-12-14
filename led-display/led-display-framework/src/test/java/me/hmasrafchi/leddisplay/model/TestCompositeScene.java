@@ -24,123 +24,135 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay.State;
-import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
-import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayStationary;
+import me.hmasrafchi.leddisplay.model.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
+import me.hmasrafchi.leddisplay.model.overlay.OverlayStationary;
+import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 
 /**
  * @author michelin
  *
  */
 public final class TestCompositeScene {
-	private Scene scene;
 	private Matrix matrix;
-	private MatrixIterator matrixIterator;
+	private Collection<? extends MatrixEventListener> matrixEventListeners;
 
 	@Before
 	public void init() {
 		final int matrixColumnsCount = 5;
 		final int matrixRowsCount = 6;
-		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount);
-		this.matrixIterator = new MatrixIteratorLeftToRightTopToBottom(this.matrix);
-		this.scene = getScene(matrixColumnsCount);
+
+		this.matrixEventListeners = getMatrixEventListeners(matrixColumnsCount);
+		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount, matrixEventListeners);
 	}
 
 	@Test
 	public void test() {
-		final int sceneRepeatCount = 10;
+		final int sceneRepeatCount = 1;
 		for (int i = 0; i < sceneRepeatCount; i++) {
+			// 1nd frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
+					Arrays.asList(BLACK, BLACK, BLACK, BLACK, GREEN), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 2rd frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
-					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
-					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
-					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
-					Arrays.asList(RED, RED, RED, RED, RED)));
-
-			verifyNextFrame(Arrays.asList( //
-					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, BLACK, BLACK, GREEN, YELLOW), //
+					Arrays.asList(BLACK, BLACK, BLACK, GREEN, GREEN), //
 					Arrays.asList(RED, BLACK, BLACK, GREEN, RED), //
 					Arrays.asList(YELLOW, BLACK, BLACK, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 3th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, BLACK, GREEN, GREEN, YELLOW), //
+					Arrays.asList(BLACK, BLACK, GREEN, GREEN, GREEN), //
 					Arrays.asList(RED, BLACK, GREEN, BLACK, RED), //
 					Arrays.asList(YELLOW, BLACK, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 4th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
+					Arrays.asList(BLACK, GREEN, GREEN, GREEN, GREEN), //
 					Arrays.asList(RED, GREEN, BLACK, GREEN, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 5th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
+					Arrays.asList(GREEN, GREEN, GREEN, GREEN, GREEN), //
 					Arrays.asList(RED, BLACK, GREEN, BLACK, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 6th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
+					Arrays.asList(GREEN, GREEN, GREEN, GREEN, GREEN), //
 					Arrays.asList(RED, GREEN, BLACK, GREEN, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 7th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
+					Arrays.asList(GREEN, GREEN, GREEN, GREEN, GREEN), //
 					Arrays.asList(RED, BLACK, GREEN, BLACK, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
-			verifyNextFrame(Arrays.asList(Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
+			// 8th frame
+			verifyNextFrame(Arrays.asList( //
+					Arrays.asList(RED, RED, RED, RED, RED), //
+					Arrays.asList(GREEN, GREEN, GREEN, GREEN, BLACK), //
 					Arrays.asList(RED, GREEN, BLACK, GREEN, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, GREEN, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 9th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
+					Arrays.asList(GREEN, GREEN, GREEN, BLACK, BLACK), //
+					Arrays.asList(RED, BLACK, GREEN, BLACK, RED), //
 					Arrays.asList(YELLOW, GREEN, GREEN, BLACK, YELLOW), //
-					Arrays.asList(RED, BLACK, GREEN, BLACK, RED), //
-					Arrays.asList(YELLOW, GREEN, GREEN, BLACK, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 10th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
-					Arrays.asList(YELLOW, GREEN, BLACK, BLACK, YELLOW), //
+					Arrays.asList(GREEN, GREEN, BLACK, BLACK, BLACK), //
 					Arrays.asList(RED, GREEN, BLACK, BLACK, RED), //
 					Arrays.asList(YELLOW, GREEN, BLACK, BLACK, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(RED, RED, RED, RED, RED)));
 
+			// 11th frame
 			verifyNextFrame(Arrays.asList( //
 					Arrays.asList(RED, RED, RED, RED, RED), //
+					Arrays.asList(GREEN, BLACK, BLACK, BLACK, BLACK), //
+					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
+					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
+					Arrays.asList(RED, RED, RED, RED, RED)));
+
+			// 12th frame
+			verifyNextFrame(Arrays.asList( //
+					Arrays.asList(RED, RED, RED, RED, RED), //
+					Arrays.asList(BLACK, BLACK, BLACK, BLACK, BLACK), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
 					Arrays.asList(YELLOW, BLACK, BLACK, BLACK, YELLOW), //
 					Arrays.asList(RED, BLACK, BLACK, BLACK, RED), //
@@ -148,7 +160,8 @@ public final class TestCompositeScene {
 		}
 	}
 
-	private Matrix getMatrix(final int matrixColumnsCount, final int matrixRowsCount) {
+	private Matrix getMatrix(final int matrixColumnsCount, final int matrixRowsCount,
+			final Collection<? extends MatrixEventListener> matrixEventListeners) {
 		final List<List<Led>> leds = new ArrayList<>();
 		for (int i = 0; i < matrixRowsCount; i++) {
 			final List<Led> row = new ArrayList<>();
@@ -158,10 +171,10 @@ public final class TestCompositeScene {
 
 			leds.add(row);
 		}
-		return new Matrix(leds);
+		return new Matrix(leds, matrixEventListeners);
 	}
 
-	private Scene getScene(final int matrixColumnsCount) {
+	private Collection<? extends MatrixEventListener> getMatrixEventListeners(final int matrixColumnsCount) {
 		// OverlayRollHorizontal
 		final List<List<State>> statesRoll = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
@@ -176,8 +189,8 @@ public final class TestCompositeScene {
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.OFF),
+				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
 				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.ON),
 				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
@@ -191,14 +204,15 @@ public final class TestCompositeScene {
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, stationaryForegroundColor,
 				stationaryBackgroundColor);
 
-		final Collection<Overlay> overlays = Arrays.asList(overlayRoll, overlayStationary);
-		return new CompositeScene(Arrays.asList(new OverlayedScene(overlays)));
+		final SceneOverlayed overlayedEventListener = new SceneOverlayed(
+				Arrays.asList(overlayRoll, overlayStationary));
+		return Arrays.asList(overlayedEventListener);
 	}
 
 	private void verifyNextFrame(final List<List<RgbColor>> expectedColors) {
-		this.scene.nextFrame(this.matrixIterator);
+		this.matrix.nextFrame();
 		final List<List<Led>> expectedLeds1 = getExpectedLeds(expectedColors);
-		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1)));
+		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1, matrixEventListeners)));
 	}
 
 	private List<List<Led>> getExpectedLeds(final List<List<RgbColor>> colors) {
@@ -219,7 +233,7 @@ class DummyLed implements Led {
 	private RgbColor color;
 
 	DummyLed() {
-
+		color = RgbColor.BLACK;
 	}
 
 	@Override

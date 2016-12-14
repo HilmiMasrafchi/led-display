@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene.overlay;
+package me.hmasrafchi.leddisplay.model.overlay;
 
 import java.util.List;
 
@@ -21,27 +21,28 @@ public final class OverlayStationary implements Overlay {
 	private final Led.RgbColor offColor;
 
 	@Override
-	public void changeLed(final Led led, final int ledColumndIndex, final int ledRowIndex) {
+	public void onLedVisited(final Led led, final int ledColumndIndex, final int ledRowIndex) {
 		final Overlay.State state = states.get(ledRowIndex).get(ledColumndIndex);
 		if (state.equals(Overlay.State.ON)) {
 			led.setRgbColor(onColor);
 		} else if (state.equals(Overlay.State.OFF)) {
 			led.setRgbColor(offColor);
 		}
+		led.setOpacityLevels(1);
 	}
 
 	@Override
-	public void matrixIterationEnded() {
+	public void onMatrixIterationEnded() {
 
 	}
 
 	@Override
-	public boolean isEndReached() {
+	public boolean isExhausted() {
 		return false;
 	}
 
 	@Override
-	public void reset() {
+	public void onMatrixReset() {
 
 	}
 

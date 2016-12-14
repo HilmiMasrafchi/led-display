@@ -6,7 +6,6 @@ package me.hmasrafchi.leddisplay.model;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
@@ -16,22 +15,16 @@ import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
  *
  */
 @RequiredArgsConstructor
-public final class RandomColorScene extends AbstractScene {
+public final class SceneRandomColor implements MatrixEventListener {
 	private final static List<Double> OPACITY_VALUES = Arrays.asList(new Double(0.3), new Double(0.4), new Double(0.5),
 			new Double(0.6), new Double(0.7), new Double(0.8), new Double(0.9), new Double(1));
 
-	@Getter
-	private final List<Led.RgbColor> colors;
+	private final List<RgbColor> colors;
 
-	private int counter = 0;
-
-	@Override
-	public boolean hasNextFrame() {
-		return counter < 10;
-	}
+	private int counter = 1;
 
 	@Override
-	void changeLed(final Led led, final int ledColumnIndex, final int ledRowIndex) {
+	public void onLedVisited(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
 		final int randomRainbowIndex1 = (int) (Math.random() * (colors.size()));
 		final RgbColor rgbColor = colors.get(randomRainbowIndex1);
 		led.setRgbColor(rgbColor);
@@ -41,17 +34,17 @@ public final class RandomColorScene extends AbstractScene {
 	}
 
 	@Override
-	void ledIterationEnded() {
+	public boolean isExhausted() {
+		return counter >= 10;
+	}
+
+	@Override
+	public void onMatrixReset() {
+		counter = 1;
+	}
+
+	@Override
+	public void onMatrixIterationEnded() {
 		counter++;
-	}
-
-	@Override
-	void resetSceneState() {
-		counter = 0;
-	}
-
-	@Override
-	public String toString() {
-		return "RandomColorScene";
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.model.scene.overlay;
+package me.hmasrafchi.leddisplay.model.overlay;
 
 import java.util.List;
 
@@ -46,7 +46,7 @@ public final class OverlayRollHorizontal implements Overlay {
 	}
 
 	@Override
-	public void changeLed(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
+	public void onLedVisited(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
 		final State state = getStateAt(currentLedColumnIndex, currentLedRowIndex);
 		if (state.equals(State.ON)) {
 			led.setRgbColor(color);
@@ -54,18 +54,18 @@ public final class OverlayRollHorizontal implements Overlay {
 	}
 
 	@Override
-	public void matrixIterationEnded() {
+	public void onMatrixIterationEnded() {
 		currentIndexMark--;
 	}
 
 	@Override
-	public boolean isEndReached() {
-		return currentIndexMark >= -getWidth() + 1;
+	public boolean isExhausted() {
+		return currentIndexMark <= -getWidth();
 	}
 
 	@Override
-	public void reset() {
-		currentIndexMark = matrixWidth;
+	public void onMatrixReset() {
+		currentIndexMark = matrixWidth - 1;
 	}
 
 	@Override

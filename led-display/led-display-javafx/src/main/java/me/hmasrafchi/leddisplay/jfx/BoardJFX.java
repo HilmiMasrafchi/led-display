@@ -5,13 +5,13 @@ package me.hmasrafchi.leddisplay.jfx;
 
 import java.time.Duration;
 
-import javax.inject.Inject;
+import com.google.common.base.Preconditions;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import me.hmasrafchi.leddisplay.model.Scene;
+import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.model.api.Board;
 
 /**
@@ -21,13 +21,15 @@ import me.hmasrafchi.leddisplay.model.api.Board;
 public final class BoardJFX implements Board {
 	private final Timeline timeline;
 
-	@Inject
-	public BoardJFX(final Scene scene, final Duration delayBetweenFrames) {
-		this.timeline = new Timeline();
-		final EventHandler<ActionEvent> eventHandler = event -> scene.nextFrame();
+	public BoardJFX(final Matrix matrix, final Duration delayBetweenFrames) {
+		Preconditions.checkNotNull(matrix);
+		Preconditions.checkNotNull(delayBetweenFrames);
+		Preconditions.checkArgument(!delayBetweenFrames.isNegative() && !delayBetweenFrames.isZero());
+
+		final EventHandler<ActionEvent> eventHandler = event -> matrix.nextFrame();
 		final KeyFrame keyFrame = new KeyFrame(convertToJavaFxDuration(delayBetweenFrames), eventHandler);
-		timeline.getKeyFrames().add(keyFrame);
-		timeline.setCycleCount(Timeline.INDEFINITE);
+		this.timeline = new Timeline(keyFrame);
+		this.timeline.setCycleCount(Timeline.INDEFINITE);
 	}
 
 	private javafx.util.Duration convertToJavaFxDuration(final Duration duration) {

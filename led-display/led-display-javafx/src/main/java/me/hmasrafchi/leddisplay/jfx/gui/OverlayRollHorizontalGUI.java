@@ -12,8 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import me.hmasrafchi.leddisplay.jfx.ColorUtils;
 import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.scene.overlay.Overlay;
-import me.hmasrafchi.leddisplay.model.scene.overlay.OverlayRollHorizontal;
+import me.hmasrafchi.leddisplay.model.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
 
 /**
  * @author michelin
