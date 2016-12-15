@@ -30,8 +30,8 @@ public final class GeneratorMatrix {
 		this.verticalGap = verticalGap;
 	}
 
-	public Matrix next(final int columnsCount, final int rowsCount,
-			final Collection<? extends MatrixEventListener> matrixEventListeners) {
+	public Matrix next(final Collection<? extends Scene> scenes, final int columnsCount,
+			final int rowsCount) {
 		Preconditions.checkArgument(columnsCount > 0);
 		Preconditions.checkArgument(rowsCount > 0);
 
@@ -55,6 +55,6 @@ public final class GeneratorMatrix {
 			currentCoordinateX = 0;
 		}
 
-		return new Matrix(leds, matrixEventListeners);
+		return new Matrix(leds, scenes);
 	}
 }

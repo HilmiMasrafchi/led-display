@@ -20,16 +20,16 @@ import me.hmasrafchi.leddisplay.model.GeneratorLed;
 import me.hmasrafchi.leddisplay.model.GeneratorLedWithUniformText;
 import me.hmasrafchi.leddisplay.model.GeneratorMatrix;
 import me.hmasrafchi.leddisplay.model.Matrix;
-import me.hmasrafchi.leddisplay.model.MatrixEventListener;
+import me.hmasrafchi.leddisplay.model.Scene;
 import me.hmasrafchi.leddisplay.model.SceneOverlayed;
 import me.hmasrafchi.leddisplay.model.SceneRandomColor;
 import me.hmasrafchi.leddisplay.model.api.Board;
 import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayStationary;
-import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 
 /**
  * @author michelin
@@ -78,18 +78,17 @@ public final class Main extends Application {
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, stationaryForegroundColor,
 				stationaryBackgroundColor);
 
-		final MatrixEventListener firstScene = new SceneOverlayed(
-				Arrays.asList(overlayRoll, overlayStationary));
+		final Scene firstScene = new SceneOverlayed(Arrays.asList(overlayRoll, overlayStationary));
 
 		final List<RgbColor> colors = Arrays.asList(RgbColor.RED, RgbColor.GREEN, RgbColor.BLUE);
-		final MatrixEventListener secondScene = new SceneRandomColor(colors);
+		final Scene secondScene = new SceneRandomColor(colors);
 
 		final Provider<Led> provider = new ProviderLEDJFx();
 		final GeneratorLed generatorLed = new GeneratorLedWithUniformText(provider, "●", 140d);
 		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed,
 				configuration.getMatrixLedHorizontalGap(), configuration.getMatrixLedVerticalGap());
-		final Matrix matrix = generatorMatrix.next(configuration.getMatrixColumnsCount(),
-				configuration.getMatrixRowsCount(), Arrays.asList(firstScene));
+		final Matrix matrix = generatorMatrix.next(Arrays.asList(firstScene, secondScene),
+				configuration.getMatrixColumnsCount(), configuration.getMatrixRowsCount());
 
 		final Board board = new BoardJFX(matrix, Duration.ofMillis(configuration.getDelayBetweenFrames()));
 
@@ -101,34 +100,34 @@ public final class Main extends Application {
 		primaryStage.setScene(scene);
 
 		primaryStage.show();
-		// board.startAnimation();
+		board.startAnimation();
 
-		// 1
-		matrix.nextFrame();
-		// 2
-		matrix.nextFrame();
-		// 3
-		matrix.nextFrame();
-		// 4
-		matrix.nextFrame();
-		// 5
-		matrix.nextFrame();
-		// 6
-		matrix.nextFrame();
-		// 7
-		matrix.nextFrame();
-		// 8
-		matrix.nextFrame();
-		// 9
-		matrix.nextFrame();
-		// 10
-		matrix.nextFrame();
-		// 11
-		matrix.nextFrame();
-		// 12
-		matrix.nextFrame();
-		// exhausted
-		// 13
-		matrix.nextFrame();
+		// // 1
+		// matrix.nextFrame();
+		// // 2
+		// matrix.nextFrame();
+		// // 3
+		// matrix.nextFrame();
+		// // 4
+		// matrix.nextFrame();
+		// // 5
+		// matrix.nextFrame();
+		// // 6
+		// matrix.nextFrame();
+		// // 7
+		// matrix.nextFrame();
+		// // 8
+		// matrix.nextFrame();
+		// // 9
+		// matrix.nextFrame();
+		// // 10
+		// matrix.nextFrame();
+		// // 11
+		// matrix.nextFrame();
+		// // 12
+		// matrix.nextFrame();
+		// // exhausted
+		// // 13
+		// matrix.nextFrame();
 	}
 }

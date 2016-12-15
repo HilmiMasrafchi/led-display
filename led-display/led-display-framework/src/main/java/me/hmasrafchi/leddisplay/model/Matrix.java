@@ -21,19 +21,19 @@ import me.hmasrafchi.leddisplay.util.TriConsumer;
 public final class Matrix {
 	private final List<List<Led>> leds;
 
-	private final Collection<MatrixEventListener> matrixEventListeners;
-	private final CyclicIterator<MatrixEventListener> matrixEventListenersIterator;
+	private final Collection<Scene> scenes;
+	private final CyclicIterator<Scene> scenesIterator;
 
 	private final MatrixIterator matrixIterator;
 
-	Matrix(final List<List<Led>> leds, final Collection<? extends MatrixEventListener> matrixEventListeners) {
+	Matrix(final List<List<Led>> leds, final Collection<? extends Scene> scenes) {
 		checkLedsPreconditions(leds);
-		checkMatrixEventListenerPreconditions(matrixEventListeners);
+		checkScenesPreconditions(scenes);
 
 		this.leds = leds;
 
-		this.matrixEventListeners = new CopyOnWriteArrayList<>(matrixEventListeners);
-		this.matrixEventListenersIterator = new CyclicIterator<>(matrixEventListeners);
+		this.scenes = new CopyOnWriteArrayList<>(scenes);
+		this.scenesIterator = new CyclicIterator<>(scenes);
 
 		this.matrixIterator = new MatrixIterator();
 	}
@@ -51,29 +51,28 @@ public final class Matrix {
 		}
 	}
 
-	private void checkMatrixEventListenerPreconditions(
-			final Collection<? extends MatrixEventListener> matrixEventListeners) {
-		Preconditions.checkNotNull(matrixEventListeners);
-		Preconditions.checkArgument(!matrixEventListeners.isEmpty());
+	private void checkScenesPreconditions(final Collection<? extends Scene> scenes) {
+		Preconditions.checkNotNull(scenes);
+		Preconditions.checkArgument(!scenes.isEmpty());
 	}
 
 	public void nextFrame() {
-		final MatrixEventListener currentListener = matrixEventListenersIterator.getCurrentElement();
-		if (currentListener.isExhausted()) {
-			currentListener.onMatrixReset();
-			matrixEventListenersIterator.next();
+		final Scene currentScene = scenesIterator.getCurrentElement();
+		if (currentScene.isExhausted()) {
+			currentScene.onMatrixReset();
+			scenesIterator.next();
 		} else {
-			currentListener.onMatrixIterationEnded();
+			currentScene.onMatrixIterationEnded();
 		}
-		matrixIterator.iterate(currentListener::onLedVisited);
+		matrixIterator.iterate(currentScene::onLedVisited);
 	}
 
-	public void addMatrixEventListener(final MatrixEventListener listener) {
-		matrixEventListeners.add(listener);
+	public void addScene(final Scene scene) {
+		scenes.add(scene);
 	}
 
-	public void removeMatrixEventListener(final MatrixEventListener listener) {
-		matrixEventListeners.remove(listener);
+	public void removeScene(final Scene scene) {
+		scenes.remove(scene);
 	}
 
 	private Led getLedAt(final int columnsCount, final int rowsCount) {

@@ -10,8 +10,6 @@ import me.hmasrafchi.leddisplay.model.api.Led;
  *
  */
 public interface MatrixEventListener {
-	boolean isExhausted();
-
 	void onLedVisited(Led led, int currentLedColumnIndex, int currentLedRowIndex);
 
 	void onMatrixReset();

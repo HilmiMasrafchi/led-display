@@ -15,7 +15,7 @@ import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
  *
  */
 @RequiredArgsConstructor
-public final class SceneOverlayed implements MatrixEventListener {
+public final class SceneOverlayed implements Scene {
 	private final Collection<Overlay> overlays;
 
 	@Override

@@ -25,9 +25,9 @@ import lombok.ToString;
 import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
+import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayStationary;
-import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 
 /**
  * @author michelin
@@ -35,15 +35,15 @@ import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
  */
 public final class TestCompositeScene {
 	private Matrix matrix;
-	private Collection<? extends MatrixEventListener> matrixEventListeners;
+	private Collection<? extends Scene> scenes;
 
 	@Before
 	public void init() {
 		final int matrixColumnsCount = 5;
 		final int matrixRowsCount = 6;
 
-		this.matrixEventListeners = getMatrixEventListeners(matrixColumnsCount);
-		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount, matrixEventListeners);
+		this.scenes = getScenes(matrixColumnsCount);
+		this.matrix = getMatrix(matrixColumnsCount, matrixRowsCount, scenes);
 	}
 
 	@Test
@@ -161,7 +161,7 @@ public final class TestCompositeScene {
 	}
 
 	private Matrix getMatrix(final int matrixColumnsCount, final int matrixRowsCount,
-			final Collection<? extends MatrixEventListener> matrixEventListeners) {
+			final Collection<? extends Scene> scenes) {
 		final List<List<Led>> leds = new ArrayList<>();
 		for (int i = 0; i < matrixRowsCount; i++) {
 			final List<Led> row = new ArrayList<>();
@@ -171,10 +171,10 @@ public final class TestCompositeScene {
 
 			leds.add(row);
 		}
-		return new Matrix(leds, matrixEventListeners);
+		return new Matrix(leds, scenes);
 	}
 
-	private Collection<? extends MatrixEventListener> getMatrixEventListeners(final int matrixColumnsCount) {
+	private Collection<? extends Scene> getScenes(final int matrixColumnsCount) {
 		// OverlayRollHorizontal
 		final List<List<State>> statesRoll = Arrays.asList(
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
@@ -204,15 +204,14 @@ public final class TestCompositeScene {
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, stationaryForegroundColor,
 				stationaryBackgroundColor);
 
-		final SceneOverlayed overlayedEventListener = new SceneOverlayed(
-				Arrays.asList(overlayRoll, overlayStationary));
-		return Arrays.asList(overlayedEventListener);
+		final Scene overlayedScene = new SceneOverlayed(Arrays.asList(overlayRoll, overlayStationary));
+		return Arrays.asList(overlayedScene);
 	}
 
 	private void verifyNextFrame(final List<List<RgbColor>> expectedColors) {
 		this.matrix.nextFrame();
 		final List<List<Led>> expectedLeds1 = getExpectedLeds(expectedColors);
-		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1, matrixEventListeners)));
+		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1, scenes)));
 	}
 
 	private List<List<Led>> getExpectedLeds(final List<List<RgbColor>> colors) {
