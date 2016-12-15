@@ -30,31 +30,35 @@ public final class GeneratorMatrix {
 		this.verticalGap = verticalGap;
 	}
 
-	public Matrix next(final Collection<? extends Scene> scenes, final int columnsCount,
-			final int rowsCount) {
+	public Matrix next(final Collection<? extends Scene> scenes, final int columnsCount, final int rowsCount) {
 		Preconditions.checkArgument(columnsCount > 0);
 		Preconditions.checkArgument(rowsCount > 0);
 
 		final List<List<Led>> leds = new ArrayList<>();
 
-		double currentCoordinateX = 0;
 		double currentCoordinateY = 0;
 		for (int i = 0; i < rowsCount; i++) {
-			final List<Led> currentLedRow = new ArrayList<>(columnsCount);
-			for (int j = 0; j < columnsCount; j++) {
-				final Led currentLed = ledGenerator.next();
-				currentLed.setCoordinateX(currentCoordinateX);
-				currentLed.setCoordinateY(currentCoordinateY);
-				currentLedRow.add(currentLed);
-
-				currentCoordinateX += (ledGenerator.getLedMaximumWidth() + horizontalGap);
-			}
+			final List<Led> currentLedRow = nextLedRow(columnsCount, currentCoordinateY);
 			leds.add(currentLedRow);
 
 			currentCoordinateY += (ledGenerator.getLedMaximumHeight() + verticalGap);
-			currentCoordinateX = 0;
 		}
 
 		return new Matrix(leds, scenes);
+	}
+
+	private List<Led> nextLedRow(final int columnsCount, final double currentCoordinateY) {
+		final List<Led> ledRow = new ArrayList<>(columnsCount);
+		double currentCoordinateX = 0;
+		for (int j = 0; j < columnsCount; j++) {
+			final Led currentLed = ledGenerator.next();
+			currentLed.setCoordinateX(currentCoordinateX);
+			currentLed.setCoordinateY(currentCoordinateY);
+			ledRow.add(currentLed);
+
+			currentCoordinateX += (ledGenerator.getLedMaximumWidth() + horizontalGap);
+		}
+
+		return ledRow;
 	}
 }
