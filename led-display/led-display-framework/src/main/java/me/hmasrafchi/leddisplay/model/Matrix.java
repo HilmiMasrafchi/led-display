@@ -61,10 +61,11 @@ public final class Matrix {
 		if (currentScene.isExhausted()) {
 			currentScene.onMatrixReset();
 			scenesIterator.next();
+			matrixIterator.iterate((currentLed, i, j) -> currentLed.reset());
 		} else {
 			currentScene.onMatrixIterationEnded();
 		}
-		matrixIterator.iterate(currentScene::onLedVisited);
+		matrixIterator.iterate(scenesIterator.getCurrentElement()::onLedVisited);
 	}
 
 	public void addScene(final Scene scene) {

@@ -129,5 +129,10 @@ public final class Main extends Application {
 		// // exhausted
 		// // 13
 		// matrix.nextFrame();
+		// matrix.nextFrame();
+		// matrix.nextFrame();
+		//
+		// // exhausedj
+		// matrix.nextFrame();
 	}
 }

@@ -16,6 +16,8 @@ import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
  */
 @RequiredArgsConstructor
 public final class SceneRandomColor implements Scene {
+	private static final int FRAMES_COUNT = 10;
+
 	private final static List<Double> OPACITY_VALUES = Arrays.asList(new Double(0.3), new Double(0.4), new Double(0.5),
 			new Double(0.6), new Double(0.7), new Double(0.8), new Double(0.9), new Double(1));
 
@@ -35,7 +37,7 @@ public final class SceneRandomColor implements Scene {
 
 	@Override
 	public boolean isExhausted() {
-		return counter >= 10;
+		return counter >= FRAMES_COUNT;
 	}
 
 	@Override
