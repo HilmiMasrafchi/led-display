@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.model;
 
 import java.util.Collection;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.model.api.Led;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
@@ -16,6 +17,7 @@ import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
  */
 @RequiredArgsConstructor
 public final class SceneOverlayed implements Scene {
+	@Getter
 	private final Collection<Overlay> overlays;
 
 	@Override
