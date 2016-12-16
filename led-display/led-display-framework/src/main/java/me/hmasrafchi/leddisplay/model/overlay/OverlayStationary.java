@@ -7,7 +7,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin
@@ -38,7 +38,7 @@ public final class OverlayStationary implements Overlay {
 
 	@Override
 	public boolean isExhausted() {
-		return false;
+		return true;
 	}
 
 	@Override

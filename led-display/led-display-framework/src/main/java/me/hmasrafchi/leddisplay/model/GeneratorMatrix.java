@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.api.Led;
 
 /**
  * @author michelin

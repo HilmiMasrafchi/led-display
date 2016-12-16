@@ -8,8 +8,8 @@ import java.util.List;
 import com.google.common.base.Preconditions;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.model.api.Led;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 
 /**
  * @author michelin
@@ -19,7 +19,9 @@ public final class OverlayRollHorizontal implements Overlay {
 	@Getter
 	private final List<List<Overlay.State>> states;
 	@Getter
-	private final Led.RgbColor color;
+	private final Led.RgbColor onColor;
+	@Getter
+	private final Led.RgbColor offColor;
 	@Getter
 	private final int yPosition;
 	@Getter
@@ -27,14 +29,15 @@ public final class OverlayRollHorizontal implements Overlay {
 
 	private int currentIndexMark;
 
-	public OverlayRollHorizontal(final List<List<State>> states, final RgbColor color, final int yPosition,
-			final int matrixWidth) {
+	public OverlayRollHorizontal(final List<List<State>> states, final RgbColor onColor, final RgbColor offColor,
+			final int yPosition, final int matrixWidth) {
 		Preconditions.checkNotNull(states);
 		Preconditions.checkArgument(states.size() > 0);
 		states.stream().forEach(row -> Preconditions.checkArgument(row.size() > 0));
 		this.states = states;
 
-		this.color = Preconditions.checkNotNull(color);
+		this.onColor = Preconditions.checkNotNull(onColor);
+		this.offColor = Preconditions.checkNotNull(offColor);
 
 		Preconditions.checkArgument(yPosition >= 0);
 		this.yPosition = yPosition;
@@ -48,8 +51,16 @@ public final class OverlayRollHorizontal implements Overlay {
 	@Override
 	public void onLedVisited(final Led led, final int currentLedColumnIndex, final int currentLedRowIndex) {
 		final State state = getStateAt(currentLedColumnIndex, currentLedRowIndex);
-		if (state.equals(State.ON)) {
-			led.setRgbColor(color);
+		switch (state) {
+		case ON:
+			led.setRgbColor(onColor);
+			break;
+		case OFF:
+			led.setRgbColor(offColor);
+			break;
+		case TRANSPARENT:
+			led.reset();
+			break;
 		}
 	}
 

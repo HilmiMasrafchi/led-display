@@ -3,10 +3,10 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.BLACK;
-import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.GREEN;
-import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.RED;
-import static me.hmasrafchi.leddisplay.model.api.Led.RgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.Led.RgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.api.Led.RgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.api.Led.RgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.Led.RgbColor.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +22,8 @@ import org.junit.Test;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.model.api.Led;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
@@ -184,7 +184,7 @@ public final class TestCompositeScene {
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
 						Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, 1, matrixColumnsCount);
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW, 1, matrixColumnsCount);
 
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(

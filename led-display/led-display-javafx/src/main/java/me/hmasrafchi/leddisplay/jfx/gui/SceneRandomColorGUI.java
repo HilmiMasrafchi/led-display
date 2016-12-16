@@ -15,9 +15,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.model.Scene;
 import me.hmasrafchi.leddisplay.model.SceneRandomColor;
-import me.hmasrafchi.leddisplay.model.api.Led;
 
 /**
  * @author michelin

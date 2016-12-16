@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.api.Led;
+import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 import me.hmasrafchi.leddisplay.util.TriConsumer;
 
@@ -132,4 +132,12 @@ public final class Matrix {
 	public String toString() {
 		return "Matrix [leds=" + leds + "]";
 	}
+}
+
+interface MatrixEventListener {
+	void onLedVisited(Led led, int currentLedColumnIndex, int currentLedRowIndex);
+
+	void onMatrixReset();
+
+	void onMatrixIterationEnded();
 }

@@ -8,8 +8,8 @@ import javax.inject.Provider;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.api.Led;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 
 /**
  * @author michelin

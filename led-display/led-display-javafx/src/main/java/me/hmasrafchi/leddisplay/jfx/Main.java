@@ -16,6 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import me.hmasrafchi.leddisplay.api.Board;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.GeneratorLed;
 import me.hmasrafchi.leddisplay.model.GeneratorLedWithUniformText;
 import me.hmasrafchi.leddisplay.model.GeneratorMatrix;
@@ -23,9 +26,6 @@ import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.model.Scene;
 import me.hmasrafchi.leddisplay.model.SceneOverlayed;
 import me.hmasrafchi.leddisplay.model.SceneRandomColor;
-import me.hmasrafchi.leddisplay.model.api.Board;
-import me.hmasrafchi.leddisplay.model.api.Led;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
@@ -50,29 +50,31 @@ public final class Main extends Application {
 
 		// OverlayRollHorizontal
 		final List<List<State>> statesRoll = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON, Overlay.State.TRANSPARENT,
-						Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON,
+						Overlay.State.TRANSPARENT, Overlay.State.ON, Overlay.State.TRANSPARENT,
+						Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, 1,
-				configuration.getMatrixColumnsCount());
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW,
+				1, configuration.getMatrixColumnsCount());
 
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
 				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.ON),
 				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.OFF),
 				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON));
 		final RgbColor stationaryForegroundColor = RgbColor.RED;
 		final RgbColor stationaryBackgroundColor = RgbColor.YELLOW;
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, stationaryForegroundColor,
@@ -87,7 +89,7 @@ public final class Main extends Application {
 		final GeneratorLed generatorLed = new GeneratorLedWithUniformText(provider, "●", 140d);
 		final GeneratorMatrix generatorMatrix = new GeneratorMatrix(generatorLed,
 				configuration.getMatrixLedHorizontalGap(), configuration.getMatrixLedVerticalGap());
-		final Matrix matrix = generatorMatrix.next(Arrays.asList(firstScene, secondScene),
+		final Matrix matrix = generatorMatrix.next(Arrays.asList(overlayRoll, overlayStationary, secondScene),
 				configuration.getMatrixColumnsCount(), configuration.getMatrixRowsCount());
 
 		final Board board = new BoardJFX(matrix, Duration.ofMillis(configuration.getDelayBetweenFrames()));

@@ -10,8 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.jfx.ColorUtils;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
 
@@ -21,16 +21,16 @@ import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
  */
 final class OverlayRollHorizontalGUI extends VBox implements Model<Overlay> {
 	private final OverlayBaseGUI overlayBaseGui;
-	private final ColorPicker colorPicker;
+	private final ColorPicker onColorPicker;
 	private final TextField yPositionTextField;
 	private final Label matrixWidth;
 
 	OverlayRollHorizontalGUI(final OverlayRollHorizontal overlayRollHorizontal) {
 		this.overlayBaseGui = new OverlayBaseGUI(overlayRollHorizontal.getStates());
 
-		final RgbColor color = overlayRollHorizontal.getColor();
-		final Color jfxColor = ColorUtils.toJavaFxColor(color);
-		this.colorPicker = new ColorPicker(jfxColor);
+		final RgbColor onColor = overlayRollHorizontal.getOnColor();
+		final Color jfxOnColor = ColorUtils.toJavaFxColor(onColor);
+		this.onColorPicker = new ColorPicker(jfxOnColor);
 
 		this.yPositionTextField = new TextField();
 		this.yPositionTextField.setText(String.valueOf(overlayRollHorizontal.getYPosition()));
@@ -39,7 +39,7 @@ final class OverlayRollHorizontalGUI extends VBox implements Model<Overlay> {
 
 		this.matrixWidth = new Label(String.valueOf(overlayRollHorizontal.getMatrixWidth()));
 
-		final HBox hbox = new HBox(colorPicker, yPositionTextField, matrixWidth);
+		final HBox hbox = new HBox(onColorPicker, yPositionTextField, matrixWidth);
 		hbox.setSpacing(10);
 		hbox.setPadding(new Insets(10));
 
@@ -48,7 +48,9 @@ final class OverlayRollHorizontalGUI extends VBox implements Model<Overlay> {
 
 	@Override
 	public Overlay getModel() {
-		return new OverlayRollHorizontal(overlayBaseGui.getStates(), ColorUtils.toLedRgbColor(colorPicker.getValue()),
-				Integer.parseInt(yPositionTextField.getText()), Integer.valueOf(matrixWidth.getText()));
+		// TODO: create new offColorPicker
+		return new OverlayRollHorizontal(overlayBaseGui.getStates(), ColorUtils.toLedRgbColor(onColorPicker.getValue()),
+				RgbColor.YELLOW, Integer.parseInt(yPositionTextField.getText()),
+				Integer.valueOf(matrixWidth.getText()));
 	}
 }

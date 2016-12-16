@@ -11,8 +11,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import me.hmasrafchi.leddisplay.api.Board;
 import me.hmasrafchi.leddisplay.model.Matrix;
-import me.hmasrafchi.leddisplay.model.api.Board;
 
 /**
  * @author michelin

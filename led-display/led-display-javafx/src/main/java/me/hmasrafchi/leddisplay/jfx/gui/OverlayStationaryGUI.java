@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.jfx.ColorUtils;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayStationary;
 

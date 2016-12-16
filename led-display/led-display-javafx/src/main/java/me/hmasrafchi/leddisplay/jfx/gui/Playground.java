@@ -39,11 +39,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Data;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.jfx.RuntimeTypeAdapterFactory;
 import me.hmasrafchi.leddisplay.model.SceneOverlayed;
 import me.hmasrafchi.leddisplay.model.SceneRandomColor;
-import me.hmasrafchi.leddisplay.model.api.Led;
-import me.hmasrafchi.leddisplay.model.api.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay.State;
 import me.hmasrafchi.leddisplay.model.overlay.OverlayRollHorizontal;
@@ -101,7 +101,7 @@ public final class Playground extends Application {
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
 						Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, 1, matrixColumnsCount);
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW, 1, matrixColumnsCount);
 
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(
