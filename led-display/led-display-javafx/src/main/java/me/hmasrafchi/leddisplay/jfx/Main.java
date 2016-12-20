@@ -50,31 +50,29 @@ public final class Main extends Application {
 
 		// OverlayRollHorizontal
 		final List<List<State>> statesRoll = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON,
-						Overlay.State.TRANSPARENT, Overlay.State.ON, Overlay.State.TRANSPARENT,
-						Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON, Overlay.State.TRANSPARENT,
+						Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW,
-				1, configuration.getMatrixColumnsCount());
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW, 1,
+				configuration.getMatrixColumnsCount());
 
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
+				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
+						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
 				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.ON),
 				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.OFF),
 				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
 						Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON));
+				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
+						Overlay.State.ON));
 		final RgbColor stationaryForegroundColor = RgbColor.RED;
 		final RgbColor stationaryBackgroundColor = RgbColor.YELLOW;
 		final Overlay overlayStationary = new OverlayStationary(statesStationary, stationaryForegroundColor,

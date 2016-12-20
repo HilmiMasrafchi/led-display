@@ -19,14 +19,14 @@ import me.hmasrafchi.leddisplay.util.TriConsumer;
  *
  */
 public final class Matrix {
-	private final List<List<Led>> leds;
+	private final List<List<? extends Led>> leds;
 
 	private final Collection<Scene> scenes;
 	private final CyclicIterator<Scene> scenesIterator;
 
 	private final MatrixIterator matrixIterator;
 
-	Matrix(final List<List<Led>> leds, final Collection<? extends Scene> scenes) {
+	Matrix(final List<List<? extends Led>> leds, final Collection<? extends Scene> scenes) {
 		checkLedsPreconditions(leds);
 		checkScenesPreconditions(scenes);
 
@@ -38,13 +38,13 @@ public final class Matrix {
 		this.matrixIterator = new MatrixIterator();
 	}
 
-	private void checkLedsPreconditions(final List<List<Led>> leds) {
+	private void checkLedsPreconditions(final List<? extends List<? extends Led>> leds) {
 		Preconditions.checkNotNull(leds);
 		Preconditions.checkArgument(!leds.isEmpty());
 		checkIfLedRowsHasTheSameSize(leds);
 	}
 
-	private void checkIfLedRowsHasTheSameSize(final List<List<Led>> leds) {
+	private void checkIfLedRowsHasTheSameSize(final List<? extends List<? extends Led>> leds) {
 		final int expectedRowSize = leds.get(0).size();
 		if (leds.stream().filter(row -> row.size() != expectedRowSize).findAny().isPresent()) {
 			throw new IllegalArgumentException("led rows should have equal size each");

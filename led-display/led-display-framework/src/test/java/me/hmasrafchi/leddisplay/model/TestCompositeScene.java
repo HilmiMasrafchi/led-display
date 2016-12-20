@@ -48,7 +48,7 @@ public final class TestCompositeScene {
 
 	@Test
 	public void test() {
-		final int sceneRepeatCount = 1;
+		final int sceneRepeatCount = 10;
 		for (int i = 0; i < sceneRepeatCount; i++) {
 			// 1nd frame
 			verifyNextFrame(Arrays.asList( //
@@ -162,7 +162,7 @@ public final class TestCompositeScene {
 
 	private Matrix getMatrix(final int matrixColumnsCount, final int matrixRowsCount,
 			final Collection<? extends Scene> scenes) {
-		final List<List<Led>> leds = new ArrayList<>();
+		final List<List<? extends Led>> leds = new ArrayList<>();
 		for (int i = 0; i < matrixRowsCount; i++) {
 			final List<Led> row = new ArrayList<>();
 			for (int j = 0; j < matrixColumnsCount; j++) {
@@ -184,7 +184,8 @@ public final class TestCompositeScene {
 				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
 						Overlay.State.ON, Overlay.State.ON));
 		RgbColor expectedRollColor = RgbColor.GREEN;
-		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW, 1, matrixColumnsCount);
+		final Overlay overlayRoll = new OverlayRollHorizontal(statesRoll, expectedRollColor, RgbColor.YELLOW, 1,
+				matrixColumnsCount);
 
 		// OverlayStationary
 		final List<List<State>> statesStationary = Arrays.asList(
@@ -210,12 +211,12 @@ public final class TestCompositeScene {
 
 	private void verifyNextFrame(final List<List<RgbColor>> expectedColors) {
 		this.matrix.nextFrame();
-		final List<List<Led>> expectedLeds1 = getExpectedLeds(expectedColors);
+		final List<List<? extends Led>> expectedLeds1 = getExpectedLeds(expectedColors);
 		Assert.assertThat(this.matrix, CoreMatchers.is(new Matrix(expectedLeds1, scenes)));
 	}
 
-	private List<List<Led>> getExpectedLeds(final List<List<RgbColor>> colors) {
-		final List<List<Led>> leds = new ArrayList<>(colors.size());
+	private List<List<? extends Led>> getExpectedLeds(final List<List<RgbColor>> colors) {
+		final List<List<? extends Led>> leds = new ArrayList<>(colors.size());
 		colors.stream().forEach(rowOfColor -> {
 			final List<Led> rowOfLed = rowOfColor.stream().map(DummyLed::new).collect(Collectors.toList());
 			leds.add(rowOfLed);

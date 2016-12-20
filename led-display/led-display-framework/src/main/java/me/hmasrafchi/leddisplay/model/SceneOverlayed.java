@@ -39,7 +39,7 @@ public final class SceneOverlayed implements Scene {
 
 	@Override
 	public boolean isExhausted() {
-		return overlays.stream().filter(Overlay::isExhausted).findAny().isPresent();
+		return overlays.stream().allMatch(Overlay::isExhausted);
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public final class GeneratorMatrix {
 		Preconditions.checkArgument(columnsCount > 0);
 		Preconditions.checkArgument(rowsCount > 0);
 
-		final List<List<Led>> leds = new ArrayList<>();
+		final List<List<? extends Led>> leds = new ArrayList<>();
 
 		double currentCoordinateY = 0;
 		for (int i = 0; i < rowsCount; i++) {
