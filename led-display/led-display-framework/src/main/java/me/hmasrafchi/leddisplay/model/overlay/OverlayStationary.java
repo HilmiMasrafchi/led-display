@@ -5,24 +5,33 @@ package me.hmasrafchi.leddisplay.model.overlay;
 
 import java.util.List;
 
+import com.google.common.base.Preconditions;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
  * @author michelin
  *
  */
 @Getter
-@RequiredArgsConstructor
 public final class OverlayStationary implements Overlay {
-	private final List<List<Overlay.State>> states;
+	private final TwoDimensionalListRectangular<State> states;
 	private final Led.RgbColor onColor;
 	private final Led.RgbColor offColor;
 
+	public OverlayStationary(final List<? extends List<? extends State>> states, final RgbColor onColor,
+			final RgbColor offColor) {
+		this.states = new TwoDimensionalListRectangular<>(states);
+		this.onColor = Preconditions.checkNotNull(onColor);
+		this.offColor = Preconditions.checkNotNull(offColor);
+	}
+
 	@Override
 	public void onLedVisited(final Led led, final int ledColumndIndex, final int ledRowIndex) {
-		final Overlay.State state = states.get(ledRowIndex).get(ledColumndIndex);
+		final Overlay.State state = states.getValueAt(ledColumndIndex, ledRowIndex);
 		if (state.equals(Overlay.State.ON)) {
 			led.setRgbColor(onColor);
 		} else if (state.equals(Overlay.State.OFF)) {
@@ -48,19 +57,11 @@ public final class OverlayStationary implements Overlay {
 
 	@Override
 	public Overlay.State getStateAt(int columnIndex, int rowIndex) {
-		if (columnIndex > getWidth() - 1 || rowIndex > getHeight() - 1) {
+		if (columnIndex > states.getColumnCount() - 1 || rowIndex > states.getRowCount() - 1) {
 			return State.TRANSPARENT;
 		}
 
-		return states.get(rowIndex).get(columnIndex);
-	}
-
-	private int getWidth() {
-		return states.get(0).size();
-	}
-
-	private int getHeight() {
-		return states.size();
+		return states.getValueAt(columnIndex, rowIndex);
 	}
 
 	@Override

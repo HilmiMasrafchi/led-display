@@ -13,42 +13,29 @@ import com.google.common.base.Preconditions;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 import me.hmasrafchi.leddisplay.util.TriConsumer;
+import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
  * @author michelin
  *
  */
 public final class Matrix {
-	private final List<List<? extends Led>> leds;
+	private final TwoDimensionalListRectangular<Led> leds;
 
 	private final Collection<Scene> scenes;
 	private final CyclicIterator<Scene> scenesIterator;
 
 	private final MatrixIterator matrixIterator;
 
-	Matrix(final List<List<? extends Led>> leds, final Collection<? extends Scene> scenes) {
-		checkLedsPreconditions(leds);
+	Matrix(final List<? extends List<? extends Led>> leds, final Collection<? extends Scene> scenes) {
 		checkScenesPreconditions(scenes);
 
-		this.leds = leds;
+		this.leds = new TwoDimensionalListRectangular(leds);
 
 		this.scenes = new CopyOnWriteArrayList<>(scenes);
 		this.scenesIterator = new CyclicIterator<>(scenes);
 
 		this.matrixIterator = new MatrixIterator();
-	}
-
-	private void checkLedsPreconditions(final List<? extends List<? extends Led>> leds) {
-		Preconditions.checkNotNull(leds);
-		Preconditions.checkArgument(!leds.isEmpty());
-		checkIfLedRowsHasTheSameSize(leds);
-	}
-
-	private void checkIfLedRowsHasTheSameSize(final List<? extends List<? extends Led>> leds) {
-		final int expectedRowSize = leds.get(0).size();
-		if (leds.stream().filter(row -> row.size() != expectedRowSize).findAny().isPresent()) {
-			throw new IllegalArgumentException("led rows should have equal size each");
-		}
 	}
 
 	private void checkScenesPreconditions(final Collection<? extends Scene> scenes) {
@@ -76,27 +63,16 @@ public final class Matrix {
 		scenes.remove(scene);
 	}
 
-	private Led getLedAt(final int columnsCount, final int rowsCount) {
-		return leds.get(rowsCount).get(columnsCount);
-	}
-
-	private int getColumnCount() {
-		return leds.get(0).size();
-	}
-
-	private int getRowCount() {
-		return leds.size();
-	}
-
 	public Stream<Led> stream() {
-		return leds.stream().flatMap(row -> row.stream());
+		return leds.stream();
 	}
 
 	private class MatrixIterator {
 		void iterate(final TriConsumer<Led, Integer, Integer> consumer) {
-			for (int currentLedRowIndex = 0; currentLedRowIndex < getRowCount(); currentLedRowIndex++) {
-				for (int currentLedColumnIndex = 0; currentLedColumnIndex < getColumnCount(); currentLedColumnIndex++) {
-					final Led currentLed = getLedAt(currentLedColumnIndex, currentLedRowIndex);
+			for (int currentLedRowIndex = 0; currentLedRowIndex < leds.getRowCount(); currentLedRowIndex++) {
+				for (int currentLedColumnIndex = 0; currentLedColumnIndex < leds
+						.getColumnCount(); currentLedColumnIndex++) {
+					final Led currentLed = leds.getValueAt(currentLedColumnIndex, currentLedRowIndex);
 					consumer.accept(currentLed, currentLedColumnIndex, currentLedRowIndex);
 				}
 			}

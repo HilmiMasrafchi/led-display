@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Led.RgbColor;
+import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
  * @author michelin
@@ -17,7 +18,7 @@ import me.hmasrafchi.leddisplay.api.Led.RgbColor;
  */
 public final class OverlayRollHorizontal implements Overlay {
 	@Getter
-	private final List<List<Overlay.State>> states;
+	private final TwoDimensionalListRectangular<Overlay.State> states;
 	@Getter
 	private final Led.RgbColor onColor;
 	@Getter
@@ -29,12 +30,9 @@ public final class OverlayRollHorizontal implements Overlay {
 
 	private int currentIndexMark;
 
-	public OverlayRollHorizontal(final List<List<State>> states, final RgbColor onColor, final RgbColor offColor,
-			final int yPosition, final int matrixWidth) {
-		Preconditions.checkNotNull(states);
-		Preconditions.checkArgument(states.size() > 0);
-		states.stream().forEach(row -> Preconditions.checkArgument(row.size() > 0));
-		this.states = states;
+	public OverlayRollHorizontal(final List<? extends List<? extends Overlay.State>> states, final RgbColor onColor,
+			final RgbColor offColor, final int yPosition, final int matrixWidth) {
+		this.states = new TwoDimensionalListRectangular<>(states);
 
 		this.onColor = Preconditions.checkNotNull(onColor);
 		this.offColor = Preconditions.checkNotNull(offColor);
@@ -71,7 +69,7 @@ public final class OverlayRollHorizontal implements Overlay {
 
 	@Override
 	public boolean isExhausted() {
-		return currentIndexMark <= -getWidth();
+		return currentIndexMark <= -states.getColumnCount();
 	}
 
 	@Override
@@ -81,20 +79,13 @@ public final class OverlayRollHorizontal implements Overlay {
 
 	@Override
 	public State getStateAt(final int currentLedColumnIndex, final int currentLedRowIndex) {
-		if (currentLedColumnIndex < currentIndexMark || currentLedColumnIndex > currentIndexMark + getWidth() - 1
-				|| currentLedRowIndex > getHeight() - 1 + yPosition || currentLedRowIndex < yPosition) {
+		if (currentLedColumnIndex < currentIndexMark
+				|| currentLedColumnIndex > currentIndexMark + states.getColumnCount() - 1
+				|| currentLedRowIndex > states.getRowCount() - 1 + yPosition || currentLedRowIndex < yPosition) {
 			return State.TRANSPARENT;
 		}
 
-		return states.get(currentLedRowIndex - yPosition).get(currentLedColumnIndex - currentIndexMark);
-	}
-
-	private int getWidth() {
-		return states.get(0).size();
-	}
-
-	private int getHeight() {
-		return states.size();
+		return states.getValueAt(currentLedColumnIndex - currentIndexMark, currentLedRowIndex - yPosition);
 	}
 
 	@Override

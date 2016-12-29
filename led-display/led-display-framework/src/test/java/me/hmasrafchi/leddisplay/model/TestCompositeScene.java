@@ -224,6 +224,9 @@ public final class TestCompositeScene {
 
 		return leds;
 	}
+
+	List<? extends String> s = new ArrayList<String>();
+	List<? extends List<? extends String>> asd = new ArrayList<ArrayList<String>>();
 }
 
 @EqualsAndHashCode

@@ -3,8 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.model.overlay;
 
-import java.util.List;
-
 import me.hmasrafchi.leddisplay.model.Scene;
 
 /**
@@ -12,9 +10,7 @@ import me.hmasrafchi.leddisplay.model.Scene;
  *
  */
 public interface Overlay extends Scene {
-	Overlay.State getStateAt(int columnIndex, int rowIndex);
-
-	List<List<Overlay.State>> getStates();
+	State getStateAt(int columnIndex, int rowIndex);
 
 	enum State {
 		TRANSPARENT, ON, OFF;

@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import me.hmasrafchi.leddisplay.model.overlay.Overlay;
+import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
  * @author michelin
@@ -31,7 +32,7 @@ class OverlayBaseGUI extends BorderPane {
 
 	private ButtonGrid buttonGrid;
 
-	OverlayBaseGUI(final List<List<Overlay.State>> states) {
+	OverlayBaseGUI(final TwoDimensionalListRectangular<Overlay.State> states) {
 		this.buttonGrid = getStatesButtonGrid(states);
 		setButtonTextBasedOnState(buttonGrid, states, STATE_TO_BUTTONTEXT_MAPPING);
 
@@ -44,16 +45,17 @@ class OverlayBaseGUI extends BorderPane {
 		setCenter(scrollPane);
 	}
 
-	private ButtonGrid getStatesButtonGrid(final List<List<Overlay.State>> states) {
-		return new ButtonGrid(states.get(0).size(), states.size(),
+	private ButtonGrid getStatesButtonGrid(final TwoDimensionalListRectangular<Overlay.State> states) {
+		return new ButtonGrid(states.getColumnCount(), states.getRowCount(),
 				event -> buttonActionHandler((Button) event.getSource(), STATE_TO_BUTTONTEXT_MAPPING));
 	}
 
-	private void setButtonTextBasedOnState(final ButtonGrid buttonGrid, final List<List<Overlay.State>> states,
+	private void setButtonTextBasedOnState(final ButtonGrid buttonGrid,
+			final TwoDimensionalListRectangular<Overlay.State> states,
 			final BiMap<Overlay.State, String> stateToButtonTextMapping) {
-		for (int i = 0; i < states.size(); i++) {
-			for (int j = 0; j < states.get(0).size(); j++) {
-				final Overlay.State state = states.get(i).get(j);
+		for (int i = 0; i < states.getRowCount(); i++) {
+			for (int j = 0; j < states.getColumnCount(); j++) {
+				final Overlay.State state = states.getValueAt(j, i);
 				final Button button = buttonGrid.getStateButtons().get(i).get(j);
 				button.setText(stateToButtonTextMapping.get(state));
 			}
