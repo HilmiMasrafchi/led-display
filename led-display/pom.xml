@@ -35,13 +35,19 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>2.0.2-beta</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>javax.enterprise</groupId>
 				<artifactId>cdi-api</artifactId>
 				<version>1.2</version>
 			</dependency>
 			<dependency>
-				<groupId>led-display-framework</groupId>
-				<artifactId>led-display-framework</artifactId>
+				<groupId>led-display-model</groupId>
+				<artifactId>led-display-model</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -52,8 +58,8 @@
 		</dependencies>
 	</dependencyManagement>
 	<modules>
-		<module>led-display-framework</module>
-		<module>led-display-javafx</module>
+		<module>led-display-model</module>
+		<module>led-display-client-javafx</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
