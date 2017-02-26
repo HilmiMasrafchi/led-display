@@ -4,12 +4,12 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.BLACK;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.BLUE;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.GREEN;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.OFF;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.ON;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLUE;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,7 +20,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -31,12 +32,12 @@ public final class TestSceneComposited {
 	private static final int MATRIX_COLUMNS_COUNT = 5;
 	private static final int MATRIX_ROWS_COUNT = 6;
 
-	private static final List<List<State>> STATES_ROLL1 = asList( //
+	private static final List<List<LedState>> STATES_ROLL1 = asList( //
 			asList(ON, ON, ON, ON, ON, ON, ON), //
 			asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON), //
 			asList(ON, ON, ON, ON, ON, ON, ON));
 
-	private static final List<List<State>> STATES_ROLL2 = asList( //
+	private static final List<List<LedState>> STATES_ROLL2 = asList( //
 			asList(ON, ON, ON), //
 			asList(ON, OFF, ON), //
 			asList(ON, ON, ON));

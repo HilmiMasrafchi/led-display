@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**

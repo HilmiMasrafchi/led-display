@@ -19,12 +19,4 @@ public final class LedJFx extends Text {
 		setText("█");
 		setFont(Font.font(80));
 	}
-
-	public double getHeight() {
-		return getLayoutBounds().getHeight();
-	}
-
-	public double getWidth() {
-		return getLayoutBounds().getWidth();
-	}
 }

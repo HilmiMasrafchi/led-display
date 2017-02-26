@@ -7,7 +7,8 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
 
 /**
  * @author michelin
@@ -18,14 +19,14 @@ public final class SceneRandomColor extends Scene {
 	private static final int FRAMES_COUNT = 3;
 
 	@Getter
-	private final List<Led.RgbColor> colors;
+	private final List<LedRgbColor> colors;
 
 	private int counter = 1;
 
 	@Override
 	Led onLedVisited(final int ledRowIndex, final int ledColumnIndex) {
 		final int randomRainbowIndex1 = (int) (Math.random() * (colors.size()));
-		final RgbColor rgbColor = colors.get(randomRainbowIndex1);
+		final LedRgbColor rgbColor = colors.get(randomRainbowIndex1);
 
 		return new Led(rgbColor);
 	}

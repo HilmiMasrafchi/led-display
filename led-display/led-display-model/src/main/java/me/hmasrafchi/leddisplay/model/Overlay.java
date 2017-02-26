@@ -3,14 +3,12 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
+import me.hmasrafchi.leddisplay.api.LedState;
+
 /**
  * @author michelin
  *
  */
 public abstract class Overlay extends Scene {
-	abstract State getStateAt(int rowIndex, int columnIndex);
-
-	public enum State {
-		TRANSPARENT, ON, OFF, UNRECOGNIZED;
-	}
+	abstract LedState getStateAt(int rowIndex, int columnIndex);
 }

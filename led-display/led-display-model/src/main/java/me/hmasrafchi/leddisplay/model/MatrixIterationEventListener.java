@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
+import me.hmasrafchi.leddisplay.api.Led;
+
 /**
  * @author michelin
  *

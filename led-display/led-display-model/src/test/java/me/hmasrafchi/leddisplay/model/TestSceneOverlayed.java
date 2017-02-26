@@ -4,14 +4,14 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.BLACK;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.BLUE;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.GREEN;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.RED;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.YELLOW;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.OFF;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.ON;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLUE;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,7 +22,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -33,12 +34,12 @@ public final class TestSceneOverlayed {
 	private static final int MATRIX_COLUMNS_COUNT = 5;
 	private static final int MATRIX_ROWS_COUNT = 6;
 
-	private static final List<List<State>> STATES_ROLL = asList( //
+	private static final List<List<LedState>> STATES_ROLL = asList( //
 			asList(ON, ON, ON, ON, ON, ON, ON), //
 			asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON), //
 			asList(ON, ON, ON, ON, ON, ON, ON));
 
-	private static final List<List<State>> STATES_STATIONARY = asList( //
+	private static final List<List<LedState>> STATES_STATIONARY = asList( //
 			asList(ON, ON, ON, ON, ON), //
 			asList(TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT), //
 			asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
@@ -57,8 +58,10 @@ public final class TestSceneOverlayed {
 	public void ledsShouldBeOverlayed() {
 		final Overlay overlayRoll = new OverlayRollHorizontally(new TwoDimensionalListRectangular<>(STATES_ROLL), GREEN,
 				BLUE, MATRIX_COLUMNS_COUNT, 1);
-		final Overlay overlayStationary = new OverlayStationary(new TwoDimensionalListRectangular<>(STATES_STATIONARY),
-				RED, YELLOW);
+		// TODO:
+		final Overlay overlayStationary = null;
+		// new OverlayStationary(new
+		// TwoDimensionalListRectangular<>(STATES_STATIONARY), RED, YELLOW);
 
 		final Scene sceneOverlayed = new SceneOverlayed(asList(overlayRoll, overlayStationary));
 		final List<TwoDimensionalListRectangular<Led>> frames = new ArrayList<>();
@@ -191,8 +194,10 @@ public final class TestSceneOverlayed {
 	public void ledsShouldBeOverlayedInReverseOrder() {
 		final Overlay overlayRoll = new OverlayRollHorizontally(new TwoDimensionalListRectangular<>(STATES_ROLL), GREEN,
 				BLUE, MATRIX_COLUMNS_COUNT, 1);
-		final Overlay overlayStationary = new OverlayStationary(new TwoDimensionalListRectangular<>(STATES_STATIONARY),
-				RED, YELLOW);
+		final Overlay overlayStationary = null;
+		// TODO:
+		// new OverlayStationary(new
+		// TwoDimensionalListRectangular<>(STATES_STATIONARY), RED, YELLOW);
 
 		final Scene sceneOverlayed = new SceneOverlayed(asList(overlayStationary, overlayRoll));
 		final List<TwoDimensionalListRectangular<Led>> frames = new ArrayList<>();

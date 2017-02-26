@@ -3,11 +3,14 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
+
 import java.util.Collection;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedState;
 
 /**
  * @author michelin
@@ -22,8 +25,8 @@ public final class SceneOverlayed extends Scene {
 	Led onLedVisited(final int ledRowIndex, final int ledColumnIndex) {
 		Overlay winnerOverlay = null;
 		for (final Overlay currentOverlay : overlays) {
-			final State currentState = currentOverlay.getStateAt(ledRowIndex, ledColumnIndex);
-			if (!currentState.equals(Overlay.State.TRANSPARENT)) {
+			final LedState currentState = currentOverlay.getStateAt(ledRowIndex, ledColumnIndex);
+			if (!currentState.equals(TRANSPARENT)) {
 				winnerOverlay = currentOverlay;
 			}
 		}

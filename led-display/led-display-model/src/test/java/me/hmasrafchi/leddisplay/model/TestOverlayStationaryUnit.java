@@ -4,12 +4,12 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.RED;
-import static me.hmasrafchi.leddisplay.model.Led.RgbColor.YELLOW;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.OFF;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.ON;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.UNRECOGNIZED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedState.UNRECOGNIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -23,8 +23,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -32,7 +33,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  *
  */
 public final class TestOverlayStationaryUnit {
-	private static final TwoDimensionalListRectangular<State> STATES = new TwoDimensionalListRectangular<>(asList( //
+	private static final TwoDimensionalListRectangular<LedState> STATES = new TwoDimensionalListRectangular<>(asList( //
 			Arrays.asList(ON, ON, ON, ON, ON), //
 			Arrays.asList(TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT), //
 			Arrays.asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
@@ -44,32 +45,40 @@ public final class TestOverlayStationaryUnit {
 	@Rule
 	public final ExpectedException expectedException = ExpectedException.none();
 
-	private static final RgbColor ON_COLOR = RED;
-	private static final RgbColor OFF_COLOR = YELLOW;
+	private static final LedRgbColor ON_COLOR = RED;
+	private static final LedRgbColor OFF_COLOR = YELLOW;
 
 	private Overlay overlayStationary;
 
 	@Before
 	public void init() {
-		this.overlayStationary = new OverlayStationary(STATES, ON_COLOR, OFF_COLOR);
+		// TODO:
+		// this.overlayStationary = new OverlayStationary(STATES, ON_COLOR,
+		// OFF_COLOR);
 	}
 
 	@Test
 	public void constructor_shouldThrowNullPointExceptionIfStatesAreNull() {
 		expectedException.expect(NullPointerException.class);
-		this.overlayStationary = new OverlayStationary(null, ON_COLOR, OFF_COLOR);
+		// TODO:
+		// this.overlayStationary = new OverlayStationary(null, ON_COLOR,
+		// OFF_COLOR);
 	}
 
 	@Test
 	public void constructor_shouldThrowNullPointerExceptionIfOnColorIsNull() {
 		expectedException.expect(NullPointerException.class);
-		this.overlayStationary = new OverlayStationary(STATES, null, OFF_COLOR);
+		// TODO:
+		// this.overlayStationary = new OverlayStationary(STATES, null,
+		// OFF_COLOR);
 	}
 
 	@Test
 	public void constructor_shouldThrowNullPointerExceptionIfOffColorIsNull() {
 		expectedException.expect(NullPointerException.class);
-		this.overlayStationary = new OverlayStationary(STATES, ON_COLOR, null);
+		// TODO:
+		// this.overlayStationary = new OverlayStationary(STATES, ON_COLOR,
+		// null);
 	}
 
 	@Test
@@ -124,40 +133,40 @@ public final class TestOverlayStationaryUnit {
 
 	@Test
 	public void getStateAt_shouldReturnTransparentStateIfColumnIndexIsNegative() {
-		final State actualState = overlayStationary.getStateAt(0, -1);
+		final LedState actualState = overlayStationary.getStateAt(0, -1);
 		assertThat(actualState, is(equalTo(TRANSPARENT)));
 	}
 
 	@Test
 	public void getStateAt_shouldReturnTransparentStateIfColumnIndexIsBiggerThanMaximumColumnSize() {
-		final State actualState = overlayStationary.getStateAt(0, 5);
+		final LedState actualState = overlayStationary.getStateAt(0, 5);
 		assertThat(actualState, is(equalTo(TRANSPARENT)));
 	}
 
 	@Test
 	public void getStateAt_shouldReturnTransparentStateIfRowIndexIsNegative() {
-		final State actualState = overlayStationary.getStateAt(-1, 0);
+		final LedState actualState = overlayStationary.getStateAt(-1, 0);
 		assertThat(actualState, is(equalTo(TRANSPARENT)));
 	}
 
 	@Test
 	public void getStateAt_shouldReturnTransparentStateForRowIndexBiggerThanMaximumRowSize() {
-		final State actualState = overlayStationary.getStateAt(7, 0);
+		final LedState actualState = overlayStationary.getStateAt(7, 0);
 		assertThat(actualState, is(equalTo(TRANSPARENT)));
 	}
 
 	@Test
 	public void getStateAt_shouldReturnStateAtSpecifiedIndex() {
-		final Overlay.State actualState1 = overlayStationary.getStateAt(0, 0);
+		final LedState actualState1 = overlayStationary.getStateAt(0, 0);
 		assertThat(actualState1, is(equalTo(ON)));
 
-		final Overlay.State actualState2 = overlayStationary.getStateAt(5, 0);
+		final LedState actualState2 = overlayStationary.getStateAt(5, 0);
 		assertThat(actualState2, is(equalTo(ON)));
 
-		final Overlay.State actualState3 = overlayStationary.getStateAt(0, 4);
+		final LedState actualState3 = overlayStationary.getStateAt(0, 4);
 		assertThat(actualState3, is(equalTo(ON)));
 
-		final Overlay.State actualState4 = overlayStationary.getStateAt(5, 4);
+		final LedState actualState4 = overlayStationary.getStateAt(5, 4);
 		assertThat(actualState4, is(equalTo(ON)));
 	}
 

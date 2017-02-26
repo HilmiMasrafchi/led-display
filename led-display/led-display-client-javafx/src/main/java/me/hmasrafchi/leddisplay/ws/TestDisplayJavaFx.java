@@ -3,22 +3,26 @@
  */
 package me.hmasrafchi.leddisplay.ws;
 
-import java.lang.reflect.Type;
+import static java.util.Arrays.asList;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLUE;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -26,9 +30,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.model.CompiledFrames;
-import me.hmasrafchi.leddisplay.model.Led;
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
 import me.hmasrafchi.leddisplay.model.Matrix;
 import me.hmasrafchi.leddisplay.model.MatrixDefault;
 import me.hmasrafchi.leddisplay.model.Overlay;
@@ -44,13 +49,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  * @author michelin
  *
  */
-public final class TestWs extends Application {
-	private final static Type TYPE = new TypeToken<TwoDimensionalListRectangular<Led>>() {
-		private static final long serialVersionUID = 1L;
-	}.getType();
-
-	private final Gson gson = new GsonBuilder().create();
-
+public final class TestDisplayJavaFx extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -61,47 +60,35 @@ public final class TestWs extends Application {
 		final int matrixColumnsCount = 5;
 
 		// OverlayRollHorizontal
-		final List<List<Overlay.State>> statesRoll = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.OFF, Overlay.State.ON, Overlay.State.TRANSPARENT,
-						Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON, Overlay.State.ON));
-		RgbColor expectedRollColor = RgbColor.GREEN;
+		final List<List<LedState>> statesRoll = asList( //
+				asList(ON, ON, ON, ON, ON, ON, ON), //
+				asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON), //
+				asList(ON, ON, ON, ON, ON, ON, ON));
 
 		final int yPosition = 1;
-		final Overlay overlayRoll = new OverlayRollHorizontally(new TwoDimensionalListRectangular<>(statesRoll),
-				expectedRollColor, RgbColor.BLUE, matrixColumnsCount, yPosition);
+		final Overlay overlayRoll = new OverlayRollHorizontally(new TwoDimensionalListRectangular<>(statesRoll), GREEN,
+				BLUE, matrixColumnsCount, yPosition);
 
 		// OverlayStationary
-		final List<List<Overlay.State>> statesStationary = Arrays.asList(
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON),
-				Arrays.asList(Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT),
-				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.OFF, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.OFF),
-				Arrays.asList(Overlay.State.ON, Overlay.State.TRANSPARENT, Overlay.State.TRANSPARENT,
-						Overlay.State.TRANSPARENT, Overlay.State.ON),
-				Arrays.asList(Overlay.State.ON, Overlay.State.ON, Overlay.State.ON, Overlay.State.ON,
-						Overlay.State.ON));
-		final RgbColor stationaryForegroundColor = RgbColor.RED;
-		final RgbColor stationaryBackgroundColor = RgbColor.YELLOW;
+		final List<List<LedState>> statesStationary = asList(asList(ON, ON, ON, ON, ON), //
+				asList(TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT), //
+				asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
+				asList(OFF, TRANSPARENT, TRANSPARENT, TRANSPARENT, OFF), //
+				asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
+				asList(ON, ON, ON, ON, ON));
 		final Overlay overlayStationary = new OverlayStationary(new TwoDimensionalListRectangular<>(statesStationary),
-				stationaryForegroundColor, stationaryBackgroundColor);
+				RED, YELLOW, 1);
 
 		final me.hmasrafchi.leddisplay.model.Scene sceneOverlayed = new SceneOverlayed(
-				Arrays.asList(overlayRoll, overlayStationary));
-		final me.hmasrafchi.leddisplay.model.Scene sceneRandom = new SceneRandomColor(
-				Arrays.asList(Led.RgbColor.BLUE, Led.RgbColor.RED));
+				asList(overlayRoll, overlayStationary));
+		final me.hmasrafchi.leddisplay.model.Scene sceneRandom = new SceneRandomColor(asList(BLUE, RED));
 		final me.hmasrafchi.leddisplay.model.Scene sceneComposite = new SceneComposited(
-				Arrays.asList(sceneRandom, sceneOverlayed));
+				asList(sceneRandom, sceneOverlayed));
 		final Matrix matrix = new MatrixDefault();
 		final CompiledFrames compiledFrames = matrix.compile(sceneComposite, matrixRowsCount, matrixColumnsCount);
 
 		final GridPane gridPane = new GridPane();
+		gridPane.setPadding(new Insets(0, 0, 0, 0));
 		final Collection<TwoDimensionalListRectangular<Led>> frames = new ArrayList<>();
 		final Iterator<TwoDimensionalListRectangular<Led>> iterator = compiledFrames.listIterator();
 		while (iterator.hasNext()) {
@@ -130,7 +117,7 @@ public final class TestWs extends Application {
 						final LedJFx ledJFx = map.getRowAt(r).get(c);
 						final Led led = frame.getRowAt(r).get(c);
 
-						final RgbColor rgbColor = led.getRgbColor();
+						final LedRgbColor rgbColor = led.getRgbColor();
 						ledJFx.setFill(Color.rgb(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
 					}
 				}
@@ -139,25 +126,6 @@ public final class TestWs extends Application {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		primaryStage.show();
 		timeline.play();
-	}
-
-	private String toJson(final TwoDimensionalListRectangular<Led> frame) {
-		Type type = new TypeToken<TwoDimensionalListRectangular<Led>>() {
-			private static final long serialVersionUID = 1L;
-		}.getType();
-
-		final Gson gson = new GsonBuilder().create();
-		return gson.toJson(frame, type);
-	}
-
-	private TwoDimensionalListRectangular<LedJFx> fromJson(final String json) {
-		final TwoDimensionalListRectangular<Led> fromJson = gson.fromJson(json, TYPE);
-		return fromJson.map((i) -> {
-			RgbColor rgbColor = i.getRgbColor();
-			LedJFx ledJFx = new LedJFx();
-			ledJFx.setFill(Color.rgb(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
-			return ledJFx;
-		});
 	}
 
 	private Pane getGrid(final TwoDimensionalListRectangular<LedJFx> leds) {

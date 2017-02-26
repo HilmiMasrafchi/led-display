@@ -4,10 +4,12 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.OFF;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.ON;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.UNRECOGNIZED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedState.UNRECOGNIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -18,8 +20,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -27,7 +30,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  *
  */
 public final class TestOverlayStationaryIntegration {
-	private static final TwoDimensionalListRectangular<State> STATES = new TwoDimensionalListRectangular<>(asList( //
+	private static final TwoDimensionalListRectangular<LedState> STATES = new TwoDimensionalListRectangular<>(asList( //
 			asList(ON, ON, ON, ON, ON), //
 			asList(TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT), //
 			asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
@@ -36,14 +39,16 @@ public final class TestOverlayStationaryIntegration {
 			asList(ON, ON, ON, ON, ON), //
 			asList(UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED)));
 
-	private static final RgbColor ON_COLOR = RgbColor.RED;
-	private static final RgbColor OFF_COLOR = RgbColor.YELLOW;
+	private static final LedRgbColor ON_COLOR = RED;
+	private static final LedRgbColor OFF_COLOR = YELLOW;
 
 	private Overlay overlayStationary;
 
 	@Before
 	public void init() {
-		this.overlayStationary = new OverlayStationary(STATES, ON_COLOR, OFF_COLOR);
+		// TODO:
+		// this.overlayStationary = new OverlayStationary(STATES, ON_COLOR,
+		// OFF_COLOR);
 	}
 
 	@Test

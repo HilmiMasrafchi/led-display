@@ -5,7 +5,9 @@ package me.hmasrafchi.leddisplay.model;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -13,15 +15,15 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  *
  */
 public final class OverlayRollHorizontally extends Overlay {
-	private final TwoDimensionalListRectangular<State> states;
-	private final RgbColor onColor;
-	private final RgbColor offColor;
+	private final TwoDimensionalListRectangular<LedState> states;
+	private final LedRgbColor onColor;
+	private final LedRgbColor offColor;
 	private final int yPosition;
 
 	private int currentIndexMark;
 
-	public OverlayRollHorizontally(final TwoDimensionalListRectangular<State> states, final RgbColor onColor,
-			final RgbColor offColor, final int beginIndexMark, final int yPosition) {
+	public OverlayRollHorizontally(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
+			final LedRgbColor offColor, final int beginIndexMark, final int yPosition) {
 		this.states = Preconditions.checkNotNull(states);
 
 		this.onColor = Preconditions.checkNotNull(onColor);
@@ -33,7 +35,7 @@ public final class OverlayRollHorizontally extends Overlay {
 
 	@Override
 	Led onLedVisited(final int ledRowIndex, final int ledColumnIndex) {
-		final State state = getStateAt(ledRowIndex, ledColumnIndex);
+		final LedState state = getStateAt(ledRowIndex, ledColumnIndex);
 		switch (state) {
 		case ON:
 			return new Led(onColor);
@@ -57,10 +59,10 @@ public final class OverlayRollHorizontally extends Overlay {
 	}
 
 	@Override
-	State getStateAt(final int ledRowIndex, final int ledColumnIndex) {
+	LedState getStateAt(final int ledRowIndex, final int ledColumnIndex) {
 		if (ledColumnIndex < currentIndexMark || ledColumnIndex > currentIndexMark + states.getColumnCount() - 1
 				|| ledRowIndex < yPosition || ledRowIndex > states.getRowCount() - 1 + yPosition) {
-			return State.TRANSPARENT;
+			return LedState.TRANSPARENT;
 		}
 
 		return states.getValueAt(ledRowIndex - yPosition, ledColumnIndex - currentIndexMark);

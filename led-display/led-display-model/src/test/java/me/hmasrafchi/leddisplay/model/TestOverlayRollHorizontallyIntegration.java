@@ -4,10 +4,12 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.OFF;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.ON;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
-import static me.hmasrafchi.leddisplay.model.Overlay.State.UNRECOGNIZED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.LedState.OFF;
+import static me.hmasrafchi.leddisplay.api.LedState.ON;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedState.UNRECOGNIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -17,8 +19,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
-import me.hmasrafchi.leddisplay.model.Overlay.State;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -26,7 +29,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  *
  */
 public final class TestOverlayRollHorizontallyIntegration {
-	private static final TwoDimensionalListRectangular<State> STATES = new TwoDimensionalListRectangular<>(asList( //
+	private static final TwoDimensionalListRectangular<LedState> STATES = new TwoDimensionalListRectangular<>(asList( //
 			asList(ON, ON, ON, ON, ON, ON, ON), //
 			asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON), //
 			asList(ON, ON, ON, ON, ON, ON, ON), //
@@ -35,8 +38,8 @@ public final class TestOverlayRollHorizontallyIntegration {
 	@Rule
 	public final ExpectedException expectedException = ExpectedException.none();
 
-	private static final RgbColor ON_COLOR = RgbColor.RED;
-	private static final RgbColor OFF_COLOR = RgbColor.YELLOW;
+	private static final LedRgbColor ON_COLOR = RED;
+	private static final LedRgbColor OFF_COLOR = YELLOW;
 
 	private Overlay overlayRollHorizontally;
 

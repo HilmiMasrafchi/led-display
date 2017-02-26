@@ -3,11 +3,13 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import static me.hmasrafchi.leddisplay.model.Overlay.State.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
 
 import com.google.common.base.Preconditions;
 
-import me.hmasrafchi.leddisplay.model.Led.RgbColor;
+import me.hmasrafchi.leddisplay.api.Led;
+import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
@@ -15,24 +17,26 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  *
  */
 public final class OverlayStationary extends Overlay {
-	private final TwoDimensionalListRectangular<State> states;
-	private final RgbColor onColor;
-	private final RgbColor offColor;
+	private final TwoDimensionalListRectangular<LedState> states;
+	private final LedRgbColor onColor;
+	private final LedRgbColor offColor;
+	private final int duration;
 
-	private boolean isExhaustedCalled = false;
+	private int durationCounter = 1;
 
-	public OverlayStationary(final TwoDimensionalListRectangular<State> states, final RgbColor onColor,
-			final RgbColor offColor) {
+	// TODO: make constructor with default duration of 1
+	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
+			final LedRgbColor offColor, final int duration) {
 		this.states = Preconditions.checkNotNull(states);
 		this.onColor = Preconditions.checkNotNull(onColor);
 		this.offColor = Preconditions.checkNotNull(offColor);
+		Preconditions.checkArgument(duration > 0);
+		this.duration = duration;
 	}
 
 	@Override
 	Led onLedVisited(final int ledRowIndex, final int ledColumnIndex) {
-		isExhaustedCalled = true;
-
-		final State state = getStateAt(ledRowIndex, ledColumnIndex);
+		final LedState state = getStateAt(ledRowIndex, ledColumnIndex);
 		switch (state) {
 		case ON:
 			return new Led(onColor);
@@ -47,16 +51,16 @@ public final class OverlayStationary extends Overlay {
 
 	@Override
 	void onMatrixIterationEnded() {
-
+		durationCounter++;
 	}
 
 	@Override
 	boolean isExhausted() {
-		return isExhaustedCalled;
+		return durationCounter > duration;
 	}
 
 	@Override
-	Overlay.State getStateAt(final int rowIndex, final int columnIndex) {
+	LedState getStateAt(final int rowIndex, final int columnIndex) {
 		if (rowIndex < 0 || rowIndex >= states.getRowCount() || columnIndex < 0
 				|| columnIndex >= states.getColumnCount()) {
 			return TRANSPARENT;
