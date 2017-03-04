@@ -3,8 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.ws;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -45,17 +43,18 @@ public final class LedDisplayJavaFx extends Application {
 		final int matrixColumnsCount = 5;
 
 		final Client client = ClientBuilder.newClient();
-		final Response response = client.target("http://localhost:8080/led-display-webservices-rest").path("matrix/0")
-				.request(MediaType.APPLICATION_JSON).get();
+		final Response response = client.target("http://localhost:8080/led-display-webservices-rest")
+				.path("matrix/1/frames").request(MediaType.APPLICATION_JSON).get();
 
 		final MyClass myClass = response.readEntity(MyClass.class);
-		List<SceneFrames> sceneFrames = myClass.getSceneFrames();
+		final List<List<List<Led>>> allFrames = myClass.getFrames();
 
 		final GridPane gridPane = new GridPane();
 		gridPane.setPadding(new Insets(0, 0, 0, 0));
-		final int guiRowsCount = matrixRowsCount;
-		final int guiColumnsCount = matrixColumnsCount;
-		TwoDimensionalListRectangular<LedJFx> map = TwoDimensionalListRectangular.create(LedJFx::new, guiRowsCount,
+		final int guiRowsCount = myClass.getRowCount();
+		final int guiColumnsCount = myClass.getColumnCount();
+
+		TwoDimensionalListRectangular<LedJFx> map = new TwoDimensionalListRectangular<>(LedJFx::new, guiRowsCount,
 				guiColumnsCount);
 		for (int i = 0; i < map.getRowCount(); i++) {
 			gridPane.addRow(i, map.getRowAt(i).stream().toArray(Node[]::new));
@@ -63,11 +62,6 @@ public final class LedDisplayJavaFx extends Application {
 
 		primaryStage.setScene(new Scene(gridPane));
 
-		final List<List<List<Led>>> allFrames = new ArrayList<>();
-		Iterator<SceneFrames> iterator = sceneFrames.iterator();
-		while (iterator.hasNext()) {
-			allFrames.addAll(iterator.next().getFrames());
-		}
 		final Timeline timeline = new Timeline();
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
 			final CyclicIterator<List<List<Led>>> framesIterator = new CyclicIterator<>(allFrames);
@@ -95,15 +89,9 @@ public final class LedDisplayJavaFx extends Application {
 
 	@Data
 	static class MyClass {
-		int id;
-		int columnCount;
-		int rowCount;
-		List<SceneFrames> sceneFrames;
-	}
-
-	@Data
-	static class SceneFrames {
-		int id;
+		Integer id;
+		Integer rowCount;
+		Integer columnCount;
 		List<List<List<Led>>> frames;
 	}
 }

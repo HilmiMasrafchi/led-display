@@ -3,14 +3,15 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
+import javax.enterprise.inject.Default;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import me.hmasrafchi.leddisplay.api.CompiledFrames;
+import me.hmasrafchi.leddisplay.api.Frame;
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
+import me.hmasrafchi.leddisplay.api.Matrix;
+import me.hmasrafchi.leddisplay.api.Scene;
 
 /**
  * @author michelin
@@ -18,35 +19,18 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  */
 @ToString
 @RequiredArgsConstructor
+@Default
 public final class MatrixDefault implements Matrix {
 	@Override
 	public CompiledFrames compile(final Scene scene, final int rowCount, final int columnCount) {
-		final List<TwoDimensionalListRectangular<Led>> frames = new ArrayList<>();
-
-		final TwoDimensionalListRectangular<Led> currentFrame = TwoDimensionalListRectangular.create(Led::new, rowCount,
-				columnCount);
+		final CompiledFrames compiledFrames = new CompiledFrames();
+		final Frame currentFrame = new Frame(Led::new, rowCount, columnCount);
 		while (!scene.isExhausted()) {
-			final TwoDimensionalListRectangular<Led> nextFrame = iterate(currentFrame, scene::onLedVisited);
+			final Frame nextFrame = currentFrame.map(scene::onLedVisited, rowCount, columnCount);
 			scene.onMatrixIterationEnded();
-			frames.add(nextFrame);
+			compiledFrames.addFrame(nextFrame);
 		}
 
-		return new CompiledFrames(frames);
-	}
-
-	private TwoDimensionalListRectangular<Led> iterate(final TwoDimensionalListRectangular<Led> frame,
-			final BiFunction<Integer, Integer, Led> biFunction) {
-		final List<List<Led>> result = new ArrayList<>();
-		for (int currentLedRowIndex = 0; currentLedRowIndex < frame.getRowCount(); currentLedRowIndex++) {
-			final List<Led> row = new ArrayList<>();
-			for (int currentLedColumnIndex = 0; currentLedColumnIndex < frame
-					.getColumnCount(); currentLedColumnIndex++) {
-				final Led accept = biFunction.apply(currentLedRowIndex, currentLedColumnIndex);
-				row.add(accept);
-			}
-			result.add(row);
-		}
-
-		return new TwoDimensionalListRectangular<>(result);
+		return compiledFrames;
 	}
 }
