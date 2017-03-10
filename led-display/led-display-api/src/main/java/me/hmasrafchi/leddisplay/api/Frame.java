@@ -6,6 +6,7 @@ package me.hmasrafchi.leddisplay.api;
 import java.util.List;
 import java.util.function.Supplier;
 
+import lombok.EqualsAndHashCode;
 import me.hmasrafchi.leddisplay.util.TriFunction;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
@@ -13,6 +14,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  * @author michelin
  *
  */
+@EqualsAndHashCode
 public final class Frame {
 	private final TwoDimensionalListRectangular<Led> frameData;
 
@@ -20,13 +22,13 @@ public final class Frame {
 		this.frameData = new TwoDimensionalListRectangular<>(supplier, rowCount, columnCount);
 	}
 
+	public Frame(final TwoDimensionalListRectangular<Led> frameData) {
+		this.frameData = frameData;
+	}
+
 	public Frame map(final TriFunction<Led, Integer, Integer, Led> mapperFunction) {
 		final TwoDimensionalListRectangular<Led> mappedList = frameData.map(mapperFunction);
 		return new Frame(mappedList);
-	}
-
-	private Frame(final TwoDimensionalListRectangular<Led> frameData) {
-		this.frameData = frameData;
 	}
 
 	public List<List<Led>> getFrameData() {

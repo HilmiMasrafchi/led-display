@@ -27,7 +27,6 @@ import lombok.Data;
 import me.hmasrafchi.leddisplay.api.CompiledFrames;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Matrix;
-import me.hmasrafchi.leddisplay.model.MatrixDefault;
 import me.hmasrafchi.leddisplay.model.Overlay;
 import me.hmasrafchi.leddisplay.model.SceneFactory;
 import me.hmasrafchi.leddisplay.model.SceneOverlayed;
@@ -49,6 +48,9 @@ public class MatrixResource {
 
 	@Inject
 	private SceneResource sceneResource;
+
+	@Inject
+	private Matrix matrix;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -135,7 +137,6 @@ public class MatrixResource {
 				modelScenes.add(new SceneOverlayed(modelOverlays));
 			}
 
-			final Matrix matrix = new MatrixDefault();
 			final me.hmasrafchi.leddisplay.api.Scene sceneComposited = sceneFactory.getCompositeScene(modelScenes);
 			final CompiledFrames compile = matrix.compile(sceneComposited, matrixEntity.getRowCount(),
 					matrixEntity.getColumnCount());

@@ -3,7 +3,9 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import javax.enterprise.inject.Default;
+import java.io.Serializable;
+
+import javax.enterprise.context.RequestScoped;
 
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -18,9 +20,11 @@ import me.hmasrafchi.leddisplay.api.Scene;
  *
  */
 @ToString
+@RequestScoped
 @RequiredArgsConstructor
-@Default
-public final class MatrixDefault implements Matrix {
+class MatrixDefault implements Matrix, Serializable {
+	private static final long serialVersionUID = -2660964310070724009L;
+
 	@Override
 	public CompiledFrames compile(final Scene scene, final int rowCount, final int columnCount) {
 		final CompiledFrames compiledFrames = new CompiledFrames();

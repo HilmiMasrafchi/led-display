@@ -29,7 +29,11 @@ final class OverlayStationary implements Overlay {
 
 	private int durationCounter = 1;
 
-	// TODO: make constructor with default duration of 1
+	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
+			final LedRgbColor offColor) {
+		this(states, onColor, offColor, 1);
+	}
+
 	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
 			final LedRgbColor offColor, final int duration) {
 		this.states = Preconditions.checkNotNull(states);
