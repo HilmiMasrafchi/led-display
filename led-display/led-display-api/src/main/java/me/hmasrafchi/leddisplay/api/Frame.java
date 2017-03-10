@@ -20,9 +20,8 @@ public final class Frame {
 		this.frameData = new TwoDimensionalListRectangular<>(supplier, rowCount, columnCount);
 	}
 
-	public Frame map(final TriFunction<Led, Integer, Integer, Led> mapperFunction, final int rowCount,
-			final int columnCount) {
-		final TwoDimensionalListRectangular<Led> mappedList = frameData.map(mapperFunction, rowCount, columnCount);
+	public Frame map(final TriFunction<Led, Integer, Integer, Led> mapperFunction) {
+		final TwoDimensionalListRectangular<Led> mappedList = frameData.map(mapperFunction);
 		return new Frame(mappedList);
 	}
 

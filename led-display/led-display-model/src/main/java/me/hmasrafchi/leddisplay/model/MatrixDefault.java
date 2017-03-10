@@ -26,7 +26,7 @@ public final class MatrixDefault implements Matrix {
 		final CompiledFrames compiledFrames = new CompiledFrames();
 		final Frame currentFrame = new Frame(Led::new, rowCount, columnCount);
 		while (!scene.isExhausted()) {
-			final Frame nextFrame = currentFrame.map(scene::onLedVisited, rowCount, columnCount);
+			final Frame nextFrame = currentFrame.map(scene::onLedVisited);
 			scene.onMatrixIterationEnded();
 			compiledFrames.addFrame(nextFrame);
 		}

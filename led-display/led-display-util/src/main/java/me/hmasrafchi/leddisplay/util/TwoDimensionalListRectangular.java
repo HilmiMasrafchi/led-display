@@ -55,16 +55,25 @@ public final class TwoDimensionalListRectangular<T> {
 
 	public TwoDimensionalListRectangular(final Supplier<? extends T> supplier, final int rowCount,
 			final int columnCount) {
-		this.data = mapToList((t, r, c) -> supplier.get(), rowCount, columnCount);
+		final List<List<T>> mappedData = new ArrayList<>();
+		IntStream.range(0, rowCount).forEach(rowIndex -> {
+			final List<T> currentLedRow = new ArrayList<>();
+			IntStream.range(0, columnCount).forEach(columnIndex -> {
+				final T currentMappedElement = supplier.get();
+				currentLedRow.add(currentMappedElement);
+			});
+			mappedData.add(currentLedRow);
+		});
+
+		this.data = mapToUnmodifiableList(mappedData);
 	}
 
-	private <R> List<List<R>> mapToList(final TriFunction<T, Integer, Integer, R> mapperFunction, final int rowCount,
-			final int columnCount) {
+	private <R> List<List<R>> mapToList(final TriFunction<T, Integer, Integer, R> mapperFunction) {
 		final List<List<R>> mappedData = new ArrayList<>();
-		IntStream.range(0, rowCount).forEach(rowIndex -> {
+		IntStream.range(0, getRowCount()).forEach(rowIndex -> {
 			final List<R> currentLedRow = new ArrayList<>();
-			IntStream.range(0, columnCount).forEach(columnIndex -> {
-				final T currentElement = data == null ? null : getValueAt(rowIndex, columnIndex);
+			IntStream.range(0, getColumnCount()).forEach(columnIndex -> {
+				final T currentElement = getValueAt(rowIndex, columnIndex);
 				final R currentMappedElement = mapperFunction.accept(currentElement, rowIndex, columnIndex);
 				currentLedRow.add(currentMappedElement);
 			});
@@ -74,9 +83,8 @@ public final class TwoDimensionalListRectangular<T> {
 		return mapToUnmodifiableList(mappedData);
 	}
 
-	public <R> TwoDimensionalListRectangular<R> map(final TriFunction<T, Integer, Integer, R> mapperFunction,
-			final int rowCount, final int columnCount) {
-		final List<List<R>> mappedList = mapToList(mapperFunction, rowCount, columnCount);
+	public <R> TwoDimensionalListRectangular<R> map(final TriFunction<T, Integer, Integer, R> mapperFunction) {
+		final List<List<R>> mappedList = mapToList(mapperFunction);
 		return new TwoDimensionalListRectangular<>(mappedList);
 	}
 
