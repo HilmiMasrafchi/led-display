@@ -3,8 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import java.io.Serializable;
-
 import javax.enterprise.context.RequestScoped;
 
 import me.hmasrafchi.leddisplay.api.CompiledFrames;
@@ -18,9 +16,7 @@ import me.hmasrafchi.leddisplay.api.Scene;
  *
  */
 @RequestScoped
-class MatrixDefault implements Matrix, Serializable {
-	private static final long serialVersionUID = -2660964310070724009L;
-
+class MatrixDefault implements Matrix {
 	@Override
 	public CompiledFrames compile(final Scene scene, final int rowCount, final int columnCount) {
 		final CompiledFrames compiledFrames = new CompiledFrames();

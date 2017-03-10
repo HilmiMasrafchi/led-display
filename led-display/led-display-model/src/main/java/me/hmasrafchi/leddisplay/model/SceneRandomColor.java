@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
+import static java.util.Collections.unmodifiableList;
+
 import java.util.List;
 
 import me.hmasrafchi.leddisplay.api.Led;
@@ -20,8 +22,8 @@ final class SceneRandomColor implements Scene {
 
 	private int counter = 1;
 
-	public SceneRandomColor(final List<RgbColor> colors) {
-		this.colors = colors;
+	SceneRandomColor(final List<? extends RgbColor> colors) {
+		this.colors = unmodifiableList(colors);
 	}
 
 	@Override

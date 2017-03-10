@@ -19,7 +19,7 @@ import me.hmasrafchi.leddisplay.api.Scene;
 final class SceneOverlayed implements Scene {
 	private final List<Overlay> overlays;
 
-	public SceneOverlayed(final List<? extends Overlay> overlays) {
+	SceneOverlayed(final List<? extends Overlay> overlays) {
 		this.overlays = unmodifiableList(overlays);
 	}
 

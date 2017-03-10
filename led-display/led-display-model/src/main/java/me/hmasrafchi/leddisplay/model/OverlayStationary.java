@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.api.LedState;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.util.Preconditions;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
@@ -29,12 +29,12 @@ final class OverlayStationary implements Overlay {
 
 	private int durationCounter = 1;
 
-	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
+	OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
 			final RgbColor offColor) {
 		this(states, onColor, offColor, 1);
 	}
 
-	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
+	OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
 			final RgbColor offColor, final int duration) {
 		this.states = Preconditions.checkNotNull(states);
 		this.onColor = Preconditions.checkNotNull(onColor);

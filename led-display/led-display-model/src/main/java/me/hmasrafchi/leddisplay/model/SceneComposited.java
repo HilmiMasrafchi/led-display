@@ -3,7 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.hmasrafchi.leddisplay.api.Led;
@@ -15,11 +14,9 @@ import me.hmasrafchi.leddisplay.util.CyclicIterator;
  *
  */
 final class SceneComposited implements Scene {
-	private final List<Scene> scenes;
 	private final CyclicIterator<Scene> scenesIterator;
 
-	public SceneComposited(final List<? extends Scene> scenes) {
-		this.scenes = new ArrayList<>(scenes);
+	SceneComposited(final List<? extends Scene> scenes) {
 		this.scenesIterator = new CyclicIterator<>(scenes);
 	}
 
