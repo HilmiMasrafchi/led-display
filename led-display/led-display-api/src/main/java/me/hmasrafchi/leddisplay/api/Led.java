@@ -5,19 +5,16 @@ package me.hmasrafchi.leddisplay.api;
 
 import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
 
-import lombok.Data;
-
 /**
  * @author michelin
  *
  */
-@Data
 public class Led {
 	private static final String DEFAULT_TEXT = "█";
 	private static final LedRgbColor DEFAULT_COLOR = BLACK;
 
-	private String text;
-	private LedRgbColor rgbColor;
+	private final String text;
+	private final LedRgbColor rgbColor;
 
 	public Led() {
 		this(DEFAULT_TEXT, DEFAULT_COLOR);
@@ -30,5 +27,13 @@ public class Led {
 	public Led(final String text, final LedRgbColor rgbColor) {
 		this.text = text;
 		this.rgbColor = rgbColor;
+	}
+
+	public LedRgbColor getRgbColor() {
+		return rgbColor;
+	}
+
+	public String getText() {
+		return text;
 	}
 }

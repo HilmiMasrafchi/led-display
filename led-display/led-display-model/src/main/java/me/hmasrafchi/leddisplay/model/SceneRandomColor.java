@@ -5,8 +5,6 @@ package me.hmasrafchi.leddisplay.model;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.LedRgbColor;
 import me.hmasrafchi.leddisplay.api.Scene;
@@ -15,14 +13,16 @@ import me.hmasrafchi.leddisplay.api.Scene;
  * @author michelin
  *
  */
-@RequiredArgsConstructor
 final class SceneRandomColor implements Scene {
 	private static final int FRAMES_COUNT = 3;
 
-	@Getter
 	private final List<LedRgbColor> colors;
 
 	private int counter = 1;
+
+	public SceneRandomColor(final List<LedRgbColor> colors) {
+		this.colors = colors;
+	}
 
 	@Override
 	public Led onLedVisited(final Led led, final int ledRowIndex, final int ledColumnIndex) {

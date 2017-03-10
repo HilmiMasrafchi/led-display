@@ -3,13 +3,13 @@
  */
 package me.hmasrafchi.leddisplay.api;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author michelin
  *
  */
-@Data
 public class LedRgbColor {
 	public static final LedRgbColor WHITE = new LedRgbColor(255, 255, 255);
 	public static final LedRgbColor BLACK = new LedRgbColor(0, 0, 0);
@@ -21,17 +21,27 @@ public class LedRgbColor {
 	public static final LedRgbColor BLUE = new LedRgbColor(0, 0, 255);
 	public static final LedRgbColor INDIGO = new LedRgbColor(75, 0, 130);
 
-	private int r;
-	private int g;
-	private int b;
+	private final int r;
+	private final int g;
+	private final int b;
 
-	public LedRgbColor() {
-	}
-
-	public LedRgbColor(int r, int g, int b) {
+	@JsonCreator
+	public LedRgbColor(@JsonProperty("r") int r, @JsonProperty("g") int g, @JsonProperty("b") int b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
+	}
+
+	public int getR() {
+		return r;
+	}
+
+	public int getG() {
+		return g;
+	}
+
+	public int getB() {
+		return b;
 	}
 
 	@Override

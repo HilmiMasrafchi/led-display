@@ -6,7 +6,6 @@ package me.hmasrafchi.leddisplay.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Scene;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
@@ -16,7 +15,6 @@ import me.hmasrafchi.leddisplay.util.CyclicIterator;
  *
  */
 final class SceneComposited implements Scene {
-	@Getter
 	private final List<Scene> scenes;
 	private final CyclicIterator<Scene> scenesIterator;
 

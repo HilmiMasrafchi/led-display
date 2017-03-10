@@ -10,13 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import lombok.Value;
-
 /**
  * @author michelin
  *
  */
-@Value
 public final class CompiledFrames {
 	private final List<Frame> compiledFramesData;
 

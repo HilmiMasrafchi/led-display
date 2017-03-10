@@ -29,7 +29,6 @@ import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.Matrix;
 import me.hmasrafchi.leddisplay.model.Overlay;
 import me.hmasrafchi.leddisplay.model.SceneFactory;
-import me.hmasrafchi.leddisplay.model.SceneOverlayed;
 import me.hmasrafchi.leddisplay.rest.persist.LedStateRow;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
@@ -134,7 +133,7 @@ public class MatrixResource {
 						modelOverlays.add(overlayRollHorizontally2);
 					}
 				}
-				modelScenes.add(new SceneOverlayed(modelOverlays));
+				modelScenes.add(sceneFactory.getSceneOverlayed(modelOverlays));
 			}
 
 			final me.hmasrafchi.leddisplay.api.Scene sceneComposited = sceneFactory.getCompositeScene(modelScenes);
