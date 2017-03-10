@@ -95,10 +95,10 @@ public class MatrixResource {
 						TwoDimensionalListRectangular<me.hmasrafchi.leddisplay.api.LedState> states = new TwoDimensionalListRectangular<>(
 								modelStates);
 						me.hmasrafchi.leddisplay.rest.persist.LedRgbColor onColor2 = overlayStationary.getOnColor();
-						me.hmasrafchi.leddisplay.api.LedRgbColor onColor = new me.hmasrafchi.leddisplay.api.LedRgbColor(
+						me.hmasrafchi.leddisplay.api.RgbColor onColor = new me.hmasrafchi.leddisplay.api.RgbColor(
 								onColor2.getR(), onColor2.getG(), onColor2.getB());
 						me.hmasrafchi.leddisplay.rest.persist.LedRgbColor offColor2 = overlayStationary.getOffColor();
-						me.hmasrafchi.leddisplay.api.LedRgbColor offColor = new me.hmasrafchi.leddisplay.api.LedRgbColor(
+						me.hmasrafchi.leddisplay.api.RgbColor offColor = new me.hmasrafchi.leddisplay.api.RgbColor(
 								offColor2.getR(), offColor2.getG(), offColor2.getB());
 						int duration = overlayStationary.getDuration();
 						final Overlay overlayStationary2 = sceneFactory.getOverlayStationary(modelStates, onColor,
@@ -119,11 +119,11 @@ public class MatrixResource {
 
 						me.hmasrafchi.leddisplay.rest.persist.LedRgbColor onColor2 = overlayRollHorizontally
 								.getOnColor();
-						me.hmasrafchi.leddisplay.api.LedRgbColor onColor = new me.hmasrafchi.leddisplay.api.LedRgbColor(
+						me.hmasrafchi.leddisplay.api.RgbColor onColor = new me.hmasrafchi.leddisplay.api.RgbColor(
 								onColor2.getR(), onColor2.getG(), onColor2.getB());
 						me.hmasrafchi.leddisplay.rest.persist.LedRgbColor offColor2 = overlayRollHorizontally
 								.getOffColor();
-						me.hmasrafchi.leddisplay.api.LedRgbColor offColor = new me.hmasrafchi.leddisplay.api.LedRgbColor(
+						me.hmasrafchi.leddisplay.api.RgbColor offColor = new me.hmasrafchi.leddisplay.api.RgbColor(
 								offColor2.getR(), offColor2.getG(), offColor2.getB());
 						int beginIndexMark = overlayRollHorizontally.getBeginIndexMark();
 						int yposition = overlayRollHorizontally.getYposition();

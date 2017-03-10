@@ -4,11 +4,11 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLUE;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.GREEN;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.RgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.api.RgbColor.BLUE;
+import static me.hmasrafchi.leddisplay.api.RgbColor.GREEN;
+import static me.hmasrafchi.leddisplay.api.RgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.RgbColor.YELLOW;
 import static me.hmasrafchi.leddisplay.api.LedState.OFF;
 import static me.hmasrafchi.leddisplay.api.LedState.ON;
 import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;

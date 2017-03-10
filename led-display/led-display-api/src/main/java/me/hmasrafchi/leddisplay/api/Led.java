@@ -3,7 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.api;
 
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
+import static me.hmasrafchi.leddisplay.api.RgbColor.BLACK;
 
 /**
  * @author michelin
@@ -11,25 +11,25 @@ import static me.hmasrafchi.leddisplay.api.LedRgbColor.BLACK;
  */
 public class Led {
 	private static final String DEFAULT_TEXT = "█";
-	private static final LedRgbColor DEFAULT_COLOR = BLACK;
+	private static final RgbColor DEFAULT_COLOR = BLACK;
 
 	private final String text;
-	private final LedRgbColor rgbColor;
+	private final RgbColor rgbColor;
 
 	public Led() {
 		this(DEFAULT_TEXT, DEFAULT_COLOR);
 	}
 
-	public Led(final LedRgbColor rgbColor) {
+	public Led(final RgbColor rgbColor) {
 		this(DEFAULT_TEXT, rgbColor);
 	}
 
-	public Led(final String text, final LedRgbColor rgbColor) {
+	public Led(final String text, final RgbColor rgbColor) {
 		this.text = text;
 		this.rgbColor = rgbColor;
 	}
 
-	public LedRgbColor getRgbColor() {
+	public RgbColor getRgbColor() {
 		return rgbColor;
 	}
 

@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import lombok.Data;
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
@@ -39,9 +39,6 @@ public final class LedDisplayJavaFx extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final int matrixRowsCount = 6;
-		final int matrixColumnsCount = 5;
-
 		final Client client = ClientBuilder.newClient();
 		final Response response = client.target("http://localhost:8080/led-display-webservices-rest")
 				.path("matrix/1/frames").request(MediaType.APPLICATION_JSON).get();
@@ -76,7 +73,7 @@ public final class LedDisplayJavaFx extends Application {
 						final LedJFx ledJFx = map.getRowAt(r).get(c);
 						final Led led = frame.getRowAt(r).get(c);
 
-						final LedRgbColor rgbColor = led.getRgbColor();
+						final RgbColor rgbColor = led.getRgbColor();
 						ledJFx.setFill(Color.rgb(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
 					}
 				}

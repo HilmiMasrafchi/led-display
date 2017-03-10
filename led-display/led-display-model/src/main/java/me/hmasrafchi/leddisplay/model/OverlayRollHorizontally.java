@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.Preconditions;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
@@ -21,14 +21,14 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 @JsonTypeName("overlayRollHorizontally")
 final class OverlayRollHorizontally implements Overlay {
 	private final TwoDimensionalListRectangular<LedState> states;
-	private final LedRgbColor onColor;
-	private final LedRgbColor offColor;
+	private final RgbColor onColor;
+	private final RgbColor offColor;
 	private final int yPosition;
 
 	private int currentIndexMark;
 
-	OverlayRollHorizontally(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
-			final LedRgbColor offColor, final int beginIndexMark, final int yPosition) {
+	OverlayRollHorizontally(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
+			final RgbColor offColor, final int beginIndexMark, final int yPosition) {
 		this.states = Preconditions.checkNotNull(states);
 
 		this.onColor = Preconditions.checkNotNull(onColor);

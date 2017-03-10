@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.util.Preconditions;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
@@ -23,19 +23,19 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 @JsonTypeName("overlayStationary")
 final class OverlayStationary implements Overlay {
 	private final TwoDimensionalListRectangular<LedState> states;
-	private final LedRgbColor onColor;
-	private final LedRgbColor offColor;
+	private final RgbColor onColor;
+	private final RgbColor offColor;
 	private final int duration;
 
 	private int durationCounter = 1;
 
-	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
-			final LedRgbColor offColor) {
+	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
+			final RgbColor offColor) {
 		this(states, onColor, offColor, 1);
 	}
 
-	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final LedRgbColor onColor,
-			final LedRgbColor offColor, final int duration) {
+	public OverlayStationary(final TwoDimensionalListRectangular<LedState> states, final RgbColor onColor,
+			final RgbColor offColor, final int duration) {
 		this.states = Preconditions.checkNotNull(states);
 		this.onColor = Preconditions.checkNotNull(onColor);
 		this.offColor = Preconditions.checkNotNull(offColor);

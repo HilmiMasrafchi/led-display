@@ -4,8 +4,8 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.RED;
-import static me.hmasrafchi.leddisplay.api.LedRgbColor.YELLOW;
+import static me.hmasrafchi.leddisplay.api.RgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.RgbColor.YELLOW;
 import static me.hmasrafchi.leddisplay.api.LedState.OFF;
 import static me.hmasrafchi.leddisplay.api.LedState.ON;
 import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
@@ -24,7 +24,7 @@ import org.junit.rules.ExpectedException;
 import me.hmasrafchi.leddisplay.api.CompiledFrames;
 import me.hmasrafchi.leddisplay.api.Frame;
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.LedRgbColor;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.api.Matrix;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
@@ -43,8 +43,8 @@ public final class TestOverlayRollHorizontallyIntegration {
 	@Rule
 	public final ExpectedException expectedException = ExpectedException.none();
 
-	private static final LedRgbColor ON_COLOR = RED;
-	private static final LedRgbColor OFF_COLOR = YELLOW;
+	private static final RgbColor ON_COLOR = RED;
+	private static final RgbColor OFF_COLOR = YELLOW;
 
 	private Overlay overlayRollHorizontally;
 
