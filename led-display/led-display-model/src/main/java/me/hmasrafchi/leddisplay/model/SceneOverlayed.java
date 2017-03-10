@@ -17,7 +17,7 @@ import me.hmasrafchi.leddisplay.api.Scene;
  *
  */
 @RequiredArgsConstructor
-public final class SceneOverlayed implements Scene {
+final class SceneOverlayed implements Scene {
 	private final List<Overlay> overlays;
 
 	@Override

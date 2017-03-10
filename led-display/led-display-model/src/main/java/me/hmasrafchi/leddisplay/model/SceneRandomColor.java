@@ -16,7 +16,7 @@ import me.hmasrafchi.leddisplay.api.Scene;
  *
  */
 @RequiredArgsConstructor
-public final class SceneRandomColor implements Scene {
+final class SceneRandomColor implements Scene {
 	private static final int FRAMES_COUNT = 3;
 
 	@Getter
