@@ -29,12 +29,17 @@ public class MatrixRespositoryJpa implements MatrixRepository {
 	}
 
 	@Override
-	public Optional<MatrixEntity> get(final Integer id) {
+	public Optional<MatrixEntity> get(final int id) {
 		return ofNullable(em.find(MatrixEntity.class, id));
 	}
 
 	@Override
 	public void update(final MatrixEntity matrixEntity) {
 		em.merge(matrixEntity);
+	}
+
+	@Override
+	public void delete(int matrixId) {
+		get(matrixId).ifPresent(matrixEntity -> em.remove(matrixEntity));
 	}
 }

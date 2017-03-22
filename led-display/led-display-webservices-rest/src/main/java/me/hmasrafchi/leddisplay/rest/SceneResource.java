@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -137,6 +138,35 @@ public class SceneResource {
 
 			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 			return Response.created(builder.build()).build();
+		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+	}
+
+	@DELETE
+	@Path("{sceneIndex}")
+	public Response removeScene(@PathParam("matrixId") final int matrixId,
+			@PathParam("sceneIndex") final int sceneIndex) {
+		return matrixRepository.get(matrixId).map(matrixEntity -> {
+			final List<Scene> scenes = matrixEntity.getScenes();
+			scenes.remove(sceneIndex);
+			matrixRepository.update(matrixEntity);
+
+			return Response.noContent().build();
+		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+	}
+
+	@DELETE
+	@Path("{sceneIndex}/overlays/{overlayIndex}")
+	public Response removeOverlayAtScene(@PathParam("matrixId") final int matrixId,
+			@PathParam("sceneIndex") final int sceneIndex, @PathParam("overlayIndex") final int overlayIndex) {
+		return matrixRepository.get(matrixId).map(matrixEntity -> {
+			final List<Scene> scenes = matrixEntity.getScenes();
+			final Scene scene = scenes.get(sceneIndex);
+			final List<Overlay> overlays = scene.getOverlays();
+			overlays.remove(overlayIndex);
+
+			matrixRepository.update(matrixEntity);
+
+			return Response.noContent().build();
 		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
 	}
 }

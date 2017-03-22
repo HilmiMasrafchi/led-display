@@ -16,7 +16,7 @@ import me.hmasrafchi.leddisplay.api.Scene;
  *
  */
 @RequestScoped
-class MatrixDefault implements Matrix {
+public class MatrixDefault implements Matrix {
 	@Override
 	public CompiledFrames compile(final Scene scene, final int rowCount, final int columnCount) {
 		final CompiledFrames compiledFrames = new CompiledFrames();
