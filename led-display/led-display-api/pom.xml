@@ -2,20 +2,19 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>led-display</groupId>
+		<groupId>me.hmasrafchi.leddisplay</groupId>
 		<artifactId>led-display</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>led-display-api</groupId>
 	<artifactId>led-display-api</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>led-display-util</groupId>
-			<artifactId>led-display-util</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-util</artifactId>
 		</dependency>
 	</dependencies>
 </project>

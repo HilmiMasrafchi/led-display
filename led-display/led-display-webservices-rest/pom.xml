@@ -4,11 +4,10 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>led-display</groupId>
+		<groupId>me.hmasrafchi.leddisplay</groupId>
 		<artifactId>led-display</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>led-display-webservices-rest</groupId>
 	<artifactId>led-display-webservices-rest</artifactId>
 	<packaging>war</packaging>
 	<build>
@@ -31,24 +30,8 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>led-display-model</groupId>
-			<artifactId>led-display-model</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.2.8.Final</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>asm</artifactId>
-					<groupId>asm</groupId>
-				</exclusion>
-			</exclusions>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
@@ -58,6 +41,10 @@
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model</artifactId>
 		</dependency>
 	</dependencies>
 	<profiles>

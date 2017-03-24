@@ -2,17 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>led-display</groupId>
+		<groupId>me.hmasrafchi.leddisplay</groupId>
 		<artifactId>led-display</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>led-display-client-javafx</groupId>
 	<artifactId>led-display-client-javafx</artifactId>
 	<dependencies>
-		<dependency>
-			<groupId>led-display-model</groupId>
-			<artifactId>led-display-model</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -26,6 +21,10 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.22</version>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model</artifactId>
 		</dependency>
 	</dependencies>
 </project>
