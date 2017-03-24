@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -25,7 +26,14 @@ public class LedStateRow {
 	@GeneratedValue
 	Integer id;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	List<LedState> ledStates;
+
+	public LedStateRow() {
+	}
+
+	public LedStateRow(final List<LedState> ledStates) {
+		this.ledStates = ledStates;
+	}
 }

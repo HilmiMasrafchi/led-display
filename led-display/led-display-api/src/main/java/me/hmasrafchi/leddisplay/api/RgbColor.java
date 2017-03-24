@@ -3,9 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.api;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author michelin
  *
@@ -25,8 +22,7 @@ public class RgbColor {
 	private final int g;
 	private final int b;
 
-	@JsonCreator
-	public RgbColor(@JsonProperty("r") int r, @JsonProperty("g") int g, @JsonProperty("b") int b) {
+	public RgbColor(int r, int g, int b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;

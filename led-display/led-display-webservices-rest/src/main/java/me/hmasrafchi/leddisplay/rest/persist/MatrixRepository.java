@@ -17,5 +17,7 @@ public interface MatrixRepository {
 
 	void update(final MatrixEntity matrixEntity);
 
+	Scene appendOverlay(final MatrixEntity matrixEntity, final Overlay overlay);
+
 	void delete(int matrixId);
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,9 +21,13 @@ import lombok.EqualsAndHashCode;
  *
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class OverlayRollHorizontally extends Overlay {
+	@Id
+	@GeneratedValue
+	Integer id;
+
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	List<LedStateRow> states;
@@ -31,4 +37,16 @@ public class OverlayRollHorizontally extends Overlay {
 	LedRgbColor offColor;
 	int beginIndexMark;
 	int yposition;
+
+	public OverlayRollHorizontally() {
+	}
+
+	public OverlayRollHorizontally(List<LedStateRow> states, LedRgbColor onColor, LedRgbColor offColor,
+			int beginIndexMark, int yposition) {
+		this.states = states;
+		this.onColor = onColor;
+		this.offColor = offColor;
+		this.beginIndexMark = beginIndexMark;
+		this.yposition = yposition;
+	}
 }

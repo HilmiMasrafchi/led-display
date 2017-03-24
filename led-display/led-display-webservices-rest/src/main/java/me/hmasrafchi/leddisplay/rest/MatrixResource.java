@@ -20,7 +20,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import me.hmasrafchi.leddisplay.api.Matrix;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
 
@@ -28,7 +27,7 @@ import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
  * @author michelin
  *
  */
-@Path("matrix")
+@Path("matrices")
 @Stateless
 public class MatrixResource {
 	@Inject
@@ -38,9 +37,6 @@ public class MatrixResource {
 	private SceneResource sceneResource;
 	@Inject
 	private CompiledFramesResource compiledFramesResource;
-
-	@Inject
-	private Matrix matrix;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -65,8 +61,13 @@ public class MatrixResource {
 	@Path("{matrixId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("matrixId") final int matrixId) {
-		return matrixRepository.get(matrixId).map(matrixEntity -> Response.ok(matrixEntity).build())
-				.orElse(Response.status(Response.Status.NOT_FOUND).build());
+		return matrixRepository.get(matrixId).map(matrixEntity -> {
+			// List<Scene> scenes = matrixEntity.getScenes();
+			// Scene scene = scenes.get(0);
+			// List<Overlay> overlays = scene.getOverlays();
+			// Overlay overlay = overlays.get(0);
+			return Response.ok(matrixEntity).build();
+		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
 	}
 
 	@Path("{matrixId}/scenes")

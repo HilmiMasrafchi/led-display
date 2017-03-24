@@ -5,10 +5,6 @@ package me.hmasrafchi.leddisplay.model;
 
 import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import me.hmasrafchi.leddisplay.api.Led;
 import me.hmasrafchi.leddisplay.api.LedState;
 import me.hmasrafchi.leddisplay.api.RgbColor;
@@ -19,8 +15,6 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
  * @author michelin
  *
  */
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
-@JsonTypeName("overlayStationary")
 final class OverlayStationary implements Overlay {
 	private final TwoDimensionalListRectangular<LedState> states;
 	private final RgbColor onColor;

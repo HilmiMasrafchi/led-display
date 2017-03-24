@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 
 import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
+import me.hmasrafchi.leddisplay.rest.persist.Overlay;
+import me.hmasrafchi.leddisplay.rest.persist.Scene;
 
 /**
  * @author michelin
@@ -41,5 +43,15 @@ public class MatrixRespositoryJpa implements MatrixRepository {
 	@Override
 	public void delete(int matrixId) {
 		get(matrixId).ifPresent(matrixEntity -> em.remove(matrixEntity));
+	}
+
+	@Override
+	public Scene appendOverlay(final MatrixEntity matrixEntity, final Overlay overlay) {
+		final Scene scene = new Scene();
+		em.persist(overlay);
+		scene.getOverlays().add(overlay);
+		matrixEntity.getScenes().add(em.merge(scene));
+		update(matrixEntity);
+		return null;
 	}
 }

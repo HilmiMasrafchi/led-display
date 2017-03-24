@@ -9,10 +9,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.net.URI;
-import java.net.URL;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,7 +18,6 @@ import javax.ws.rs.core.Response;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -34,10 +31,7 @@ import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
  *
  */
 @RunWith(Arquillian.class)
-public final class TestMatrixResource {
-	@ArquillianResource
-	private URL deploymentURL;
-
+public final class TestMatrixResource extends TestResource {
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
 		return ShrinkWrap.create(WebArchive.class) //
@@ -52,21 +46,13 @@ public final class TestMatrixResource {
 
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void post_matrix_shoulCreateNewMatrix(@ArquillianResteasyResource("") final WebTarget webTarget) {
+	public void post_matrices_shoulCreateNewMatrix(@ArquillianResteasyResource("") final WebTarget webTarget) {
 		final Response response = sendPostCreatingMatrix(webTarget, 6, 4);
 
 		final int actualResponseStatusCode = response.getStatus();
 		final URI actualResponseHeaderLocation = response.getLocation();
 		assertThat(actualResponseStatusCode, is(equalTo(Response.Status.CREATED.getStatusCode())));
 		assertThat(actualResponseHeaderLocation, is(notNullValue()));
-	}
-
-	private Response sendPostCreatingMatrix(final WebTarget webTarget, final int rowCount, final int columnCount) {
-		final MatrixEntity entity = new MatrixEntity();
-		entity.setRowCount(rowCount);
-		entity.setColumnCount(columnCount);
-
-		return webTarget.path("matrix").request(MediaType.APPLICATION_JSON).post(Entity.json(entity));
 	}
 
 	@Test
@@ -85,14 +71,6 @@ public final class TestMatrixResource {
 		assertThat(actualResponseStatusCode, is(equalTo(Response.Status.OK.getStatusCode())));
 		assertThat(actualEntity.getRowCount(), is(equalTo(expectedRowCount)));
 		assertThat(actualEntity.getColumnCount(), is(equalTo(expectedColumnCount)));
-	}
-
-	private String getWebTargetPath(final Response response) {
-		final URI location = response.getLocation();
-		final String locationPath = location.getPath();
-		final String locationPathWithoutLeading = locationPath.substring(1);
-
-		return locationPathWithoutLeading.substring(locationPathWithoutLeading.indexOf("/"));
 	}
 
 	@Test

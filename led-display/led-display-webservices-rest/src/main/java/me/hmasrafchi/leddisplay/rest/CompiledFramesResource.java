@@ -33,7 +33,7 @@ import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 @Stateless
 public class CompiledFramesResource {
 	@Inject
-	MatrixRepository matrixRepository;
+	private MatrixRepository matrixRepository;
 
 	@Inject
 	private Matrix matrix;
