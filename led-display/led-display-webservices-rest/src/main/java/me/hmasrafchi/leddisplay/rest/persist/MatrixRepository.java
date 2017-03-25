@@ -15,9 +15,14 @@ public interface MatrixRepository {
 	// TODO: check if I can get by MatrixEntity (without Id specified)
 	Optional<MatrixEntity> get(int id);
 
-	void update(final MatrixEntity matrixEntity);
+	Scene addScene(MatrixEntity matrixEntity);
 
-	Scene appendOverlay(final MatrixEntity matrixEntity, final Overlay overlay);
+	// TODO: this should be hidden
+	void update(MatrixEntity matrixEntity);
+
+	Overlay appendOverlay(Scene scene, Overlay overlay);
+
+	Overlay updateOverlay(Scene scene, Overlay overlay, Overlay newOverlay);
 
 	void delete(int matrixId);
 }

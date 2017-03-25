@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,10 +22,6 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class OverlayRollHorizontally extends Overlay {
-	@Id
-	@GeneratedValue
-	Integer id;
-
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	List<LedStateRow> states;

@@ -30,6 +30,6 @@ public class TestResource {
 		final String locationPath = location.getPath();
 		final String locationPathWithoutLeading = locationPath.substring(1);
 
-		return locationPathWithoutLeading.substring(locationPathWithoutLeading.indexOf("/"));
+		return locationPathWithoutLeading.substring(locationPathWithoutLeading.indexOf("/") + 1);
 	}
 }

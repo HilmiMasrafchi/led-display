@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author michelin
@@ -25,6 +26,7 @@ import lombok.Data;
 @JsonSubTypes({ @JsonSubTypes.Type(value = OverlayRollHorizontally.class, name = "roll"),
 		@JsonSubTypes.Type(value = OverlayStationary.class, name = "still") })
 @Data
+@EqualsAndHashCode(exclude = "id")
 public abstract class Overlay {
 	@Id
 	@GeneratedValue

@@ -51,6 +51,12 @@
 			<artifactId>arquillian-junit-container</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.1.Final</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>

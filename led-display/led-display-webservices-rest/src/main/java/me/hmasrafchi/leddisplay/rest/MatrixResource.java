@@ -27,8 +27,8 @@ import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
  * @author michelin
  *
  */
-@Path("matrices")
 @Stateless
+@Path(PathLiterals.MATRICES)
 public class MatrixResource {
 	@Inject
 	private MatrixRepository matrixRepository;
@@ -62,20 +62,16 @@ public class MatrixResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("matrixId") final int matrixId) {
 		return matrixRepository.get(matrixId).map(matrixEntity -> {
-			// List<Scene> scenes = matrixEntity.getScenes();
-			// Scene scene = scenes.get(0);
-			// List<Overlay> overlays = scene.getOverlays();
-			// Overlay overlay = overlays.get(0);
 			return Response.ok(matrixEntity).build();
 		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
 	}
 
-	@Path("{matrixId}/scenes")
+	@Path("{matrixId}/" + PathLiterals.SCENES)
 	public SceneResource getSceneResource() {
 		return sceneResource;
 	}
 
-	@Path("{matrixId}/frames")
+	@Path("{matrixId}/" + PathLiterals.FRAMES)
 	public CompiledFramesResource getCompiledFramesResource() {
 		return compiledFramesResource;
 	}

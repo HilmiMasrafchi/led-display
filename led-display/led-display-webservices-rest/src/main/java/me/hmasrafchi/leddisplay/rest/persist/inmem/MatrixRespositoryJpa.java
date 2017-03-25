@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.rest.persist.inmem;
 
 import static java.util.Optional.ofNullable;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.enterprise.inject.Default;
@@ -46,12 +47,29 @@ public class MatrixRespositoryJpa implements MatrixRepository {
 	}
 
 	@Override
-	public Scene appendOverlay(final MatrixEntity matrixEntity, final Overlay overlay) {
+	public Scene addScene(final MatrixEntity matrixEntity) {
 		final Scene scene = new Scene();
+		em.persist(scene);
+		matrixEntity.getScenes().add(scene);
+		update(matrixEntity);
+
+		return scene;
+	}
+
+	@Override
+	public Overlay appendOverlay(final Scene scene, final Overlay overlay) {
 		em.persist(overlay);
 		scene.getOverlays().add(overlay);
-		matrixEntity.getScenes().add(em.merge(scene));
-		update(matrixEntity);
-		return null;
+		em.merge(scene);
+		return overlay;
+	}
+
+	@Override
+	public Overlay updateOverlay(final Scene scene, final Overlay overlay, final Overlay newOverlay) {
+		final List<Overlay> overlays = scene.getOverlays();
+		final int indexOf = overlays.indexOf(overlay);
+		overlays.set(indexOf, newOverlay);
+		em.merge(scene);
+		return newOverlay;
 	}
 }

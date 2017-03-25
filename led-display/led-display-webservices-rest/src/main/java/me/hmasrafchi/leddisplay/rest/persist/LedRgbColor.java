@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author michelin
@@ -15,6 +16,7 @@ import lombok.Data;
  */
 @Data
 @Entity
+@EqualsAndHashCode(exclude = "id")
 public class LedRgbColor {
 	@Id
 	@GeneratedValue
