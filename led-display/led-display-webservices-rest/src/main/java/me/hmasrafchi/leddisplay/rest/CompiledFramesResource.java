@@ -24,7 +24,6 @@ import me.hmasrafchi.leddisplay.model.SceneFactory;
 import me.hmasrafchi.leddisplay.rest.persist.LedStateRow;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
 import me.hmasrafchi.leddisplay.rest.persist.Scene;
-import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**
  * @author michelin
@@ -60,8 +59,6 @@ public class CompiledFramesResource {
 							modelStates.add(row);
 						}
 
-						TwoDimensionalListRectangular<me.hmasrafchi.leddisplay.api.LedState> states = new TwoDimensionalListRectangular<>(
-								modelStates);
 						me.hmasrafchi.leddisplay.rest.persist.LedRgbColor onColor2 = overlayStationary.getOnColor();
 						me.hmasrafchi.leddisplay.api.RgbColor onColor = new me.hmasrafchi.leddisplay.api.RgbColor(
 								onColor2.getR(), onColor2.getG(), onColor2.getB());

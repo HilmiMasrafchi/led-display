@@ -41,6 +41,34 @@ public class RgbColor {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + b;
+		result = prime * result + g;
+		result = prime * result + r;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RgbColor other = (RgbColor) obj;
+		if (b != other.b)
+			return false;
+		if (g != other.g)
+			return false;
+		if (r != other.r)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return String.format("(%d, %d, %d)", r, g, b);
 	}

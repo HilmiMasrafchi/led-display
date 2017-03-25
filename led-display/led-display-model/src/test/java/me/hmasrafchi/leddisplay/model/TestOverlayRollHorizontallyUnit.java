@@ -4,12 +4,12 @@
 package me.hmasrafchi.leddisplay.model;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.api.RgbColor.RED;
-import static me.hmasrafchi.leddisplay.api.RgbColor.YELLOW;
 import static me.hmasrafchi.leddisplay.api.LedState.OFF;
 import static me.hmasrafchi.leddisplay.api.LedState.ON;
 import static me.hmasrafchi.leddisplay.api.LedState.TRANSPARENT;
 import static me.hmasrafchi.leddisplay.api.LedState.UNRECOGNIZED;
+import static me.hmasrafchi.leddisplay.api.RgbColor.RED;
+import static me.hmasrafchi.leddisplay.api.RgbColor.YELLOW;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -22,11 +22,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import me.hmasrafchi.leddisplay.api.Led;
-import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.api.LedState;
+import me.hmasrafchi.leddisplay.api.RgbColor;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 
 /**

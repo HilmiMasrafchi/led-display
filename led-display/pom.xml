@@ -6,6 +6,13 @@
 	<artifactId>led-display</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<modules>
+		<module>led-display-api</module>
+		<module>led-display-model</module>
+		<module>led-display-client-javafx</module>
+		<module>led-display-webservices-rest</module>
+		<module>led-display-util</module>
+	</modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -29,6 +36,12 @@
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
+				<groupId>javax</groupId>
+				<artifactId>javaee-api</artifactId>
+				<version>7.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.projectlombok</groupId>
 				<artifactId>lombok</artifactId>
 				<version>1.16.6</version>
@@ -42,25 +55,12 @@
 			</dependency>
 			<dependency>
 				<groupId>org.mockito</groupId>
-				<artifactId>mockito-all</artifactId>
-				<version>2.0.2-beta</version>
+				<artifactId>mockito-core</artifactId>
+				<version>2.7.19</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>javax</groupId>
-				<artifactId>javaee-api</artifactId>
-				<version>7.0</version>
-				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<modules>
-		<module>led-display-api</module>
-		<module>led-display-model</module>
-		<module>led-display-client-javafx</module>
-		<module>led-display-webservices-rest</module>
-		<module>led-display-util</module>
-	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
