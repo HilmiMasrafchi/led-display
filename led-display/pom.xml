@@ -60,7 +60,6 @@
 		<module>led-display-client-javafx</module>
 		<module>led-display-webservices-rest</module>
 		<module>led-display-util</module>
-		<module>test-module</module>
 	</modules>
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>

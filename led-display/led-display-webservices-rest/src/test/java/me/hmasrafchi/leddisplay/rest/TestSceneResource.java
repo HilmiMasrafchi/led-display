@@ -13,7 +13,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -33,8 +32,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import me.hmasrafchi.leddisplay.rest.persist.LedRgbColor;
 import me.hmasrafchi.leddisplay.rest.persist.LedStateRow;
@@ -66,7 +63,7 @@ public final class TestSceneResource extends TestResource {
 	public void post_matrices_scenes_stationary_shoulCreateNewSceneAndAddStationaryOverlayAsFirstElement(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
-			@ArquillianResteasyResource("") final WebTarget webTarget3) throws JsonMappingException, IOException {
+			@ArquillianResteasyResource("") final WebTarget webTarget3) {
 		final Response response = sendPostCreatingMatrix(webTarget1, 6, 4);
 		final String webTargetPathMatrices = getWebTargetPath(response);
 		final String webTargetPathScenesStationary = String.format("%s/%s/%s", webTargetPathMatrices, "scenes",
