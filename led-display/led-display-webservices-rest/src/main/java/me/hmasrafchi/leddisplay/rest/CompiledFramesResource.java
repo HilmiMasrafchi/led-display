@@ -40,7 +40,7 @@ public class CompiledFramesResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMatrixFrames(@PathParam("matrixId") final int matrixId) {
-		return matrixRepository.get(matrixId).map(matrixEntity -> {
+		return matrixRepository.read(matrixId).map(matrixEntity -> {
 			final SceneFactory sceneFactory = new SceneFactory();
 			final List<Scene> scenes = matrixEntity.getScenes();
 			final List<me.hmasrafchi.leddisplay.api.Scene> modelScenes = new ArrayList<>();

@@ -5,6 +5,8 @@ package me.hmasrafchi.leddisplay.rest;
 
 import static java.lang.String.valueOf;
 
+import java.util.function.Supplier;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -22,6 +24,7 @@ import javax.ws.rs.core.UriInfo;
 
 import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
+import me.hmasrafchi.leddisplay.rest.persist.inmem.MatrixDoesntExistsException;
 
 /**
  * @author michelin
@@ -48,22 +51,31 @@ public class MatrixResource {
 		return Response.created(builder.build()).build();
 	}
 
-	@DELETE
-	@Path("{matrixId}")
-	public Response delete(@PathParam("matrixId") final int matrixId) {
-		return matrixRepository.get(matrixId).map(matrixEntity -> {
-			matrixRepository.delete(matrixId);
-			return Response.noContent().build();
-		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
-	}
-
 	@GET
 	@Path("{matrixId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response get(@PathParam("matrixId") final int matrixId) {
-		return matrixRepository.get(matrixId).map(matrixEntity -> {
+		return getResponseIfMatrixExists(matrixId, () -> {
+			final MatrixEntity matrixEntity = matrixRepository.read(matrixId);
 			return Response.ok(matrixEntity).build();
-		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+		});
+	}
+
+	private Response getResponseIfMatrixExists(final Object matrixId, final Supplier<Response> supplier) {
+		try {
+			return supplier.get();
+		} catch (final MatrixDoesntExistsException mdee) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+	}
+
+	@DELETE
+	@Path("{matrixId}")
+	public Response delete(@PathParam("matrixId") final int matrixId) {
+		return getResponseIfMatrixExists(matrixId, () -> {
+			matrixRepository.delete(matrixId);
+			return Response.noContent().build();
+		});
 	}
 
 	@Path("{matrixId}/" + PathLiterals.SCENES)

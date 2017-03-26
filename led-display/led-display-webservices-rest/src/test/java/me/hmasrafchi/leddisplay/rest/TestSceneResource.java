@@ -15,7 +15,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -31,7 +30,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -70,7 +68,7 @@ public final class TestSceneResource extends TestResource {
 			@ArquillianResteasyResource("") final WebTarget webTarget3) {
 		final Response createMatrixResponse = sendPostCreatingMatrix(webTarget1, 6, 4);
 		final String webTargetPathMatrices = getWebTargetPath(createMatrixResponse);
-		final String webTargetPathScenes = String.format("%s/%s", webTargetPathMatrices, "scenes");
+		final String webTargetPathScenes = String.format("%s/%s", webTargetPathMatrices, PathLiterals.SCENES);
 
 		final Response postScenesResponse = webTarget2.path(webTargetPathScenes).request().post(Entity.text(""));
 
@@ -98,7 +96,7 @@ public final class TestSceneResource extends TestResource {
 			@ArquillianResteasyResource("") final WebTarget webTarget4) {
 		final Response createMatrixResponse = sendPostCreatingMatrix(webTarget1, 6, 4);
 		final String webTargetPathMatrices = getWebTargetPath(createMatrixResponse);
-		final String webTargetPathScenes = String.format("%s/%s", webTargetPathMatrices, "scenes");
+		final String webTargetPathScenes = String.format("%s/%s", webTargetPathMatrices, PathLiterals.SCENES);
 
 		webTarget2.path(webTargetPathScenes).request().post(Entity.text(""));
 		webTarget3.path(webTargetPathScenes).request().post(Entity.text(""));
@@ -112,7 +110,21 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddOverlayStationaryToScene(
+	public void post_matrices_scenes_shouldReturnNotFoundIfMatrixDoesntExists(
+			@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2) {
+		final Response createMatrixResponse = sendPostCreatingMatrix(webTarget1, 6, 4);
+		final String webTargetPathMatrices = getWebTargetPath(createMatrixResponse) + "FOO";
+		final String webTargetPathScenes = String.format("%s/%s", webTargetPathMatrices, PathLiterals.SCENES);
+
+		final Response postResponse = webTarget2.path(webTargetPathScenes).request().post(Entity.text(""));
+		assertThat(postResponse.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
+	}
+
+	@Test
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void post_matrices_scenes_overlay_stationary_shouldAddOverlayStationaryToScene(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -154,7 +166,7 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddTwoOverlaysStationaryToScene(
+	public void post_matrices_scenes_overlay_stationary_shouldAddTwoOverlaysStationaryToScene(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -200,7 +212,7 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddOverlayRollHorizontallyToScene(
+	public void post_matrices_scenes_overlay_roll_horizontally_shouldAddOverlayRollHorizontallyToScene(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -242,7 +254,7 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddTwoOverlaysRollHorizontallyToScene(
+	public void post_matrices_scenes_overlay_roll_horizontally_shouldAddTwoOverlaysRollHorizontallyToScene(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -288,7 +300,7 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddOverlayStationaryAndOverlayRollHorizontallyToScene(
+	public void post_matrices_scenes_overlays_shouldAddOverlayStationaryAndOverlayRollHorizontallyToScene(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -334,7 +346,7 @@ public final class TestSceneResource extends TestResource {
 	@Test
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_shouldAddOverlayStationaryAndOverlayRollHorizontallyToSeparateScenes(
+	public void post_matrices_scenes_overlays_shouldAddOverlayStationaryAndOverlayRollHorizontallyToSeparateScenes(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
@@ -488,79 +500,5 @@ public final class TestSceneResource extends TestResource {
 		final MatrixEntity actualMatrixEntity = getMatrixResponse.readEntity(MatrixEntity.class);
 		final List<Overlay> overlays = actualMatrixEntity.getScenes().get(0).getOverlays();
 		assertThat(overlays.size(), equalTo(0));
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////
-
-	@Test
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Ignore
-	public void post_matrices_scenes_stationary_shoulCreateNewSceneAndAddStationaryOverlayAsFirstElement(
-			@ArquillianResteasyResource("") final WebTarget webTarget1,
-			@ArquillianResteasyResource("") final WebTarget webTarget2,
-			@ArquillianResteasyResource("") final WebTarget webTarget3) {
-		final Response response = sendPostCreatingMatrix(webTarget1, 6, 4);
-		final String webTargetPathMatrices = getWebTargetPath(response);
-		final String webTargetPathScenesStationary = String.format("%s/%s/%s", webTargetPathMatrices, "scenes",
-				"stationary");
-
-		final List<LedStateRow> overlayStationaryStates = asList( //
-				new LedStateRow(asList(ON, ON, ON, ON, ON, ON, ON)), //
-				new LedStateRow(asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON)), //
-				new LedStateRow(asList(ON, ON, ON, ON, ON, ON, ON)), //
-				new LedStateRow(asList(UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED,
-						UNRECOGNIZED, UNRECOGNIZED)));
-
-		final OverlayStationary entity = new OverlayStationary(overlayStationaryStates, new LedRgbColor(255, 0, 0),
-				new LedRgbColor(0, 255, 0), 10);
-
-		final Response postResponse = webTarget2.path(webTargetPathScenesStationary).request(APPLICATION_JSON)
-				.post(Entity.json(entity));
-
-		final int actualResponseStatusCode = postResponse.getStatus();
-		final String actualResponseHeaderLocationPath = getWebTargetPath(postResponse);
-		assertThat(actualResponseStatusCode, is(equalTo(Response.Status.CREATED.getStatusCode())));
-		assertThat(actualResponseHeaderLocationPath, is(notNullValue()));
-
-		final String[] split = actualResponseHeaderLocationPath.split("/");
-		assertThat(split.length, is(6));
-
-		final Response getMatrixResponse = webTarget3.path(webTargetPathMatrices).request(MediaType.APPLICATION_JSON)
-				.get();
-		final MatrixEntity matrix = getMatrixResponse.readEntity(MatrixEntity.class);
-		final List<Scene> scenes = matrix.getScenes();
-		assertThat(scenes.size(), is(1));
-		assertThat(scenes.get(0).getOverlays().size(), is(1));
-	}
-
-	@Test
-	@Ignore
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void post_matrices_scenes_stationary_ifCalledTwiceShoulCreateTwoScenesAndAddStationaryOverlayAsFirstElement(
-			@ArquillianResteasyResource("") final WebTarget webTarget1,
-			@ArquillianResteasyResource("") final WebTarget webTarget2) {
-		final Response response = sendPostCreatingMatrix(webTarget1, 6, 4);
-		final String webTargetPathMatrices = getWebTargetPath(response);
-		final String webTargetPathScenesStationary = String.format("%s/%s/%s", webTargetPathMatrices, "scenes",
-				"stationary");
-
-		final List<LedStateRow> overlayStationaryStates = asList( //
-				new LedStateRow(asList(ON, ON, ON, ON, ON, ON, ON)), //
-				new LedStateRow(asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON)), //
-				new LedStateRow(asList(ON, ON, ON, ON, ON, ON, ON)), //
-				new LedStateRow(asList(UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED,
-						UNRECOGNIZED, UNRECOGNIZED)));
-
-		final OverlayStationary entity = new OverlayStationary(overlayStationaryStates, new LedRgbColor(255, 0, 0),
-				new LedRgbColor(0, 255, 0), 10);
-		final Response postResponse = webTarget2.path(webTargetPathScenesStationary).request(MediaType.APPLICATION_JSON)
-				.post(Entity.json(entity));
-
-		final int actualResponseStatusCode = postResponse.getStatus();
-		final URI actualResponseHeaderLocation = postResponse.getLocation();
-		assertThat(actualResponseStatusCode, is(equalTo(Response.Status.CREATED.getStatusCode())));
-		assertThat(actualResponseHeaderLocation, is(notNullValue()));
-
 	}
 }

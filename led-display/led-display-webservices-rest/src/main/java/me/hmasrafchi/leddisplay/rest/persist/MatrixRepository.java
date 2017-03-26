@@ -3,8 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.rest.persist;
 
-import java.util.Optional;
-
 /**
  * @author michelin
  *
@@ -12,17 +10,20 @@ import java.util.Optional;
 public interface MatrixRepository {
 	void create(MatrixEntity matrix);
 
-	// TODO: check if I can get by MatrixEntity (without Id specified)
-	Optional<MatrixEntity> get(int id);
+	MatrixEntity read(Object matrixId);
 
-	Scene addScene(MatrixEntity matrixEntity);
+	void delete(Object matrixId);
+
+	Scene createNewScene(Object matrixId);
+
+	void deleteScene(Object matrixId, Object sceneId);
 
 	// TODO: this should be hidden
 	void update(MatrixEntity matrixEntity);
 
-	Overlay appendOverlay(Scene scene, Overlay overlay);
+	Overlay appendOverlay(Object matrixId, Object sceneId, Overlay overlay);
 
-	Overlay updateOverlay(Scene scene, Overlay overlay, Overlay newOverlay);
+	Overlay updateOverlay(Object matrixId, Object sceneId, Object overlayId, Overlay newOverlay);
 
-	void delete(int matrixId);
+	void deleteOverlay(Object matrixId, Object sceneId, Object overlayId);
 }

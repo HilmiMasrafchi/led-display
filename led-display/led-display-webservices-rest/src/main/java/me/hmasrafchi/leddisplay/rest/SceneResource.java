@@ -6,9 +6,7 @@ package me.hmasrafchi.leddisplay.rest;
 import static java.lang.String.valueOf;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -22,12 +20,14 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
-import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
 import me.hmasrafchi.leddisplay.rest.persist.Overlay;
 import me.hmasrafchi.leddisplay.rest.persist.OverlayRollHorizontally;
 import me.hmasrafchi.leddisplay.rest.persist.OverlayStationary;
 import me.hmasrafchi.leddisplay.rest.persist.Scene;
+import me.hmasrafchi.leddisplay.rest.persist.inmem.MatrixDoesntExistsException;
+import me.hmasrafchi.leddisplay.rest.persist.inmem.OverlayDoesntExistsException;
+import me.hmasrafchi.leddisplay.rest.persist.inmem.SceneDoesntExistsException;
 
 /**
  * @author michelin
@@ -42,59 +42,61 @@ public class SceneResource {
 	}
 
 	@POST
-	public Response createScene(@PathParam("matrixId") final int matrixId, @Context UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Scene addedScene = matrixRepository.addScene(matrixEntity);
-			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-			builder.path(valueOf(addedScene.getId()));
+	public Response createScene(@PathParam("matrixId") final int matrixId, @Context final UriInfo uriInfo) {
+		final Scene addedScene = matrixRepository.createNewScene(matrixId);
+		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+		builder.path(valueOf(addedScene.getId()));
 
-			return Response.created(builder.build()).build();
-		});
+		return Response.created(builder.build()).build();
 	}
 
 	@POST
 	@Path("{sceneId}/" + PathLiterals.OVERLAY_STATIONARY)
 	public Response appendOverlayStationaryToScene(@PathParam("matrixId") final int matrixId,
 			@PathParam("sceneId") final int sceneId, final OverlayStationary overlayStationary,
-			@Context UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Optional<Scene> findFirst = matrixEntity.getScenes().stream()
-					.filter(scene -> scene.getId().equals(sceneId)).findFirst();
-			return findFirst.map(scene -> {
-				final Overlay appendedOverlay = matrixRepository.appendOverlay(scene, overlayStationary);
+			@Context final UriInfo uriInfo) {
+		return getResponseIfSceneAndMatrixExists(() -> {
+			final Overlay appendedOverlay = matrixRepository.appendOverlay(matrixId, sceneId, overlayStationary);
 
-				final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-				final String absolutePath = builder.build().toString();
-				final String absolutePathWithoutLastSegment = absolutePath.substring(0, absolutePath.lastIndexOf("/"));
-				final UriBuilder newUriBuilder = UriBuilder.fromUri(String.format("%s/%s/%s",
-						absolutePathWithoutLastSegment, PathLiterals.OVERLAYS, appendedOverlay.getId()));
-				final URI overlayLocation = newUriBuilder.build();
+			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+			final String absolutePath = builder.build().toString();
+			final String absolutePathWithoutLastSegment = absolutePath.substring(0, absolutePath.lastIndexOf("/"));
+			final UriBuilder newUriBuilder = UriBuilder.fromUri(String.format("%s/%s/%s",
+					absolutePathWithoutLastSegment, PathLiterals.OVERLAYS, appendedOverlay.getId()));
+			final URI overlayLocation = newUriBuilder.build();
 
-				return Response.created(overlayLocation).build();
-			}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+			return Response.created(overlayLocation).build();
 		});
+	}
+
+	private Response getResponseIfSceneAndMatrixExists(final Supplier<Response> supplier) {
+		try {
+			return supplier.get();
+		} catch (final MatrixDoesntExistsException | SceneDoesntExistsException | OverlayDoesntExistsException e) {
+			System.out.println(e);
+			return Response.status(Response.Status.NOT_FOUND).build();
+		} catch (final Exception e) {
+			System.out.println(e);
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 	@POST
 	@Path("{sceneId}/" + PathLiterals.OVERLAY_ROLL_HORIZONTALLY)
 	public Response appendOverlayRollHorizontallyToScene(@PathParam("matrixId") final int matrixId,
 			@PathParam("sceneId") final int sceneId, final OverlayRollHorizontally overlayRollHorizontally,
-			@Context UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Optional<Scene> findScene = matrixEntity.getScenes().stream()
-					.filter(scene -> scene.getId().equals(sceneId)).findFirst();
-			return findScene.map(scene -> {
-				final Overlay appendedOverlay = matrixRepository.appendOverlay(scene, overlayRollHorizontally);
+			@Context final UriInfo uriInfo) {
+		return getResponseIfSceneAndMatrixExists(() -> {
+			final Overlay appendedOverlay = matrixRepository.appendOverlay(matrixId, sceneId, overlayRollHorizontally);
 
-				final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-				final String absolutePath = builder.build().toString();
-				final String absolutePathWithoutLastSegment = absolutePath.substring(0, absolutePath.lastIndexOf("/"));
-				final UriBuilder newUriBuilder = UriBuilder.fromUri(String.format("%s/%s/%s",
-						absolutePathWithoutLastSegment, PathLiterals.OVERLAYS, appendedOverlay.getId()));
-				final URI overlayLocation = newUriBuilder.build();
+			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+			final String absolutePath = builder.build().toString();
+			final String absolutePathWithoutLastSegment = absolutePath.substring(0, absolutePath.lastIndexOf("/"));
+			final UriBuilder newUriBuilder = UriBuilder.fromUri(String.format("%s/%s/%s",
+					absolutePathWithoutLastSegment, PathLiterals.OVERLAYS, appendedOverlay.getId()));
+			final URI overlayLocation = newUriBuilder.build();
 
-				return Response.created(overlayLocation).build();
-			}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+			return Response.created(overlayLocation).build();
 		});
 	}
 
@@ -103,32 +105,18 @@ public class SceneResource {
 	public Response updateOverlayStationaryToScene(@PathParam("matrixId") final int matrixId,
 			@PathParam("sceneId") final int sceneId, @PathParam("overlayId") final int overlayId,
 			final Overlay newOverlay, @Context UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Optional<Scene> findScene = matrixEntity.getScenes().stream()
-					.filter(scene -> scene.getId().equals(sceneId)).findFirst();
-			return findScene.map(scene -> {
-				final Optional<Overlay> findOverlay = scene.getOverlays().stream()
-						.filter(overlay -> overlay.getId().equals(overlayId)).findFirst();
-				return findOverlay.map(overlay -> {
-					matrixRepository.updateOverlay(scene, overlay, newOverlay);
-					return Response.ok().build();
-				}).orElse(Response.status(Response.Status.NOT_FOUND).build());
-			}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+		return getResponseIfSceneAndMatrixExists(() -> {
+			matrixRepository.updateOverlay(matrixId, sceneId, overlayId, newOverlay);
+			return Response.ok().build();
 		});
 	}
 
 	@DELETE
 	@Path("{sceneId}")
 	public Response deleteScene(@PathParam("matrixId") final int matrixId, @PathParam("sceneId") final int sceneId) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Optional<Scene> findScene = matrixEntity.getScenes().stream()
-					.filter(scene -> scene.getId().equals(sceneId)).findFirst();
-			return findScene.map(scene -> {
-				final List<Scene> scenes = matrixEntity.getScenes();
-				scenes.remove(scene);
-				matrixRepository.update(matrixEntity);
-				return Response.noContent().build();
-			}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+		return getResponseIfSceneAndMatrixExists(() -> {
+			matrixRepository.deleteScene(matrixId, sceneId);
+			return Response.noContent().build();
 		});
 	}
 
@@ -136,174 +124,9 @@ public class SceneResource {
 	@Path("{sceneId}/" + PathLiterals.OVERLAYS + "/{overlayId}")
 	public Response deleteOverlay(@PathParam("matrixId") final int matrixId, @PathParam("sceneId") final int sceneId,
 			@PathParam("overlayId") final int overlayId) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final Optional<Scene> findScene = matrixEntity.getScenes().stream()
-					.filter(scene -> scene.getId().equals(sceneId)).findFirst();
-			return findScene.map(scene -> {
-				final Optional<Overlay> findOverlay = scene.getOverlays().stream()
-						.filter(overlay -> overlay.getId().equals(overlayId)).findFirst();
-				return findOverlay.map(overlay -> {
-					final List<Overlay> overlays = scene.getOverlays();
-					overlays.remove(overlay);
-					matrixRepository.update(matrixEntity);
-					return Response.noContent().build();
-				}).orElse(Response.status(Response.Status.NOT_FOUND).build());
-			}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+		return getResponseIfSceneAndMatrixExists(() -> {
+			matrixRepository.deleteOverlay(matrixId, sceneId, overlayId);
+			return Response.noContent().build();
 		});
 	}
-
-	// @POST
-	// @Path("stationary")
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// public Response appendOverlayStationary(@PathParam("matrixId") final int
-	// matrixId,
-	// final OverlayStationary addOverlayStationary, @Context UriInfo uriInfo) {
-	// return appendOverlay(matrixId, addOverlayStationary, uriInfo);
-	// }
-	//
-	// @POST
-	// @Path("roll")
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// public Response appendOverlayRollHorizontally(@PathParam("matrixId")
-	// final int matrixId,
-	// final OverlayRollHorizontally addRollHorizontally, @Context UriInfo
-	// uriInfo) {
-	// return appendOverlay(matrixId, addRollHorizontally, uriInfo);
-	// }
-
-	// private Response appendOverlay(final int matrixId, final Overlay overlay,
-	// final UriInfo uriInfo) {
-	// return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-	// matrixRepository.appendOverlay(matrixEntity, overlay);
-	// final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-	// // TODO: put the scene id
-	// return Response.created(builder.build()).build();
-	// });
-	// }
-
-	private Response applyFunctionIfMatrixExists(final int matrixId, final Function<MatrixEntity, Response> function) {
-		return matrixRepository.get(matrixId).map(function).orElse(Response.status(Response.Status.NOT_FOUND).build());
-	}
-
-	// @POST
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// @Path("{sceneIndex}/overlays_stationary")
-	// public Response appendOverlayStationaryToScene2(@PathParam("matrixId")
-	// final int matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex, final OverlayStationary
-	// addOverlayStationary,
-	// @Context UriInfo uriInfo) {
-	// return appendOverlayToScene(matrixId, sceneIndex, addOverlayStationary,
-	// uriInfo);
-	// }
-
-	// @POST
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// @Path("{sceneIndex}/overlays_roll")
-	// public Response
-	// appendOverlayRollHorizontallyToScene(@PathParam("matrixId") final int
-	// matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex, final
-	// OverlayRollHorizontally addOverlayRollHorizontally,
-	// @Context UriInfo uriInfo) {
-	// return appendOverlayToScene(matrixId, sceneIndex,
-	// addOverlayRollHorizontally, uriInfo);
-	// }
-
-	private Response appendOverlayToScene(final int matrixId, final int sceneIndex, final Overlay overlay,
-			final UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final List<Scene> scenes = matrixEntity.getScenes();
-			if (sceneIndex == scenes.size()) {
-				return Response.status(Response.Status.NOT_FOUND).build();
-			}
-
-			scenes.get(sceneIndex).getOverlays().add(overlay);
-			matrixRepository.update(matrixEntity);
-
-			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-			return Response.created(builder.build()).build();
-		});
-	}
-
-	// @PUT
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// @Path("{sceneIndex}/overlays/{overlayIndex}/stationary")
-	// public Response
-	// replaceWithOverlayStationaryAtScene(@PathParam("matrixId") final int
-	// matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex, @PathParam("overlayIndex")
-	// final int overlayIndex,
-	// final OverlayStationary addOverlayStationary, @Context final UriInfo
-	// uriInfo) {
-	// return replaceWithOverlayAtScene(matrixId, sceneIndex, overlayIndex,
-	// addOverlayStationary, uriInfo);
-	// }
-	//
-	// @PUT
-	// @Consumes(MediaType.APPLICATION_JSON)
-	// @Path("{sceneIndex}/overlays/{overlayIndex}/roll")
-	// public Response
-	// replaceWithOverlayRollHorizontallyAtScene(@PathParam("matrixId") final
-	// int matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex, @PathParam("overlayIndex")
-	// final int overlayIndex,
-	// final OverlayRollHorizontally addOverlayRollHorizontally, @Context final
-	// UriInfo uriInfo) {
-	// return replaceWithOverlayAtScene(matrixId, sceneIndex, overlayIndex,
-	// addOverlayRollHorizontally, uriInfo);
-	// }
-
-	private Response replaceWithOverlayAtScene(final int matrixId, final int sceneIndex, final int overlayIndex,
-			final Overlay overlay, final UriInfo uriInfo) {
-		return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-			final List<Scene> scenes = matrixEntity.getScenes();
-			if (sceneIndex == scenes.size()) {
-				return Response.status(Response.Status.NOT_FOUND).build();
-			}
-
-			final Scene scene = scenes.get(sceneIndex);
-			final List<Overlay> overlays = scene.getOverlays();
-			if (overlayIndex == overlays.size()) {
-				return Response.status(Response.Status.NOT_FOUND).build();
-			}
-
-			overlays.set(overlayIndex, overlay);
-			matrixRepository.update(matrixEntity);
-
-			final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-			return Response.created(builder.build()).build();
-		});
-	}
-
-	// @DELETE
-	// @Path("{sceneIndex}")
-	// public Response removeScene(@PathParam("matrixId") final int matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex) {
-	// return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-	// final List<Scene> scenes = matrixEntity.getScenes();
-	// scenes.remove(sceneIndex);
-	// matrixRepository.update(matrixEntity);
-	//
-	// return Response.noContent().build();
-	// });
-	// }
-	//
-	// @DELETE
-	// @Path("{sceneIndex}/overlays/{overlayIndex}")
-	// public Response removeOverlayAtScene(@PathParam("matrixId") final int
-	// matrixId,
-	// @PathParam("sceneIndex") final int sceneIndex, @PathParam("overlayIndex")
-	// final int overlayIndex) {
-	// return applyFunctionIfMatrixExists(matrixId, matrixEntity -> {
-	// final List<Scene> scenes = matrixEntity.getScenes();
-	// final Scene scene = scenes.get(sceneIndex);
-	// final List<Overlay> overlays = scene.getOverlays();
-	// overlays.remove(overlayIndex);
-	//
-	// matrixRepository.update(matrixEntity);
-	//
-	// return Response.noContent().build();
-	// });
-	// }
 }
