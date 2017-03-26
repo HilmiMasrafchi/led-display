@@ -20,8 +20,7 @@ import me.hmasrafchi.leddisplay.rest.persist.Scene;
  *
  */
 @Default
-// TODO: rename
-public class MatrixRespositoryJpa implements MatrixRepository {
+public class MatrixRepositoryJpa implements MatrixRepository {
 	@PersistenceContext
 	private EntityManager em;
 

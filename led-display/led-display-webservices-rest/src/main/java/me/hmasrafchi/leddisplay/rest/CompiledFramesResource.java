@@ -22,8 +22,10 @@ import me.hmasrafchi.leddisplay.api.Matrix;
 import me.hmasrafchi.leddisplay.model.Overlay;
 import me.hmasrafchi.leddisplay.model.SceneFactory;
 import me.hmasrafchi.leddisplay.rest.persist.LedStateRow;
+import me.hmasrafchi.leddisplay.rest.persist.MatrixEntity;
 import me.hmasrafchi.leddisplay.rest.persist.MatrixRepository;
 import me.hmasrafchi.leddisplay.rest.persist.Scene;
+import me.hmasrafchi.leddisplay.rest.persist.inmem.MatrixDoesntExistsException;
 
 /**
  * @author michelin
@@ -40,7 +42,8 @@ public class CompiledFramesResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMatrixFrames(@PathParam("matrixId") final int matrixId) {
-		return matrixRepository.read(matrixId).map(matrixEntity -> {
+		try {
+			final MatrixEntity matrixEntity = matrixRepository.read(matrixId);
 			final SceneFactory sceneFactory = new SceneFactory();
 			final List<Scene> scenes = matrixEntity.getScenes();
 			final List<me.hmasrafchi.leddisplay.api.Scene> modelScenes = new ArrayList<>();
@@ -108,7 +111,9 @@ public class CompiledFramesResource {
 					.map(frame -> frame.getFrameData()).collect(Collectors.toList());
 			return Response.ok(new MyClass(matrixEntity.getId(), matrixEntity.getRowCount(),
 					matrixEntity.getColumnCount(), collect)).build();
-		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
+		} catch (final MatrixDoesntExistsException e) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 
 	@Data
