@@ -13,7 +13,7 @@
 		<module>led-display-webservices-rest</module>
 		<module>led-display-util</module>
 		<module>led-display-administration</module>
-		<module>led-display-consumer2</module>
+		<module>led-display-consumer</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

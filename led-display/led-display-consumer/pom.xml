@@ -8,10 +8,10 @@
 		<artifactId>led-display</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>led-display-consumer2</artifactId>
+	<artifactId>led-display-consumer</artifactId>
 	<packaging>war</packaging>
 	<build>
-		<finalName>led-display-consumer2</finalName>
+		<finalName>led-display-consumer</finalName>
 	</build>
 	<dependencies>
 		<dependency>
