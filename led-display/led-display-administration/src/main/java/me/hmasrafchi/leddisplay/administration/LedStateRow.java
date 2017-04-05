@@ -30,4 +30,12 @@ class LedStateRow {
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
 	private List<LedState> ledStates;
+
+	int getColumnCount() {
+		return ledStates.size();
+	}
+
+	LedState getStateAt(int columnIndex) {
+		return ledStates.get(columnIndex);
+	}
 }

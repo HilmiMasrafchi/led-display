@@ -24,10 +24,15 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, visible = true)
 @JsonSubTypes({ @JsonSubTypes.Type(value = SceneRollHorizontally.class, name = "roll"),
-		@JsonSubTypes.Type(value = SceneRandomColor.class, name = "random"),
 		@JsonSubTypes.Type(value = SceneComposite.class, name = "composite") })
-class Scene {
+abstract class Scene {
 	@Id
 	@GeneratedValue
 	private Integer id;
+
+	abstract Led onLedVisited(Led led, int ledRowIndex, int ledColumnIndex);
+
+	abstract void onMatrixIterationEnded();
+
+	abstract boolean does();
 }

@@ -1,9 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.consumer.model;
-
-import me.hmasrafchi.leddisplay.api.LedState;
+package me.hmasrafchi.leddisplay.administration;
 
 /**
  * @author michelin
