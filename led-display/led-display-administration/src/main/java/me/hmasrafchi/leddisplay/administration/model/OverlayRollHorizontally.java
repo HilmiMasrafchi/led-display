@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration;
+package me.hmasrafchi.leddisplay.administration.model;
 
 import java.util.List;
 
@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-class SceneRollHorizontally extends Scene implements Overlay {
+class OverlayRollHorizontally extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	private List<LedStateRow> states;
@@ -34,11 +37,13 @@ class SceneRollHorizontally extends Scene implements Overlay {
 
 	private int yPosition;
 
+	@Transient
+	@JsonIgnore
 	private int currentIndexMark;
 
 	@Override
-	public Led onLedVisited(final Led led, final int ledRowIndex, final int ledColumnIndex) {
-		final LedState state = getStateAt(ledRowIndex, ledColumnIndex);
+	Led onLedVisited(final Led led, final int ledRowIndex, final int ledColumnIndex) {
+		final Led.State state = getStateAt(ledRowIndex, ledColumnIndex);
 		switch (state) {
 		case ON:
 			return new Led(onColor);
@@ -52,20 +57,23 @@ class SceneRollHorizontally extends Scene implements Overlay {
 	}
 
 	@Override
-	public void onMatrixIterationEnded() {
+	void onMatrixIterationEnded() {
 		currentIndexMark--;
 	}
 
 	@Override
-	public boolean does() {
+	@JsonIgnore
+	boolean isExhausted() {
 		return currentIndexMark + states.get(0).getColumnCount() < 0;
 	}
 
 	@Override
-	public LedState getStateAt(final int ledRowIndex, final int ledColumnIndex) {
+	@JsonIgnore
+	Led.State getStateAt(final int ledRowIndex, final int ledColumnIndex) {
+		// TODO: refactor .get(0).getColumnCount()
 		if (ledColumnIndex < currentIndexMark || ledColumnIndex > currentIndexMark + states.get(0).getColumnCount() - 1
 				|| ledRowIndex < yPosition || ledRowIndex > states.size() - 1 + yPosition) {
-			return LedState.TRANSPARENT;
+			return Led.State.TRANSPARENT;
 		}
 
 		return states.get(ledRowIndex - yPosition).getStateAt(ledColumnIndex - currentIndexMark);

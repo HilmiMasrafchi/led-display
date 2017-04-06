@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration;
+package me.hmasrafchi.leddisplay.administration.model;
 
 import java.util.List;
 
@@ -22,20 +22,21 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(exclude = "id")
-class LedStateRow {
+// TODO: make inner class of LedState
+public class LedStateRow {
 	@Id
 	@GeneratedValue
 	private Integer id;
 
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
-	private List<LedState> ledStates;
+	private List<Led.State> ledStates;
 
-	int getColumnCount() {
+	public int getColumnCount() {
 		return ledStates.size();
 	}
 
-	LedState getStateAt(int columnIndex) {
+	public Led.State getStateAt(int columnIndex) {
 		return ledStates.get(columnIndex);
 	}
 }

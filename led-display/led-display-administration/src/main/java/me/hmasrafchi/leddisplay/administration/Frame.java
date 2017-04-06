@@ -6,6 +6,7 @@ package me.hmasrafchi.leddisplay.administration;
 import java.util.List;
 import java.util.function.Supplier;
 
+import me.hmasrafchi.leddisplay.administration.model.Led;
 import me.hmasrafchi.leddisplay.util.TriFunction;
 import me.hmasrafchi.leddisplay.util.TwoDimensionalListRectangular;
 

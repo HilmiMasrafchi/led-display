@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration;
+package me.hmasrafchi.leddisplay.administration.application;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

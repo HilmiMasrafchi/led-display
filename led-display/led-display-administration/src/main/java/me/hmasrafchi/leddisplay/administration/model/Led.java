@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration;
+package me.hmasrafchi.leddisplay.administration.model;
 
 /**
  * @author michelin
@@ -64,5 +64,9 @@ public class Led {
 		} else if (!text.equals(other.text))
 			return false;
 		return true;
+	}
+
+	public enum State {
+		TRANSPARENT, ON, OFF, UNRECOGNIZED;
 	}
 }
