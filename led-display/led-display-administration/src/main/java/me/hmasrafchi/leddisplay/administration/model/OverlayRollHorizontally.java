@@ -13,6 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
@@ -21,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.util.Preconditions;
+import me.hmasrafchi.leddisplay.administration.infrastructure.Preconditions;
 
 /**
  * @author michelin
@@ -34,6 +35,7 @@ import me.hmasrafchi.leddisplay.util.Preconditions;
 public class OverlayRollHorizontally extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
+	@OrderColumn
 	private List<LedStateRow> states;
 
 	@Embedded

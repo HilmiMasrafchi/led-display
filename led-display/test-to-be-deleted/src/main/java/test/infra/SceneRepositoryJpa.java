@@ -1,15 +1,15 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.infrastructure;
+package test.infra;
 
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import me.hmasrafchi.leddisplay.administration.model.Scene;
-import me.hmasrafchi.leddisplay.administration.model.SceneRepository;
+import test.model.Scene;
+import test.model.SceneRepository;
 
 /**
  * @author michelin

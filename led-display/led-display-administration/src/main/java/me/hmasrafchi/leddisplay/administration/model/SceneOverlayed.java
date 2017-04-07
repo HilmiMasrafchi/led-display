@@ -10,8 +10,10 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,8 +28,9 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(callSuper = true)
 public class SceneOverlayed extends Scene {
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn
+	@OrderColumn
 	private List<Overlay> overlays;
 
 	public SceneOverlayed() {

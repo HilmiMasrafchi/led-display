@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import me.hmasrafchi.leddisplay.administration.CompiledFrames;
 import me.hmasrafchi.leddisplay.administration.Frame;
 
@@ -37,7 +38,8 @@ import me.hmasrafchi.leddisplay.administration.Frame;
 public abstract class Scene {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	@Setter
+	protected Integer id;
 
 	abstract Led onLedVisited(Led led, int ledRowIndex, int ledColumnIndex);
 

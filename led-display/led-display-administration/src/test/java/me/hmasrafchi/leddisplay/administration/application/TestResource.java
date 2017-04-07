@@ -23,9 +23,8 @@ public class TestResource {
 		return webTarget.path("scenes").request(MediaType.APPLICATION_JSON).post(Entity.json(scene));
 	}
 
-	Scene getScene(final WebTarget webTarget, final String path) {
-		final Scene readEntity = webTarget.path(path).request(MediaType.APPLICATION_JSON).get().readEntity(Scene.class);
-		return readEntity;
+	SceneComposite getScene(final WebTarget webTarget, final String path) {
+		return (SceneComposite) webTarget.path(path).request(MediaType.APPLICATION_JSON).get().readEntity(Scene.class);
 	}
 
 	String getWebTargetPath(final Response response) {

@@ -21,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import me.hmasrafchi.leddisplay.util.Preconditions;
+import lombok.ToString;
+import me.hmasrafchi.leddisplay.administration.infrastructure.Preconditions;
 
 /**
  * @author michelin
@@ -30,6 +31,7 @@ import me.hmasrafchi.leddisplay.util.Preconditions;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
+@ToString
 public class OverlayStationary extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
@@ -93,11 +95,6 @@ public class OverlayStationary extends Overlay {
 		}
 
 		return states.get(rowIndex).getStateAt(columnIndex);
-	}
-
-	@Override
-	public String toString() {
-		return "OverlayedStationary";
 	}
 
 	public OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,

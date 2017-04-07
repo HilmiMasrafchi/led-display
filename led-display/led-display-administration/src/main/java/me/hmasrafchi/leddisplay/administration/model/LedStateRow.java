@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -37,6 +38,7 @@ public class LedStateRow {
 	@Enumerated(EnumType.STRING)
 	@NotNull
 	@Size(min = 1)
+	@OrderColumn
 	private List<Led.State> ledStates;
 
 	@JsonIgnore

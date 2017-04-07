@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -20,7 +21,8 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public final class CompiledFrames {
-	private final List<Frame> compiledFramesData;
+	@Setter
+	private List<Frame> compiledFramesData;
 
 	public CompiledFrames() {
 		this(Collections.emptyList());

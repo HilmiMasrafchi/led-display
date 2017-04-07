@@ -26,10 +26,6 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
-			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-util</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>

@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.administration.model;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import lombok.ToString;
  * @author michelin
  *
  */
+@Data
 @ToString
 @EqualsAndHashCode
 public class Led {

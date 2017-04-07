@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
@@ -19,7 +20,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.util.CyclicIterator;
+import me.hmasrafchi.leddisplay.administration.CompiledFrames;
+import me.hmasrafchi.leddisplay.administration.infrastructure.CyclicIterator;
 
 /**
  * @author michelin
@@ -33,6 +35,7 @@ public class SceneComposite extends Scene {
 	@Getter
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn
+	@OrderColumn
 	private List<Scene> scenes;
 
 	@Transient
@@ -65,6 +68,15 @@ public class SceneComposite extends Scene {
 		if (scenes != null && !scenes.isEmpty()) {
 			this.scenesIterator = new CyclicIterator<>(scenes);
 		}
+	}
+
+	@Override
+	public CompiledFrames getCompiledFrames(final int rowCount, final int columnCount) {
+		if (scenesIterator == null) {
+			return null;
+		}
+
+		return super.getCompiledFrames(rowCount, columnCount);
 	}
 
 	public SceneComposite(final List<Scene> scenes) {
