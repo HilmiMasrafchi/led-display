@@ -30,7 +30,7 @@ import me.hmasrafchi.leddisplay.util.Preconditions;
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = true)
-class OverlayStationary extends Overlay {
+public class OverlayStationary extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	@NotNull
@@ -100,7 +100,7 @@ class OverlayStationary extends Overlay {
 		return "OverlayedStationary";
 	}
 
-	OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,
+	public OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,
 			final int duration) {
 		this.states = Preconditions.checkNotNull(states);
 		this.onColor = Preconditions.checkNotNull(onColor);
@@ -109,7 +109,7 @@ class OverlayStationary extends Overlay {
 		this.duration = duration;
 	}
 
-	OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor) {
+	public OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor) {
 		this(states, onColor, offColor, 1);
 	}
 

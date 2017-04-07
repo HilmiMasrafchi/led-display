@@ -13,12 +13,14 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import me.hmasrafchi.leddisplay.util.Preconditions;
 
 /**
@@ -27,8 +29,9 @@ import me.hmasrafchi.leddisplay.util.Preconditions;
  */
 @Data
 @Entity
-@EqualsAndHashCode(callSuper = true)
-class OverlayRollHorizontally extends Overlay {
+@ToString
+@EqualsAndHashCode(callSuper = true, exclude = "currentIndexMark")
+public class OverlayRollHorizontally extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	private List<LedStateRow> states;
@@ -44,6 +47,8 @@ class OverlayRollHorizontally extends Overlay {
 			@AttributeOverride(name = "g", column = @Column(name = "offColorG")),
 			@AttributeOverride(name = "b", column = @Column(name = "offColorB")) })
 	private RgbColor offColor;
+
+	private int beginIndexMark;
 
 	private int yPosition;
 
@@ -89,22 +94,23 @@ class OverlayRollHorizontally extends Overlay {
 		return states.get(ledRowIndex - yPosition).getStateAt(ledColumnIndex - currentIndexMark);
 	}
 
-	@Override
-	public String toString() {
-		return "OverlayRollHorizontal";
-	}
-
 	OverlayRollHorizontally() {
 	}
 
-	OverlayRollHorizontally(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,
+	public OverlayRollHorizontally(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,
 			final int beginIndexMark, final int yPosition) {
 		this.states = Preconditions.checkNotNull(states);
 
 		this.onColor = Preconditions.checkNotNull(onColor);
 		this.offColor = Preconditions.checkNotNull(offColor);
 
+		this.beginIndexMark = beginIndexMark;
 		this.currentIndexMark = beginIndexMark;
 		this.yPosition = yPosition;
+	}
+
+	@PostLoad
+	void setCurrentIndexMark() {
+		this.currentIndexMark = beginIndexMark;
 	}
 }

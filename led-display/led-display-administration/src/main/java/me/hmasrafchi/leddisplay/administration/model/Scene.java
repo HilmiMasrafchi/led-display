@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import me.hmasrafchi.leddisplay.administration.CompiledFrames;
 import me.hmasrafchi.leddisplay.administration.Frame;
@@ -27,10 +28,12 @@ import me.hmasrafchi.leddisplay.administration.Frame;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, visible = true)
 @JsonSubTypes({ @JsonSubTypes.Type(value = OverlayStationary.class, name = "stationary"),
 		@JsonSubTypes.Type(value = OverlayRollHorizontally.class, name = "roll"),
-		@JsonSubTypes.Type(value = SceneComposite.class, name = "composite") })
+		@JsonSubTypes.Type(value = SceneOverlayed.class, name = "overlayed"),
+		@JsonSubTypes.Type(value = SceneComposite.class, name = "composited") })
 
 @Entity
 @Inheritance
+@EqualsAndHashCode(exclude = "id")
 public abstract class Scene {
 	@Id
 	@GeneratedValue

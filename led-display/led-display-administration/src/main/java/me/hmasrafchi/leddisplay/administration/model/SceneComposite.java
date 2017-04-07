@@ -15,8 +15,10 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import me.hmasrafchi.leddisplay.util.CyclicIterator;
 
 /**
@@ -25,6 +27,8 @@ import me.hmasrafchi.leddisplay.util.CyclicIterator;
  */
 @Setter
 @Entity
+@EqualsAndHashCode(callSuper = true, exclude = "scenesIterator")
+@ToString
 public class SceneComposite extends Scene {
 	@Getter
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -63,7 +67,8 @@ public class SceneComposite extends Scene {
 		}
 	}
 
-	SceneComposite(final List<Scene> scenes) {
+	public SceneComposite(final List<Scene> scenes) {
+		this.scenes = scenes;
 		this.scenesIterator = new CyclicIterator<>(scenes);
 	}
 

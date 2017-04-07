@@ -49,7 +49,8 @@ public class SceneResource {
 	}
 
 	@POST
-	@Path("{sceneId}/{sceneType: (roll|stationary)}")
+	@Path("{sceneId}/{sceneType: (" + PathLiterals.OVERLAY_STATIONARY + "|" + PathLiterals.OVERLAY_ROLL_HORIZONTALLY
+			+ ")}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response appendOverlayToScene(@PathParam("sceneId") final Integer sceneId, final Overlay overlay,
 			@Context UriInfo uriInfo) {
@@ -63,7 +64,8 @@ public class SceneResource {
 	}
 
 	@POST
-	@Path("{sceneId}/overlays/{overlayId}/{sceneType: (roll|stationary)}")
+	@Path("{sceneId}/overlays/{overlayId}/{sceneType: (" + PathLiterals.OVERLAY_STATIONARY + "|"
+			+ PathLiterals.OVERLAY_ROLL_HORIZONTALLY + ")}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response appendOverlayToOverlayedScene(@PathParam("sceneId") final Integer sceneId,
 			@PathParam("overlayId") final Integer overlayId, final Overlay overlay, @Context UriInfo uriInfo) {

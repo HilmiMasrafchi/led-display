@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import me.hmasrafchi.leddisplay.administration.model.Led.State;
@@ -37,6 +39,7 @@ public class LedStateRow {
 	@Size(min = 1)
 	private List<Led.State> ledStates;
 
+	@JsonIgnore
 	public int getColumnCount() {
 		return ledStates.size();
 	}
@@ -45,7 +48,7 @@ public class LedStateRow {
 		return ledStates.get(columnIndex);
 	}
 
-	LedStateRow(final List<State> ledStates) {
+	public LedStateRow(final List<State> ledStates) {
 		this.ledStates = ledStates;
 	}
 
