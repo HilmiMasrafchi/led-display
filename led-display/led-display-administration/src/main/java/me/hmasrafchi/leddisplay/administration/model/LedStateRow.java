@@ -11,9 +11,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.hmasrafchi.leddisplay.administration.model.Led.State;
 
 /**
  * @author michelin
@@ -30,6 +33,8 @@ public class LedStateRow {
 
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
+	@NotNull
+	@Size(min = 1)
 	private List<Led.State> ledStates;
 
 	public int getColumnCount() {
@@ -38,5 +43,12 @@ public class LedStateRow {
 
 	public Led.State getStateAt(int columnIndex) {
 		return ledStates.get(columnIndex);
+	}
+
+	LedStateRow(final List<State> ledStates) {
+		this.ledStates = ledStates;
+	}
+
+	LedStateRow() {
 	}
 }

@@ -5,17 +5,23 @@ package me.hmasrafchi.leddisplay.administration.model;
 
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import me.hmasrafchi.leddisplay.util.Preconditions;
 
 /**
  * @author michelin
@@ -27,14 +33,24 @@ import lombok.EqualsAndHashCode;
 class OverlayStationary extends Overlay {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
+	@NotNull
 	private List<LedStateRow> states;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@Embedded
+	@AttributeOverrides({ @AttributeOverride(name = "r", column = @Column(name = "onColorR")),
+			@AttributeOverride(name = "g", column = @Column(name = "onColorG")),
+			@AttributeOverride(name = "b", column = @Column(name = "onColorB")) })
+	@NotNull
 	private RgbColor onColor;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@Embedded
+	@AttributeOverrides({ @AttributeOverride(name = "r", column = @Column(name = "offColorR")),
+			@AttributeOverride(name = "g", column = @Column(name = "offColorG")),
+			@AttributeOverride(name = "b", column = @Column(name = "offColorB")) })
+	@NotNull
 	private RgbColor offColor;
 
+	@Min(1)
 	private int duration;
 
 	@Transient
@@ -82,5 +98,21 @@ class OverlayStationary extends Overlay {
 	@Override
 	public String toString() {
 		return "OverlayedStationary";
+	}
+
+	OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor,
+			final int duration) {
+		this.states = Preconditions.checkNotNull(states);
+		this.onColor = Preconditions.checkNotNull(onColor);
+		this.offColor = Preconditions.checkNotNull(offColor);
+		Preconditions.checkArgument(duration > 0);
+		this.duration = duration;
+	}
+
+	OverlayStationary(final List<LedStateRow> states, final RgbColor onColor, final RgbColor offColor) {
+		this(states, onColor, offColor, 1);
+	}
+
+	OverlayStationary() {
 	}
 }

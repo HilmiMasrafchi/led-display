@@ -15,6 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -89,8 +90,10 @@ public class SceneResource {
 	@GET
 	@Path("{sceneId}/compiled_frames")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCompiledFrames(@PathParam("sceneId") final Integer sceneId) {
-		return sceneRepository.find(sceneId).map(scene -> Response.ok(scene.getCompiledFrames(10, 10)).build())
+	public Response getCompiledFrames(@PathParam("sceneId") final Integer sceneId,
+			@QueryParam("rowCount") final int rowCount, @QueryParam("columnCount") final int columnCount) {
+		return sceneRepository.find(sceneId)
+				.map(scene -> Response.ok(scene.getCompiledFrames(rowCount, columnCount)).build())
 				.orElse(Response.status(Response.Status.NOT_FOUND).build());
 	}
 }

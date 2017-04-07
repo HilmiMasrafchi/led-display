@@ -62,4 +62,11 @@ public class SceneComposite extends Scene {
 			this.scenesIterator = new CyclicIterator<>(scenes);
 		}
 	}
+
+	SceneComposite(final List<Scene> scenes) {
+		this.scenesIterator = new CyclicIterator<>(scenes);
+	}
+
+	public SceneComposite() {
+	}
 }
