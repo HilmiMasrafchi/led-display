@@ -26,10 +26,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-util</artifactId>
-		</dependency>
 	</dependencies>
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>

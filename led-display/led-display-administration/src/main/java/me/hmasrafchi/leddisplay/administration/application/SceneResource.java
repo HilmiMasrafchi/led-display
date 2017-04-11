@@ -6,8 +6,11 @@ package me.hmasrafchi.leddisplay.administration.application;
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,6 +42,12 @@ public class SceneResource {
 	@Inject
 	private SceneRepository sceneRepository;
 
+	@Inject
+	private JMSContext jmsContext;
+
+	@Resource(mappedName = "java:jboss/exported/jms/queue/test")
+	private Queue queue;
+
 	@POST
 	public Response createScene(@Context final UriInfo uriInfo) {
 		final Scene scene = new SceneComposite();
@@ -46,6 +55,7 @@ public class SceneResource {
 
 		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 		builder.path(valueOf(scene.getId()));
+
 		return Response.created(builder.build()).build();
 	}
 
@@ -58,6 +68,12 @@ public class SceneResource {
 			final SceneComposite sceneCompositeToBeUpdated = (SceneComposite) sceneToBeUpdated;
 			final SceneOverlayed sceneOverlayed = new SceneOverlayed(asList(overlay));
 			sceneCompositeToBeUpdated.getScenes().add(sceneOverlayed);
+
+			try {
+				jmsContext.createProducer().send(queue, "" + sceneId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			return Response.noContent().build();
 		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -96,53 +112,11 @@ public class SceneResource {
 	public Response getCompiledFrames(@PathParam("sceneId") final Integer sceneId,
 			@QueryParam("rowCount") final int rowCount, @QueryParam("columnCount") final int columnCount) {
 		return sceneRepository.find(sceneId).map(scene -> {
-			System.out.println(scene);
 			final CompiledFrames compiledFrames = scene.getCompiledFrames(rowCount, columnCount);
 			if (compiledFrames == null) {
 				return Response.status(Status.NOT_FOUND).build();
 			}
 			return Response.ok(compiledFrames).build();
 		}).orElse(Response.status(Response.Status.NOT_FOUND).build());
-	}
-
-	@GET
-	@Path("{sceneId}/test")
-	public Response test2(@PathParam("sceneId") final Integer sceneId) {
-		return sceneRepository.find(sceneId).map(scene -> {
-			// System.out.println("hello");
-			// final SceneComposite sceneComposite = (SceneComposite) scene;
-			// final Set<Scene> scenes = sceneComposite.getScenes();
-			// if (scenes.isEmpty()) {
-			// scenes.add(new SceneOverlayed());
-			// }
-			//
-			// final List<LedStateRow> overlayStationaryStates = asList( //
-			// new LedStateRow(asList(ON, ON, ON, ON, ON)), //
-			// new LedStateRow(asList(TRANSPARENT, TRANSPARENT, TRANSPARENT,
-			// TRANSPARENT, TRANSPARENT)), //
-			// new LedStateRow(asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT,
-			// ON)), //
-			// new LedStateRow(asList(OFF, TRANSPARENT, TRANSPARENT,
-			// TRANSPARENT, OFF)), //
-			// new LedStateRow(asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT,
-			// ON)), //
-			// new LedStateRow(asList(ON, ON, ON, ON, ON)));
-			// final OverlayStationary overlayStationaryToPost = new
-			// OverlayStationary(overlayStationaryStates,
-			// RgbColor.RED, RgbColor.YELLOW, 1);
-			//
-			// final Scene sceneOverlayed = scenes.get(0);
-			// final SceneOverlayed sceneOverlayedCasted = (SceneOverlayed)
-			// sceneOverlayed;
-			// if (sceneOverlayedCasted.getOverlays() == null) {
-			// sceneOverlayedCasted.setOverlays(new ArrayList<>());
-			// }
-			//
-			// final List<Overlay> overlays =
-			// sceneOverlayedCasted.getOverlays();
-			// overlays.add(overlayStationaryToPost);
-
-			return Response.status(Status.OK).build();
-		}).orElse(Response.status(Status.NOT_FOUND).build());
 	}
 }
