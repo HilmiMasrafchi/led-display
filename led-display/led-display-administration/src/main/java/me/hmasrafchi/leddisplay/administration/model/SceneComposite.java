@@ -20,7 +20,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import me.hmasrafchi.leddisplay.administration.CompiledFrames;
 import me.hmasrafchi.leddisplay.administration.infrastructure.CyclicIterator;
 
 /**
@@ -68,15 +67,6 @@ public class SceneComposite extends Scene {
 		if (scenes != null && !scenes.isEmpty()) {
 			this.scenesIterator = new CyclicIterator<>(scenes);
 		}
-	}
-
-	@Override
-	public CompiledFrames getCompiledFrames(final int rowCount, final int columnCount) {
-		if (scenesIterator == null) {
-			return null;
-		}
-
-		return super.getCompiledFrames(rowCount, columnCount);
 	}
 
 	public SceneComposite(final List<Scene> scenes) {

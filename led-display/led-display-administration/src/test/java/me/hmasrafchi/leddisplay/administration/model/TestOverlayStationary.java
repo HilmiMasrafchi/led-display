@@ -25,15 +25,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import me.hmasrafchi.leddisplay.administration.CompiledFrames;
-import me.hmasrafchi.leddisplay.administration.Frame;
-
 /**
  * @author michelin
  *
  */
 @RunWith(MockitoJUnitRunner.class)
-public final class TestOverlayStationaryUnit {
+public final class TestOverlayStationary {
 	private static final List<LedStateRow> STATES = asList( //
 			new LedStateRow(asList(ON, ON, ON, ON, ON)), //
 			new LedStateRow(asList(TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT, TRANSPARENT)), //
@@ -198,27 +195,5 @@ public final class TestOverlayStationaryUnit {
 	@Test
 	public void onMatrixIterationEnded_shouldDoNothing() {
 		overlayStationary.onMatrixIterationEnded();
-	}
-
-	@Test
-	public void getCompiledFrames_shouldReturnStationaryFrames() {
-		final List<List<Led>> expectedLedStates = asList(
-				asList(new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR)),
-				asList(new Led(), new Led(), new Led(), new Led(), new Led()),
-				asList(new Led(ON_COLOR), new Led(), new Led(), new Led(), new Led(ON_COLOR)),
-				asList(new Led(OFF_COLOR), new Led(), new Led(), new Led(), new Led(OFF_COLOR)),
-				asList(new Led(ON_COLOR), new Led(), new Led(), new Led(), new Led(ON_COLOR)),
-				asList(new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR), new Led(ON_COLOR)),
-				asList(new Led(), new Led(), new Led(), new Led(), new Led()));
-		final CompiledFrames expectedCompiledFrames = getExpectedCompiledFrames(expectedLedStates);
-
-		final CompiledFrames actualCompiledFrames = overlayStationary.getCompiledFrames(7, 5);
-
-		assertThat(actualCompiledFrames, equalTo(expectedCompiledFrames));
-	}
-
-	private CompiledFrames getExpectedCompiledFrames(final List<List<Led>> expectedLedStates) {
-		final Frame frame = new Frame(expectedLedStates);
-		return new CompiledFrames(asList(frame));
 	}
 }

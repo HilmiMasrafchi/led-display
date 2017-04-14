@@ -22,7 +22,6 @@ public class SceneRepositoryJpa implements SceneRepository {
 	@Override
 	public void add(final Scene scene) {
 		entityManager.persist(scene);
-		entityManager.flush();
 	}
 
 	@Override

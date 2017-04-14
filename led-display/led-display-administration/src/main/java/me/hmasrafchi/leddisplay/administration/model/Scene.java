@@ -15,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import me.hmasrafchi.leddisplay.administration.CompiledFrames;
-import me.hmasrafchi.leddisplay.administration.Frame;
 
 /**
  * @author michelin
@@ -46,16 +44,4 @@ public abstract class Scene {
 	abstract void onMatrixIterationEnded();
 
 	abstract boolean isExhausted();
-
-	public CompiledFrames getCompiledFrames(final int rowCount, final int columnCount) {
-		final CompiledFrames compiledFrames = new CompiledFrames();
-		final Frame currentFrame = new Frame(Led::new, rowCount, columnCount);
-		while (!isExhausted()) {
-			final Frame nextFrame = currentFrame.map(this::onLedVisited);
-			onMatrixIterationEnded();
-			compiledFrames.addFrame(nextFrame);
-		}
-
-		return compiledFrames;
-	}
 }

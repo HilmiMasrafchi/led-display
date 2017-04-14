@@ -38,4 +38,8 @@ public final class Frame {
 		final TwoDimensionalListRectangular<Led> mappedList = frameData.map(mapperFunction);
 		return new Frame(mappedList.getData());
 	}
+
+	public List<List<Led>> getFrameData() {
+		return frameData.getData();
+	}
 }
