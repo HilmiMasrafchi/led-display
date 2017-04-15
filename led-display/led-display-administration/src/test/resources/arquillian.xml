@@ -9,9 +9,10 @@
 			<property name="jbossHome">C:/D/wildfly-10.1.0.Final-testenv</property>
 			<property name="serverConfig">standalone-full.xml</property>
 			<!-- <property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property> -->
-			
- 			<!-- <property name="javaVmArguments">-Djboss.socket.binding.port-offset=100 -Djboss.management.native.port=9054</property> -->
+
+			<!-- <property name="javaVmArguments">-Djboss.socket.binding.port-offset=100 
+				-Djboss.management.native.port=9054</property> -->
 			<!-- <property name="managementPort">9154</property> -->
- 		</configuration>
+		</configuration>
 	</container>
 </arquillian>
