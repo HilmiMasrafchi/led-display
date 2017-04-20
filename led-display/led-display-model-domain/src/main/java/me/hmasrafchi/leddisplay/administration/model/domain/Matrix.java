@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * @author michelin
  *
  */
+@EqualsAndHashCode
 public final class Matrix {
 	private final int rowCount;
 	private final int columnCount;
-
 	private final Optional<Scene> sceneOptional;
 
 	public Matrix(final int rowCount, final int columnCount, final Optional<Scene> sceneOptional) {

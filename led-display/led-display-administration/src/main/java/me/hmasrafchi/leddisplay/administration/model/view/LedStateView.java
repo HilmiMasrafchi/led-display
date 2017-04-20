@@ -7,6 +7,6 @@ package me.hmasrafchi.leddisplay.administration.model.view;
  * @author michelin
  *
  */
-public enum LedState {
+public enum LedStateView {
 	TRANSPARENT, ON, OFF, UNRECOGNIZED;
 }

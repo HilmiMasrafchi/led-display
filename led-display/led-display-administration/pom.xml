@@ -72,12 +72,24 @@
 			<artifactId>arquillian-rest-client-impl-3x</artifactId>
 			<version>1.0.0.Alpha4</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javassist</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>2.25</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javassist</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -86,6 +98,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Arquillian tests -->
+		<dependency>
+			<groupId>ma.glasnost.orika</groupId>
+			<artifactId>orika-core</artifactId>
+			<version>1.5.1</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>

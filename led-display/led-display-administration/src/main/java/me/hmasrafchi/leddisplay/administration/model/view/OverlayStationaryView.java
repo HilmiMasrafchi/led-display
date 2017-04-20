@@ -19,15 +19,15 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public final class OverlayStationary implements Overlay {
-	private final List<List<LedState>> states;
-	private final RgbColor onColor;
-	private final RgbColor offColor;
+public final class OverlayStationaryView implements OverlayView {
+	private final List<List<LedStateView>> states;
+	private final RgbColorView onColor;
+	private final RgbColorView offColor;
 	private final int duration;
 
 	@JsonCreator
-	public OverlayStationary(@JsonProperty("states") final List<List<LedState>> states,
-			@JsonProperty("onColor") final RgbColor onColor, @JsonProperty("offColor") final RgbColor offColor,
+	public OverlayStationaryView(@JsonProperty("states") final List<List<LedStateView>> states,
+			@JsonProperty("onColor") final RgbColorView onColor, @JsonProperty("offColor") final RgbColorView offColor,
 			@JsonProperty("duration") final int duration) {
 		this.states = states;
 		this.onColor = onColor;

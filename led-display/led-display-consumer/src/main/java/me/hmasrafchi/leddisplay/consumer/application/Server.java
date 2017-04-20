@@ -36,7 +36,7 @@ import me.hmasrafchi.leddisplay.consumer.MatrixUpdatedEvent;
  * @author michelin
  *
  */
-@ServerEndpoint("/live/{matrixId}")
+@ServerEndpoint("/{matrixId}")
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/test") }, messageListenerInterface = MessageListener.class)

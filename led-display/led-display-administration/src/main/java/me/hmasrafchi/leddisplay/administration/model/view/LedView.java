@@ -17,19 +17,19 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-public final class Led {
+public final class LedView {
 	private static final String DEFAULT_TEXT = "█";
 
 	private final String text;
-	private final RgbColor rgbColor;
+	private final RgbColorView rgbColor;
 
 	@JsonCreator
-	public Led(@JsonProperty("text") final String text, @JsonProperty("rgbColor") final RgbColor rgbColor) {
+	public LedView(@JsonProperty("text") final String text, @JsonProperty("rgbColor") final RgbColorView rgbColor) {
 		this.text = text;
 		this.rgbColor = rgbColor;
 	}
 
-	public Led(final RgbColor rgbColor) {
+	public LedView(final RgbColorView rgbColor) {
 		this(DEFAULT_TEXT, rgbColor);
 	}
 }

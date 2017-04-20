@@ -28,6 +28,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
 import me.hmasrafchi.leddisplay.administration.model.domain.Led;
 import me.hmasrafchi.leddisplay.administration.model.domain.OverlayRollHorizontally;
 import me.hmasrafchi.leddisplay.administration.model.domain.OverlayStationary;
@@ -35,10 +36,9 @@ import me.hmasrafchi.leddisplay.administration.model.domain.Scene;
 import me.hmasrafchi.leddisplay.administration.model.domain.SceneComposite;
 import me.hmasrafchi.leddisplay.administration.model.domain.SceneOverlayed;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedState;
-import me.hmasrafchi.leddisplay.administration.model.view.Matrix;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixRepository;
-import me.hmasrafchi.leddisplay.administration.model.view.Overlay;
+import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
 
 /**
  * @author michelin
@@ -54,7 +54,10 @@ public class MatrixResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createMatrix(final CreateMatrixCommand createMatrixCommand, @Context UriInfo uriInfo)
 			throws IllegalStateException, SecurityException, SystemException {
-		final Object matrixId = matrixRepository.create(createMatrixCommand);
+		final MatrixView matrixView = new MatrixView(createMatrixCommand.getRowCount(),
+				createMatrixCommand.getColumnCount(), createMatrixCommand.getScenes());
+
+		final Object matrixId = matrixRepository.create(matrixView);
 		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 		final URI createdMatrixLocationURI = builder.path(valueOf(matrixId)).build();
 
@@ -63,7 +66,7 @@ public class MatrixResource {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateMatrix(final Matrix matrix) {
+	public Response updateMatrix(final MatrixView matrix) {
 		matrixRepository.update(matrix);
 		return Response.noContent().build();
 	}
@@ -88,34 +91,34 @@ public class MatrixResource {
 			final List<Scene> scenes = new ArrayList<>();
 
 			Optional<Scene> of = null;
-			final List<List<Overlay>> scenesEntity = matrixEntity.getScenes();
+			final List<List<OverlayView>> scenesEntity = matrixEntity.getScenes();
 			if (scenesEntity == null || scenesEntity.isEmpty()) {
 				of = Optional.empty();
 			} else {
-				for (final List<Overlay> scene : scenesEntity) {
+				for (final List<OverlayView> scene : scenesEntity) {
 					final List<me.hmasrafchi.leddisplay.administration.model.domain.Overlay> overlays = new ArrayList<>();
 
-					for (final Overlay overlay : scene) {
-						if (overlay instanceof me.hmasrafchi.leddisplay.administration.model.view.OverlayStationary) {
-							final me.hmasrafchi.leddisplay.administration.model.view.OverlayStationary overlayView = (me.hmasrafchi.leddisplay.administration.model.view.OverlayStationary) overlay;
+					for (final OverlayView overlay : scene) {
+						if (overlay instanceof me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView) {
+							final me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView overlayView = (me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView) overlay;
 
 							final List<List<Led.State>> states = new ArrayList<>();
-							final List<List<LedState>> statesEntity = overlayView.getStates();
-							for (final List<LedState> stateRowEntity : statesEntity) {
+							final List<List<LedStateView>> statesEntity = overlayView.getStates();
+							for (final List<LedStateView> stateRowEntity : statesEntity) {
 								final List<Led.State> stateRow = new ArrayList<>();
-								for (final LedState stateEntity : stateRowEntity) {
+								for (final LedStateView stateEntity : stateRowEntity) {
 									Led.State ledState = Led.State.valueOf(stateEntity.name());
 									stateRow.add(ledState);
 								}
 								states.add(stateRow);
 							}
 
-							final me.hmasrafchi.leddisplay.administration.model.view.RgbColor onColorEntity = overlayView
+							final me.hmasrafchi.leddisplay.administration.model.view.RgbColorView onColorEntity = overlayView
 									.getOnColor();
 							me.hmasrafchi.leddisplay.administration.model.domain.RgbColor onColor = new me.hmasrafchi.leddisplay.administration.model.domain.RgbColor(
 									onColorEntity.getR(), onColorEntity.getG(), onColorEntity.getB());
 
-							final me.hmasrafchi.leddisplay.administration.model.view.RgbColor offColorEntity = overlayView
+							final me.hmasrafchi.leddisplay.administration.model.view.RgbColorView offColorEntity = overlayView
 									.getOffColor();
 							me.hmasrafchi.leddisplay.administration.model.domain.RgbColor offColor = new me.hmasrafchi.leddisplay.administration.model.domain.RgbColor(
 									offColorEntity.getR(), offColorEntity.getG(), offColorEntity.getB());
@@ -127,26 +130,26 @@ public class MatrixResource {
 							overlays.add(overlayStationary);
 						}
 
-						if (overlay instanceof me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontally) {
-							final me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontally overlayEntity = (me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontally) overlay;
+						if (overlay instanceof me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView) {
+							final me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView overlayEntity = (me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView) overlay;
 
 							final List<List<Led.State>> states = new ArrayList<>();
-							final List<List<LedState>> statesEntity = overlayEntity.getStates();
-							for (final List<LedState> stateRowEntity : statesEntity) {
+							final List<List<LedStateView>> statesEntity = overlayEntity.getStates();
+							for (final List<LedStateView> stateRowEntity : statesEntity) {
 								final List<Led.State> stateRow = new ArrayList<>();
-								for (final LedState stateEntity : stateRowEntity) {
+								for (final LedStateView stateEntity : stateRowEntity) {
 									Led.State ledState = Led.State.valueOf(stateEntity.name());
 									stateRow.add(ledState);
 								}
 								states.add(stateRow);
 							}
 
-							final me.hmasrafchi.leddisplay.administration.model.view.RgbColor onColorEntity = overlayEntity
+							final me.hmasrafchi.leddisplay.administration.model.view.RgbColorView onColorEntity = overlayEntity
 									.getOnColor();
 							me.hmasrafchi.leddisplay.administration.model.domain.RgbColor onColor = new me.hmasrafchi.leddisplay.administration.model.domain.RgbColor(
 									onColorEntity.getR(), onColorEntity.getG(), onColorEntity.getB());
 
-							final me.hmasrafchi.leddisplay.administration.model.view.RgbColor offColorEntity = overlayEntity
+							final me.hmasrafchi.leddisplay.administration.model.view.RgbColorView offColorEntity = overlayEntity
 									.getOffColor();
 							me.hmasrafchi.leddisplay.administration.model.domain.RgbColor offColor = new me.hmasrafchi.leddisplay.administration.model.domain.RgbColor(
 									offColorEntity.getR(), offColorEntity.getG(), offColorEntity.getB());
@@ -170,20 +173,20 @@ public class MatrixResource {
 			final me.hmasrafchi.leddisplay.administration.model.domain.Matrix matrix = new me.hmasrafchi.leddisplay.administration.model.domain.Matrix(
 					rowCount, columnCount, of);
 			return matrix.getCompiledFrames().map(compiledFramesDomain -> {
-				final List<List<List<me.hmasrafchi.leddisplay.administration.model.view.Led>>> collect = compiledFramesDomain
+				final List<List<List<me.hmasrafchi.leddisplay.administration.model.view.LedView>>> collect = compiledFramesDomain
 						.stream().map(frame -> {
 							final List<List<Led>> frameData = frame.getFrameData();
-							final List<List<me.hmasrafchi.leddisplay.administration.model.view.Led>> frameView = new ArrayList<>();
+							final List<List<me.hmasrafchi.leddisplay.administration.model.view.LedView>> frameView = new ArrayList<>();
 							for (final List<Led> ledRow : frameData) {
-								final List<me.hmasrafchi.leddisplay.administration.model.view.Led> ledRowView = new ArrayList<>();
+								final List<me.hmasrafchi.leddisplay.administration.model.view.LedView> ledRowView = new ArrayList<>();
 								for (final Led ledDomain : ledRow) {
 									final String text = ledDomain.getText();
 									final me.hmasrafchi.leddisplay.administration.model.domain.RgbColor rgbColor = ledDomain
 											.getRgbColor();
-									final me.hmasrafchi.leddisplay.administration.model.view.RgbColor rgbColorView = new me.hmasrafchi.leddisplay.administration.model.view.RgbColor(
+									final me.hmasrafchi.leddisplay.administration.model.view.RgbColorView rgbColorView = new me.hmasrafchi.leddisplay.administration.model.view.RgbColorView(
 											rgbColor.getR(), rgbColor.getG(), rgbColor.getB());
 
-									final me.hmasrafchi.leddisplay.administration.model.view.Led led = new me.hmasrafchi.leddisplay.administration.model.view.Led(
+									final me.hmasrafchi.leddisplay.administration.model.view.LedView led = new me.hmasrafchi.leddisplay.administration.model.view.LedView(
 											text, rgbColorView);
 
 									ledRowView.add(led);

@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
-import javax.validation.constraints.Min;
 
 import lombok.Data;
 
@@ -26,14 +25,12 @@ import lombok.Data;
 public class MatrixEntity {
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@Basic
-	@Min(value = 1, message = "row count should be bigger or equal to 1")
 	private int rowCount;
 
 	@Basic
-	@Min(value = 1, message = "column count should be bigger or equal to 1")
 	private int columnCount;
 
 	@OrderColumn

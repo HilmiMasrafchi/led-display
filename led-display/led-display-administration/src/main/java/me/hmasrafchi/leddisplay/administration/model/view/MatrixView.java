@@ -20,41 +20,41 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public final class Matrix {
+public final class MatrixView {
 	private final Integer id;
 
 	private final int rowCount;
 	private final int columnCount;
 
-	private final List<List<Overlay>> scenes;
+	private final List<List<OverlayView>> scenes;
 
-	public Matrix(final int rowCount, final int columnCount) {
+	public MatrixView(final int rowCount, final int columnCount) {
 		this(null, rowCount, columnCount, new ArrayList<>());
 	}
 
-	public Matrix(final int rowCount, final int columnCount, final List<List<Overlay>> scenes) {
+	public MatrixView(final int rowCount, final int columnCount, final List<List<OverlayView>> scenes) {
 		this(null, rowCount, columnCount, scenes);
 	}
 
 	@JsonCreator
-	public Matrix(@JsonProperty("id") final Integer id, @JsonProperty("rowCount") final int rowCount,
+	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("rowCount") final int rowCount,
 			@JsonProperty("columnCount") final int columnCount,
-			@JsonProperty("scenes") final List<List<Overlay>> scenes) {
+			@JsonProperty("scenes") final List<List<OverlayView>> scenes) {
 		this.id = id;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;
 	}
 
-	public void appendNewSceneAndAppendOverlayToIt(final Overlay overlay) {
-		final ArrayList<Overlay> newScene = new ArrayList<>();
+	public void appendNewSceneAndAppendOverlayToIt(final OverlayView overlay) {
+		final ArrayList<OverlayView> newScene = new ArrayList<>();
 		newScene.add(overlay);
 
 		this.scenes.add(newScene);
 	}
 
-	public void appendNewOverlayToScene(final int sceneIndex, final Overlay overlay) {
-		final List<Overlay> scene = this.scenes.get(sceneIndex);
+	public void appendNewOverlayToScene(final int sceneIndex, final OverlayView overlay) {
+		final List<OverlayView> scene = this.scenes.get(sceneIndex);
 		scene.add(overlay);
 	}
 }

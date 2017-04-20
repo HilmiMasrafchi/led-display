@@ -5,18 +5,18 @@ package me.hmasrafchi.leddisplay.administration.model.domain;
 
 import static me.hmasrafchi.leddisplay.administration.model.domain.Led.State.TRANSPARENT;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author michelin
  *
  */
 public final class SceneOverlayed extends Scene {
-	private List<Overlay> overlays;
+	private Collection<Overlay> overlays;
 
-	public SceneOverlayed(final List<? extends Overlay> overlays) {
-		this.overlays = Collections.unmodifiableList(overlays);
+	public SceneOverlayed(final Collection<? extends Overlay> overlays2) {
+		this.overlays = Collections.unmodifiableCollection(overlays2);
 	}
 
 	@Override

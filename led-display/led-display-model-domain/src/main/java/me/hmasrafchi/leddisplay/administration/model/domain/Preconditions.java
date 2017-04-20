@@ -21,7 +21,7 @@ public final class Preconditions {
 	public static String checkStringNotBlank(final String string) {
 		checkNotNull(string);
 		if (string.trim().isEmpty()) {
-			throw new IllegalArgumentException("parameter can not be null, empty or blank");
+			throw new DomainContraintViolationException("parameter can not be null, empty or blank");
 		}
 
 		return string;
@@ -36,13 +36,13 @@ public final class Preconditions {
 			return object;
 		}
 
-		throw new IllegalArgumentException(errorMessage);
+		throw new DomainContraintViolationException(errorMessage);
 	}
 
 	public static String checkStringNotBlank(final String string, final String message) {
 		checkNotNull(string);
 		if (string.trim().isEmpty()) {
-			throw new IllegalArgumentException(message);
+			throw new DomainContraintViolationException(message);
 		}
 
 		return string;
@@ -54,7 +54,7 @@ public final class Preconditions {
 
 	public static void checkArgument(final boolean argument, final String message) {
 		if (!argument) {
-			throw new IllegalArgumentException(message);
+			throw new DomainContraintViolationException(message);
 		}
 	}
 }

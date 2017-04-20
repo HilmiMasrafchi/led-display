@@ -21,12 +21,12 @@ public final class CreateMatrixCommand {
 	private final int rowCount;
 	private final int columnCount;
 
-	private final List<List<Overlay>> scenes;
+	private final List<List<OverlayView>> scenes;
 
 	@JsonCreator
 	public CreateMatrixCommand(@JsonProperty("rowCount") final int rowCount,
 			@JsonProperty("columnCount") final int columnCount,
-			@JsonProperty("scenes") final List<List<Overlay>> scenes) {
+			@JsonProperty("scenes") final List<List<OverlayView>> scenes) {
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;

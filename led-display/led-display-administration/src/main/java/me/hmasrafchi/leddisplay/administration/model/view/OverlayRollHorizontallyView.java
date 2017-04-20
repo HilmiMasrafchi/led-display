@@ -19,16 +19,16 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public final class OverlayRollHorizontally implements Overlay {
-	private final List<List<LedState>> states;
-	private final RgbColor onColor;
-	private final RgbColor offColor;
+public final class OverlayRollHorizontallyView implements OverlayView {
+	private final List<List<LedStateView>> states;
+	private final RgbColorView onColor;
+	private final RgbColorView offColor;
 	private final int beginIndexMark;
 	private final int yposition;
 
 	@JsonCreator
-	public OverlayRollHorizontally(@JsonProperty("states") final List<List<LedState>> states,
-			@JsonProperty("onColor") final RgbColor onColor, @JsonProperty("offColor") final RgbColor offColor,
+	public OverlayRollHorizontallyView(@JsonProperty("states") final List<List<LedStateView>> states,
+			@JsonProperty("onColor") final RgbColorView onColor, @JsonProperty("offColor") final RgbColorView offColor,
 			@JsonProperty("beginIndexMark") final int beginIndexMark, @JsonProperty("yposition") final int yposition) {
 		this.states = states;
 		this.onColor = onColor;

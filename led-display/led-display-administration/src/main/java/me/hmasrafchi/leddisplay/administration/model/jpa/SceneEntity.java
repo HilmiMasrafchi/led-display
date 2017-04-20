@@ -25,7 +25,7 @@ import lombok.Data;
 public class SceneEntity {
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@ManyToOne
 	private MatrixEntity matrix;
@@ -33,6 +33,14 @@ public class SceneEntity {
 	@OrderColumn
 	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<OverlayEntity> overlays;
+
+	public SceneEntity() {
+	}
+
+	public SceneEntity(final MatrixEntity matrix, final List<OverlayEntity> overlays) {
+		this.matrix = matrix;
+		this.overlays = overlays;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

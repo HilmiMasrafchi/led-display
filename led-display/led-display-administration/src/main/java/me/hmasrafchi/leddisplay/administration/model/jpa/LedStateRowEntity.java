@@ -21,7 +21,6 @@ import lombok.Data;
  */
 @Data
 @Entity
-// TODO: make inner class of LedState
 public class LedStateRowEntity {
 	@Id
 	@GeneratedValue
@@ -31,4 +30,11 @@ public class LedStateRowEntity {
 	@Enumerated(EnumType.STRING)
 	@OrderColumn
 	private List<LedStateEntity> ledStates;
+
+	public LedStateRowEntity() {
+	}
+
+	public LedStateRowEntity(final List<LedStateEntity> ledStates) {
+		this.ledStates = ledStates;
+	}
 }

@@ -20,10 +20,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public final class CompiledFrames {
-	private final List<List<List<Led>>> leds;
+	private final List<List<List<LedView>>> leds;
 
 	@JsonCreator
-	public CompiledFrames(@JsonProperty("leds") final List<List<List<Led>>> leds) {
+	public CompiledFrames(@JsonProperty("leds") final List<List<List<LedView>>> leds) {
 		this.leds = leds;
 	}
 }
