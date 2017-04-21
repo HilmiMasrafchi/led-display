@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.ManyToOne;
 
 import lombok.Data;
 
@@ -22,9 +21,6 @@ public abstract class OverlayEntity {
 	@Id
 	@GeneratedValue
 	protected Integer id;
-
-	@ManyToOne
-	protected SceneEntity scene;
 
 	@Override
 	public boolean equals(Object obj) {

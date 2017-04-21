@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
@@ -34,7 +35,8 @@ public class MatrixEntity {
 	private int columnCount;
 
 	@OrderColumn
-	@OneToMany(mappedBy = "matrix", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<SceneEntity> scenes;
 
 	@Override

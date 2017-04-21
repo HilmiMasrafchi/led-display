@@ -136,6 +136,5 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	public void update(final MatrixView matrix) {
 		final MatrixEntity matrixEntity = em.find(MatrixEntity.class, matrix.getId());
 		beanMapper.mapMatrixViewToDataModel(matrixEntity, matrix);
-		em.merge(matrixEntity);
 	}
 }

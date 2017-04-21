@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
@@ -27,18 +27,15 @@ public class SceneEntity {
 	@GeneratedValue
 	private Integer id;
 
-	@ManyToOne
-	private MatrixEntity matrix;
-
 	@OrderColumn
-	@OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<OverlayEntity> overlays;
 
-	public SceneEntity() {
+	SceneEntity() {
 	}
 
-	public SceneEntity(final MatrixEntity matrix, final List<OverlayEntity> overlays) {
-		this.matrix = matrix;
+	public SceneEntity(final List<OverlayEntity> overlays) {
 		this.overlays = overlays;
 	}
 

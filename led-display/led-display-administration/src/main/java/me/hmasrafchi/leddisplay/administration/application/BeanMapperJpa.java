@@ -42,12 +42,12 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 		final int columnCount = matrixView.getColumnCount();
 
 		final List<List<OverlayView>> scenes = matrixView.getScenes();
-		final Optional<Scene> sceneOptional = mapScenesFromViewToModel(scenes);
+		final Optional<Scene> sceneOptional = mapScenesFromViewToDomainModel(scenes);
 
 		return new Matrix(rowCount, columnCount, sceneOptional);
 	}
 
-	private Optional<Scene> mapScenesFromViewToModel(final List<List<OverlayView>> scenesView) {
+	private Optional<Scene> mapScenesFromViewToDomainModel(final List<List<OverlayView>> scenesView) {
 		if (scenesView == null || scenesView.isEmpty()) {
 			return Optional.empty();
 		}
@@ -136,7 +136,6 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 
 		final List<SceneEntity> scenesModel = new ArrayList<>();
 		for (final List<OverlayView> sceneView : scenesView) {
-			final SceneEntity sceneEntity = new SceneEntity();
 			final List<OverlayEntity> overlaysModel = new ArrayList<>();
 			for (final OverlayView currentOverlayView : sceneView) {
 				if (currentOverlayView instanceof OverlayStationaryView) {
@@ -157,8 +156,6 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 
 					final OverlayStationaryEntity overlayStationaryEntity = new OverlayStationaryEntity(
 							currentStatesData, onColorEntity, offColorEntity, durationView);
-
-					overlayStationaryEntity.setScene(sceneEntity);
 
 					overlaysModel.add(overlayStationaryEntity);
 				}
@@ -184,14 +181,11 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 					final OverlayRollHorizontallyEntity overlayRollHorizontallyEntity = new OverlayRollHorizontallyEntity(
 							currentStatesData, onColorEntity, offColorEntity, beginIndexView, ypositionView);
 
-					overlayRollHorizontallyEntity.setScene(sceneEntity);
-
 					overlaysModel.add(overlayRollHorizontallyEntity);
 				}
 			}
 
-			sceneEntity.setMatrix(matrixEntity);
-			sceneEntity.setOverlays(overlaysModel);
+			final SceneEntity sceneEntity = new SceneEntity(overlaysModel);
 			scenesModel.add(sceneEntity);
 		}
 

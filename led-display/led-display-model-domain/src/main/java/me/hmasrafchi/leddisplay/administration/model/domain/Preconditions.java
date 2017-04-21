@@ -9,6 +9,8 @@ import static java.util.Objects.requireNonNull;
  * @author michelin
  *
  */
+// TODO: refactor the code to populate constraint violation instead of
+// immeadiately throwing an exception - use builder pattern
 public final class Preconditions {
 	public static <T> T checkNotNull(final T object) {
 		return requireNonNull(object, "parameter can not be null");

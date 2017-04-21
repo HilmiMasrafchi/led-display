@@ -12,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
@@ -27,9 +28,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class OverlayRollHorizontallyEntity extends OverlayEntity {
-	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn
 	@OrderColumn
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<LedStateRowEntity> states;
 
 	@Embedded

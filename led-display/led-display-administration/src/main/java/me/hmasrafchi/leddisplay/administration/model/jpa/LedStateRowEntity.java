@@ -26,9 +26,9 @@ public class LedStateRowEntity {
 	@GeneratedValue
 	private Integer id;
 
+	@OrderColumn
 	@ElementCollection
 	@Enumerated(EnumType.STRING)
-	@OrderColumn
 	private List<LedStateEntity> ledStates;
 
 	public LedStateRowEntity() {
