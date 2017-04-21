@@ -15,8 +15,8 @@ import lombok.ToString;
  *
  */
 @Getter
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 public final class LedView {
 	private static final String DEFAULT_TEXT = "█";
 

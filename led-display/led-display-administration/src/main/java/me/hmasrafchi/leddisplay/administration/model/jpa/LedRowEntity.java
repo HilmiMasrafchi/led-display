@@ -9,7 +9,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OrderColumn;
 
 import lombok.Data;
 
@@ -19,19 +18,18 @@ import lombok.Data;
  */
 @Data
 @Entity
-public class LedStateRowEntity {
+public class LedRowEntity {
 	@Id
 	@GeneratedValue
 	private Integer id;
 
-	@OrderColumn
 	@ElementCollection
-	private List<LedStateEntity> ledStates;
+	private List<LedEmbeddable> leds;
 
-	LedStateRowEntity() {
+	public LedRowEntity(List<LedEmbeddable> leds) {
+		this.leds = leds;
 	}
 
-	public LedStateRowEntity(final List<LedStateEntity> ledStates) {
-		this.ledStates = ledStates;
+	LedRowEntity() {
 	}
 }

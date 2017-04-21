@@ -19,6 +19,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
+// TODO: to be removed
 public final class CompiledFrames {
 	private final List<List<List<LedView>>> leds;
 

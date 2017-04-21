@@ -22,7 +22,7 @@ import lombok.Data;
  */
 @Data
 @Entity
-public class SceneEntity {
+public class FrameEntity {
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -30,12 +30,13 @@ public class SceneEntity {
 	@OrderColumn
 	@JoinColumn
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<OverlayEntity> overlays;
+	private List<LedRowEntity> ledRows;
 
-	SceneEntity() {
+	public FrameEntity(List<LedRowEntity> ledRows) {
+		this.ledRows = ledRows;
 	}
 
-	public SceneEntity(final List<OverlayEntity> overlays) {
-		this.overlays = overlays;
+	FrameEntity() {
+
 	}
 }

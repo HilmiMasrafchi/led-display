@@ -12,7 +12,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  *
  */
 public interface MatrixRepository {
-	Object create(MatrixView matrixView);
+	MatrixView create(MatrixView matrixView);
 
 	Optional<MatrixView> find(Object matrixId);
 

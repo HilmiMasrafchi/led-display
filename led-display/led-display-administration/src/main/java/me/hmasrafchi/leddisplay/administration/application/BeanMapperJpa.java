@@ -8,7 +8,9 @@ import static java.util.Optional.of;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import me.hmasrafchi.leddisplay.administration.model.domain.CompiledFrames;
 import me.hmasrafchi.leddisplay.administration.model.domain.Led;
 import me.hmasrafchi.leddisplay.administration.model.domain.Matrix;
 import me.hmasrafchi.leddisplay.administration.model.domain.Overlay;
@@ -18,14 +20,19 @@ import me.hmasrafchi.leddisplay.administration.model.domain.RgbColor;
 import me.hmasrafchi.leddisplay.administration.model.domain.Scene;
 import me.hmasrafchi.leddisplay.administration.model.domain.SceneComposite;
 import me.hmasrafchi.leddisplay.administration.model.domain.SceneOverlayed;
+import me.hmasrafchi.leddisplay.administration.model.jpa.FrameEntity;
+import me.hmasrafchi.leddisplay.administration.model.jpa.LedEmbeddable;
+import me.hmasrafchi.leddisplay.administration.model.jpa.LedRowEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.LedStateEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.LedStateRowEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.MatrixEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.OverlayEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.OverlayRollHorizontallyEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.OverlayStationaryEntity;
+import me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable;
 import me.hmasrafchi.leddisplay.administration.model.jpa.SceneEntity;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
@@ -117,13 +124,33 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	}
 
 	@Override
-	public MatrixEntity mapMatrixFromViewToDataModel(final MatrixView matrixView) {
+	public MatrixEntity mapMatrixFromViewToDataModel(final MatrixView matrixView,
+			final Optional<CompiledFrames> compiledFrames) {
 		final Integer matrixIdView = matrixView.getId();
 		final int rowCountView = matrixView.getRowCount();
 		final int columnCountView = matrixView.getColumnCount();
 		final List<SceneEntity> scenes = mapScenesFromViewToDataModel(matrixView.getScenes());
 
-		return new MatrixEntity(matrixIdView, rowCountView, columnCountView, scenes);
+		final List<FrameEntity> compiledFramesData = mapCompiledFramesFromDomainToDataModel(compiledFrames);
+
+		return new MatrixEntity(matrixIdView, rowCountView, columnCountView, scenes, compiledFramesData);
+	}
+
+	private List<FrameEntity> mapCompiledFramesFromDomainToDataModel(final Optional<CompiledFrames> compiledFrames) {
+		return compiledFrames.map(frames -> {
+			return frames.stream().map(frame -> {
+				final List<LedRowEntity> a = frame.getFrameData().stream().map(frameRow -> {
+					final List<LedEmbeddable> b = frameRow.stream().map(led -> {
+						final RgbColor rgbColor2 = led.getRgbColor();
+						RgbColorEmbeddable rgbColor = new RgbColorEmbeddable(rgbColor2.getR(), rgbColor2.getG(),
+								rgbColor2.getB());
+						return new LedEmbeddable(led.getText(), rgbColor);
+					}).collect(Collectors.toList());
+					return new LedRowEntity(b);
+				}).collect(Collectors.toList());
+				return new FrameEntity(a);
+			}).collect(Collectors.toList());
+		}).orElse(null);
 	}
 
 	private List<SceneEntity> mapScenesFromViewToDataModel(final List<List<OverlayView>> scenesView) {
@@ -142,11 +169,11 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 							currentOverlayStationaryView.getStates());
 
 					final RgbColorView onColorView = currentOverlayStationaryView.getOnColor();
-					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor onColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor(
+					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable onColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable(
 							onColorView.getR(), onColorView.getG(), onColorView.getB());
 
 					final RgbColorView offColorView = currentOverlayStationaryView.getOffColor();
-					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor offColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor(
+					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable offColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable(
 							offColorView.getR(), offColorView.getG(), offColorView.getB());
 
 					final int durationView = currentOverlayStationaryView.getDuration();
@@ -164,11 +191,11 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 							currentOverlayStationaryView.getStates());
 
 					final RgbColorView onColorView = currentOverlayStationaryView.getOnColor();
-					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor onColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor(
+					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable onColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable(
 							onColorView.getR(), onColorView.getG(), onColorView.getB());
 
 					final RgbColorView offColorView = currentOverlayStationaryView.getOffColor();
-					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor offColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColor(
+					me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable offColorEntity = new me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable(
 							offColorView.getR(), offColorView.getG(), offColorView.getB());
 
 					final int beginIndexView = currentOverlayStationaryView.getBeginIndexMark();
@@ -201,5 +228,90 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 		}
 
 		return currentStatesData;
+	}
+
+	@Override
+	public MatrixView mapMatrixFromDataToViewModel(final MatrixEntity matrixEntity) {
+		final Integer matrixId = matrixEntity.getId();
+		final int rowCount = matrixEntity.getRowCount();
+		final int columnCount = matrixEntity.getColumnCount();
+
+		final List<List<OverlayView>> scenes = mapScenesFromDataToViewModel(matrixEntity.getScenes());
+		final List<List<List<LedView>>> compiledFrames = mapCompiledFramesFromDataToViewModel(
+				matrixEntity.getCompiledFrames());
+		return new MatrixView(matrixId, rowCount, columnCount, scenes, compiledFrames);
+	}
+
+	private List<List<List<LedView>>> mapCompiledFramesFromDataToViewModel(final List<FrameEntity> compiledFrames) {
+		if (compiledFrames == null) {
+			return null;
+		}
+
+		return compiledFrames.stream().map(frame -> {
+			return frame.getLedRows().stream().map(ledRow -> {
+				return ledRow.getLeds().stream().map(led -> {
+					final String text = led.getText();
+
+					final RgbColorEmbeddable rgbColor = led.getRgbColor();
+					final RgbColorView rgbColorView = new RgbColorView(rgbColor.getR(), rgbColor.getG(),
+							rgbColor.getB());
+
+					return new LedView(text, rgbColorView);
+				}).collect(Collectors.toList());
+			}).collect(Collectors.toList());
+		}).collect(Collectors.toList());
+	}
+
+	private List<List<OverlayView>> mapScenesFromDataToViewModel(final List<SceneEntity> scenes) {
+		if (scenes == null) {
+			return null;
+		}
+
+		return scenes.stream().map(scene -> {
+			return scene.getOverlays().stream().map(overlay -> {
+				if (overlay instanceof OverlayStationaryEntity) {
+					final OverlayStationaryEntity o = (OverlayStationaryEntity) overlay;
+					final List<List<LedStateView>> states = mapLedStatesFromDataToViewMode(o.getStates());
+
+					final RgbColorEmbeddable onColor = o.getOnColor();
+					final RgbColorView onColorView = new RgbColorView(onColor.getR(), onColor.getG(), onColor.getB());
+
+					final RgbColorEmbeddable offColor = o.getOffColor();
+					final RgbColorView offColorView = new RgbColorView(offColor.getR(), offColor.getG(),
+							offColor.getB());
+
+					final int duration = o.getDuration();
+					return new OverlayStationaryView(states, onColorView, offColorView, duration);
+				}
+
+				if (overlay instanceof OverlayRollHorizontallyEntity) {
+					final OverlayRollHorizontallyEntity o = (OverlayRollHorizontallyEntity) overlay;
+					final List<List<LedStateView>> states = mapLedStatesFromDataToViewMode(o.getStates());
+
+					final RgbColorEmbeddable onColor = o.getOnColor();
+					final RgbColorView onColorView = new RgbColorView(onColor.getR(), onColor.getG(), onColor.getB());
+
+					final RgbColorEmbeddable offColor = o.getOffColor();
+					final RgbColorView offColorView = new RgbColorView(offColor.getR(), offColor.getG(),
+							offColor.getB());
+
+					final int beginIndexMark = o.getBeginIndexMark();
+					final int yposition = o.getYPosition();
+
+					return new OverlayRollHorizontallyView(states, onColorView, offColorView, beginIndexMark,
+							yposition);
+				}
+
+				throw new BeanMapperException("can not find proper domain implementation for overlay: " + overlay);
+			}).collect(Collectors.<OverlayView>toList());
+		}).collect(Collectors.toList());
+	}
+
+	private List<List<LedStateView>> mapLedStatesFromDataToViewMode(final List<LedStateRowEntity> states) {
+		return states.stream().map(stateRow -> {
+			return stateRow.getLedStates().stream().map(state -> {
+				return LedStateView.valueOf(state.name());
+			}).collect(Collectors.toList());
+		}).collect(Collectors.toList());
 	}
 }

@@ -36,10 +36,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import me.hmasrafchi.leddisplay.administration.model.view.CompiledFrames;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
@@ -157,14 +156,17 @@ public final class TestMatrixResource {
 				.readEntity(MatrixView.class);
 
 		final List<List<LedStateView>> overlayStationaryStates = asList( //
-				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON), //
-				asList(LedStateView.ON, LedStateView.OFF, LedStateView.ON, LedStateView.TRANSPARENT, LedStateView.ON, LedStateView.TRANSPARENT,
-						LedStateView.ON), //
-				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON), //
-				asList(LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED,
-						LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED));
-		final OverlayStationaryView overlay = new OverlayStationaryView(overlayStationaryStates, new RgbColorView(255, 0, 0),
-				new RgbColorView(0, 255, 0), 10);
+				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON,
+						LedStateView.ON, LedStateView.ON), //
+				asList(LedStateView.ON, LedStateView.OFF, LedStateView.ON, LedStateView.TRANSPARENT, LedStateView.ON,
+						LedStateView.TRANSPARENT, LedStateView.ON), //
+				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON,
+						LedStateView.ON, LedStateView.ON), //
+				asList(LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED,
+						LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED,
+						LedStateView.UNRECOGNIZED));
+		final OverlayStationaryView overlay = new OverlayStationaryView(overlayStationaryStates,
+				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
 		expectedMatrix.appendNewSceneAndAppendOverlayToIt(overlay);
 
 		final Response putMatrixResponse = webTarget3.path("matrices").request(APPLICATION_JSON)
@@ -410,195 +412,327 @@ public final class TestMatrixResource {
 				.post(json(createMatrixCommand));
 		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
 
-		final String path = newlyCreatedMatrixPath + "/compiled_frames";
-		final Response getResponse = webTarget2.path(path).request(MediaType.APPLICATION_JSON).get();
+		final Response getResponse = webTarget2.path(newlyCreatedMatrixPath).request(MediaType.APPLICATION_JSON).get();
 
 		final int actualResponseStatusCode = getResponse.getStatus();
 		assertThat(actualResponseStatusCode, equalTo(Response.Status.OK.getStatusCode()));
 
-		final CompiledFrames actualCompiledFrames = getResponse.readEntity(CompiledFrames.class);
+		final List<List<List<LedView>>> actualCompiledFrames = getResponse.readEntity(MatrixView.class)
+				.getCompiledFrames();
 
 		// scene 1
 		final List<List<LedView>> frame1 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame2 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame3 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(BLUE)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame4 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame5 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame6 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame7 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame8 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame9 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame10 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame11 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame12 = new ArrayList<>(asList( //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame13 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		// scene 2
 		final List<List<LedView>> frame14 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame15 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame16 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(BLUE)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame17 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame18 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame19 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame20 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame21 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
 		final List<List<LedView>> frame22 = new ArrayList<>(asList( //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK))));
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK))));
 
-		final CompiledFrames expectedCompiledFrames = new CompiledFrames(asList(frame1, frame2, frame3, frame4, frame5,
-				frame6, frame7, frame8, frame9, frame10, frame11, frame12, frame13, frame14, frame15, frame16, frame17,
-				frame18, frame19, frame20, frame21, frame22));
+		final List<List<List<LedView>>> expectedCompiledFrames = asList(frame1, frame2, frame3, frame4, frame5, frame6,
+				frame7, frame8, frame9, frame10, frame11, frame12, frame13, frame14, frame15, frame16, frame17, frame18,
+				frame19, frame20, frame21, frame22);
 
 		assertThat(actualCompiledFrames, equalTo(expectedCompiledFrames));
 	}
@@ -624,8 +758,8 @@ public final class TestMatrixResource {
 				asList(OFF, TRANSPARENT, TRANSPARENT, TRANSPARENT, OFF), //
 				asList(ON, TRANSPARENT, TRANSPARENT, TRANSPARENT, ON), //
 				asList(ON, ON, ON, ON, ON));
-		final OverlayStationaryView overlayStationaryToPost = new OverlayStationaryView(overlayStationaryStates, RgbColorView.RED,
-				RgbColorView.YELLOW, 1);
+		final OverlayStationaryView overlayStationaryToPost = new OverlayStationaryView(overlayStationaryStates,
+				RgbColorView.RED, RgbColorView.YELLOW, 1);
 
 		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(6, 5,
 				asList(asList(overlayRollHorizontallyToPost, overlayStationaryToPost)));
@@ -633,132 +767,158 @@ public final class TestMatrixResource {
 				.post(json(createMatrixCommand));
 		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
 
-		final String path = newlyCreatedMatrixPath + "/compiled_frames";
-		final Response getResponse = webTarget2.path(path).request(MediaType.APPLICATION_JSON).get();
+		final Response getResponse = webTarget2.path(newlyCreatedMatrixPath).request(MediaType.APPLICATION_JSON).get();
 
 		final int actualResponseStatusCode = getResponse.getStatus();
 		assertThat(actualResponseStatusCode, equalTo(Response.Status.OK.getStatusCode()));
 
-		final CompiledFrames actualCompiledFrames = getResponse.readEntity(CompiledFrames.class);
+		final List<List<List<LedView>>> actualCompiledFrames = getResponse.readEntity(MatrixView.class)
+				.getCompiledFrames();
 
 		// 0nd frame
 		final List<List<LedView>> frame0 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 1nd frame
 		final List<List<LedView>> frame1 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 2rd frame
 		final List<List<LedView>> frame2 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 3th frame
 		final List<List<LedView>> frame3 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(GREEN), new LedView(BLUE), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 4th frame
 		final List<List<LedView>> frame4 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(BLACK), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(GREEN), new LedView(BLUE), new LedView(GREEN), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 5th frame
 		final List<List<LedView>> frame5 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(BLUE), new LedView(GREEN), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 6th frame
 		final List<List<LedView>> frame6 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 7th frame
 		final List<List<LedView>> frame7 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(GREEN)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 8th frame
 		final List<List<LedView>> frame8 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(GREEN), new LedView(BLACK), new LedView(GREEN), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(GREEN),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 9th frame
 		final List<List<LedView>> frame9 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(GREEN), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(GREEN), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 10th frame
 		final List<List<LedView>> frame10 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(GREEN), new LedView(BLACK), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 11th frame
 		final List<List<LedView>> frame11 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
+				asList(new LedView(GREEN), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
 
 		// 12th frame
 		final List<List<LedView>> frame12 = new ArrayList<>(asList( //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED)), //
-				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK)), //
+				asList(new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(BLACK)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
-				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(YELLOW)), //
+				asList(new LedView(YELLOW), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK),
+						new LedView(YELLOW)), //
 				asList(new LedView(RED), new LedView(BLACK), new LedView(BLACK), new LedView(BLACK), new LedView(RED)), //
 				asList(new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED), new LedView(RED))));
-		final CompiledFrames expectedCompiledFrames = new CompiledFrames(asList(frame0, frame1, frame2, frame3, frame4,
-				frame5, frame6, frame7, frame8, frame9, frame10, frame11, frame12));
+		final List<List<List<LedView>>> expectedCompiledFrames = asList(frame0, frame1, frame2, frame3, frame4, frame5,
+				frame6, frame7, frame8, frame9, frame10, frame11, frame12);
 
 		assertThat(actualCompiledFrames, equalTo(expectedCompiledFrames));
 	}

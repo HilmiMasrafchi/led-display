@@ -19,7 +19,8 @@ import lombok.ToString;
  */
 @Getter
 @ToString
-@EqualsAndHashCode
+// TODO: remove this
+@EqualsAndHashCode(exclude = "compiledFrames")
 public final class MatrixView {
 	private final Integer id;
 
@@ -28,22 +29,26 @@ public final class MatrixView {
 
 	private final List<List<OverlayView>> scenes;
 
+	private final List<List<List<LedView>>> compiledFrames;
+
 	public MatrixView(final int rowCount, final int columnCount) {
-		this(null, rowCount, columnCount, new ArrayList<>());
+		this(null, rowCount, columnCount, new ArrayList<>(), null);
 	}
 
 	public MatrixView(final int rowCount, final int columnCount, final List<List<OverlayView>> scenes) {
-		this(null, rowCount, columnCount, scenes);
+		this(null, rowCount, columnCount, scenes, null);
 	}
 
 	@JsonCreator
 	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("rowCount") final int rowCount,
 			@JsonProperty("columnCount") final int columnCount,
-			@JsonProperty("scenes") final List<List<OverlayView>> scenes) {
+			@JsonProperty("scenes") final List<List<OverlayView>> scenes,
+			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
 		this.id = id;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;
+		this.compiledFrames = compiledFrames;
 	}
 
 	public void appendNewSceneAndAppendOverlayToIt(final OverlayView overlay) {
