@@ -13,5 +13,5 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 public interface BeanMapper<T> {
 	Matrix mapMatrixFromViewToDomainModel(MatrixView matrixView);
 
-	void mapMatrixViewToDataModel(T matrixEntity, MatrixView matrixView);
+	T mapMatrixFromViewToDataModel(MatrixView matrixView);
 }

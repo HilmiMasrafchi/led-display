@@ -117,19 +117,16 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	}
 
 	@Override
-	public void mapMatrixViewToDataModel(final MatrixEntity matrixEntity, final MatrixView matrixView) {
+	public MatrixEntity mapMatrixFromViewToDataModel(final MatrixView matrixView) {
+		final Integer matrixIdView = matrixView.getId();
 		final int rowCountView = matrixView.getRowCount();
-		matrixEntity.setRowCount(rowCountView);
-
 		final int columnCountView = matrixView.getColumnCount();
-		matrixEntity.setColumnCount(columnCountView);
+		final List<SceneEntity> scenes = mapScenesFromViewToDataModel(matrixView.getScenes());
 
-		final List<SceneEntity> scenes = mapScenesFromViewToDataModel(matrixEntity, matrixView.getScenes());
-		matrixEntity.setScenes(scenes);
+		return new MatrixEntity(matrixIdView, rowCountView, columnCountView, scenes);
 	}
 
-	private List<SceneEntity> mapScenesFromViewToDataModel(final MatrixEntity matrixEntity,
-			final List<List<OverlayView>> scenesView) {
+	private List<SceneEntity> mapScenesFromViewToDataModel(final List<List<OverlayView>> scenesView) {
 		if (scenesView == null) {
 			return null;
 		}

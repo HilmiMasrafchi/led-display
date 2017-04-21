@@ -39,6 +39,16 @@ public class MatrixEntity {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<SceneEntity> scenes;
 
+	public MatrixEntity(Integer id, int rowCount, int columnCount, List<SceneEntity> scenes) {
+		this.id = id;
+		this.rowCount = rowCount;
+		this.columnCount = columnCount;
+		this.scenes = scenes;
+	}
+
+	MatrixEntity() {
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

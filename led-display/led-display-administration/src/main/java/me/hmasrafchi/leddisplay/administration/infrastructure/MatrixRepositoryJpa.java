@@ -40,9 +40,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	public Object create(final MatrixView matrixView) {
 		beanMapper.mapMatrixFromViewToDomainModel(matrixView);
 
-		final MatrixEntity matrixEntity = new MatrixEntity();
-		beanMapper.mapMatrixViewToDataModel(matrixEntity, matrixView);
-
+		final MatrixEntity matrixEntity = beanMapper.mapMatrixFromViewToDataModel(matrixView);
 		em.persist(matrixEntity);
 
 		return matrixEntity.getId();
@@ -135,6 +133,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	@Override
 	public void update(final MatrixView matrix) {
 		final MatrixEntity matrixEntity = em.find(MatrixEntity.class, matrix.getId());
-		beanMapper.mapMatrixViewToDataModel(matrixEntity, matrix);
+		final MatrixEntity matrixEntityMerged = beanMapper.mapMatrixFromViewToDataModel(matrix);
+		em.merge(matrixEntityMerged);
 	}
 }
