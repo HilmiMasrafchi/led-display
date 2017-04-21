@@ -6,10 +6,13 @@ package me.hmasrafchi.leddisplay.administration.application;
 import static java.lang.String.valueOf;
 
 import java.net.URI;
+import java.util.List;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.transaction.SystemException;
+import javax.jms.JMSContext;
+import javax.jms.Queue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -24,8 +27,11 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 
 /**
@@ -38,19 +44,31 @@ public class MatrixResource {
 	@Inject
 	private MatrixRepository matrixRepository;
 
+	@Resource(name = "java:jboss/exported/jms/queue/test")
+	private Queue outgoingQueue;
+
+	@Inject
+	private JMSContext jms;
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createMatrix(final CreateMatrixCommand createMatrixCommand, @Context UriInfo uriInfo)
-			throws IllegalStateException, SecurityException, SystemException {
+	public Response createMatrix(final CreateMatrixCommand createMatrixCommand, @Context final UriInfo uriInfo) {
 		final MatrixView matrixView = new MatrixView(createMatrixCommand.getRowCount(),
 				createMatrixCommand.getColumnCount(), createMatrixCommand.getScenes());
 
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);
 
-		/*
-		 * final List<List<LedView>> compiledFrames =
-		 * matrixViewCreated.getCompiledFrames(); //send via jms
-		 */
+		final List<List<List<LedView>>> compiledFrames = matrixViewCreated.getCompiledFrames();
+
+		if (compiledFrames != null && !compiledFrames.isEmpty()) {
+			try {
+				final ObjectMapper objectMapper = new ObjectMapper();
+				final String compiledFramesJson = objectMapper.writeValueAsString(compiledFrames);
+				jms.createProducer().send(outgoingQueue, compiledFramesJson);
+			} catch (final Exception e) {
+				// TODO: handle exception
+			}
+		}
 
 		final Integer matrixId = matrixViewCreated.getId();
 		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
