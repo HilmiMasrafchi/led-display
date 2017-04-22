@@ -50,11 +50,13 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	}
 
 	@Override
-	public void update(final MatrixView matrixView) {
+	public MatrixView update(final MatrixView matrixView) {
 		final Matrix matrix = beanMapper.mapMatrixFromViewToDomainModel(matrixView);
 		final Optional<CompiledFrames> compiledFrames = matrix.getCompiledFrames();
 
 		final MatrixEntity matrixEntityMerged = beanMapper.mapMatrixFromViewToDataModel(matrixView, compiledFrames);
 		em.merge(matrixEntityMerged);
+
+		return beanMapper.mapMatrixFromDataToViewModel(matrixEntityMerged);
 	}
 }

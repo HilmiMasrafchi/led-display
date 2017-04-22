@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.consumer;
+package me.hmasrafchi.leddisplay.consumer.model.jpa;
 
 import java.util.List;
 
@@ -10,11 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * @author michelin
@@ -22,21 +18,18 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
-@EqualsAndHashCode
-public class FrameRow {
-	@JsonIgnore
+public class LedRowJpa {
 	@Id
 	@GeneratedValue
 	private Integer id;
 
 	@ElementCollection
-	private List<Led> data;
+	private List<LedJpa> leds;
 
-	public FrameRow() {
+	public LedRowJpa(final List<LedJpa> leds) {
+		this.leds = leds;
 	}
 
-	public FrameRow(List<Led> data) {
-		this.data = data;
+	LedRowJpa() {
 	}
 }

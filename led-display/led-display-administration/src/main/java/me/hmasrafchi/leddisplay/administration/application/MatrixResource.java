@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
+import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,8 +27,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
@@ -58,23 +57,7 @@ public class MatrixResource {
 				createMatrixCommand.getColumnCount(), createMatrixCommand.getScenes());
 
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);
-
-		final List<List<List<LedView>>> compiledFrames = matrixViewCreated.getCompiledFrames();
-
-		if (compiledFrames != null && !compiledFrames.isEmpty()) {
-			try {
-				final ObjectMapper objectMapper = new ObjectMapper();
-
-				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(matrixViewCreated.getId(),
-						compiledFrames);
-
-				final String compiledFramesJson = objectMapper.writeValueAsString(matrixUpdatedEvent);
-				jms.createProducer().send(outgoingQueue, compiledFramesJson);
-			} catch (final Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-		}
+		sendMatrixUpdatedEvent(matrixViewCreated);
 
 		final Integer matrixId = matrixViewCreated.getId();
 		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
@@ -83,10 +66,29 @@ public class MatrixResource {
 		return Response.created(createdMatrixLocationURI).build();
 	}
 
+	private void sendMatrixUpdatedEvent(final MatrixView matrixView) {
+		final List<List<List<LedView>>> compiledFrames = matrixView.getCompiledFrames();
+
+		if (compiledFrames != null && !compiledFrames.isEmpty()) {
+			try {
+				final Integer id = matrixView.getId();
+				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, compiledFrames);
+
+				final ObjectMessage createObjectMessage = jms.createObjectMessage();
+				createObjectMessage.setObject(matrixUpdatedEvent);
+				jms.createProducer().send(outgoingQueue, createObjectMessage);
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response updateMatrix(final MatrixView matrix) {
-		matrixRepository.update(matrix);
+		final MatrixView matrixUpdated = matrixRepository.update(matrix);
+		sendMatrixUpdatedEvent(matrixUpdated);
+
 		return Response.noContent().build();
 	}
 

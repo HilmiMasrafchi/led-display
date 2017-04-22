@@ -4,17 +4,17 @@
 package me.hmasrafchi.leddisplay.consumer.application;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.jms.ObjectMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.websocket.OnOpen;
@@ -22,21 +22,22 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import me.hmasrafchi.leddisplay.consumer.CompiledFrames;
-import me.hmasrafchi.leddisplay.consumer.Frame;
-import me.hmasrafchi.leddisplay.consumer.FrameRow;
-import me.hmasrafchi.leddisplay.consumer.Led;
-import me.hmasrafchi.leddisplay.consumer.MatrixUpdatedEvent;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.FrameJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.LedJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.LedRowJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.MatrixJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.RgbColorJpa;
+import me.hmasrafchi.leddisplay.domain.event.LedView;
+import me.hmasrafchi.leddisplay.domain.event.MatrixUpdatedEvent;
+import me.hmasrafchi.leddisplay.domain.event.RgbColorView;
 
 /**
  * @author michelin
  *
  */
-@ServerEndpoint("/{matrixId}")
+@ServerEndpoint("/live/{matrixId}")
 @MessageDriven(activationConfig = {
 		@ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "java:jboss/exported/jms/queue/test") }, messageListenerInterface = MessageListener.class)
@@ -47,13 +48,20 @@ public class Server implements MessageListener {
 	private final Map<Integer, Session> sessions = new HashMap<>();
 
 	@OnOpen
-	public void init(@PathParam("matrixId") int matrixId, Session session) {
+	public void init(@PathParam("matrixId") int matrixId, final Session session) {
 		sessions.put(matrixId, session);
-		final CompiledFrames compiledFrames = entityManager.find(CompiledFrames.class, matrixId);
+
+		final MatrixJpa matrix = entityManager.find(MatrixJpa.class, matrixId);
+		if (matrix != null) {
+			sendMatrixUpdatedEventToClient(session, matrix);
+		}
+	}
+
+	private void sendMatrixUpdatedEventToClient(Session session, final MatrixJpa matrix) {
 		final ObjectMapper objectMapper = new ObjectMapper();
 
 		try {
-			final String json = objectMapper.writeValueAsString(compiledFrames);
+			final String json = objectMapper.writeValueAsString(matrix);
 			session.getBasicRemote().sendText(json);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,37 +70,47 @@ public class Server implements MessageListener {
 
 	@Override
 	public void onMessage(final Message message) {
-		final TextMessage textMessage = (TextMessage) message;
+		final ObjectMessage objectMessage = (ObjectMessage) message;
 		try {
-			final String text = textMessage.getText();
-			final ObjectMapper objectMapper = new ObjectMapper();
-			final MatrixUpdatedEvent readValue = objectMapper.readValue(text, MatrixUpdatedEvent.class);
+			final Object object = objectMessage.getObject();
+			if (object instanceof MatrixUpdatedEvent) {
+				final MatrixUpdatedEvent matrixCreatedEvent = (MatrixUpdatedEvent) objectMessage.getObject();
 
-			final List<Frame> compiledFramesList = new ArrayList<>();
-			final List<List<List<Led>>> compiledFrames = readValue.getCompiledFrames();
-			for (final List<List<Led>> currentFrameData : compiledFrames) {
-				final List<FrameRow> frameRows = new ArrayList<>();
-				for (final List<Led> currentFrameRow : currentFrameData) {
-					final FrameRow frameRow = new FrameRow(currentFrameRow);
-					frameRows.add(frameRow);
+				final int matrixId = matrixCreatedEvent.getMatrixId();
+				final List<FrameJpa> compiledFrames = mapCompiledFramesFromEventToJpaModel(
+						matrixCreatedEvent.getCompiledFrames());
+
+				final MatrixJpa matrix = new MatrixJpa(matrixId, compiledFrames);
+				entityManager.merge(matrix);
+
+				final Session session = sessions.get(matrixCreatedEvent.getMatrixId());
+				if (session != null) {
+					sendMatrixUpdatedEventToClient(session, matrix);
 				}
-				final Frame frame = new Frame(frameRows);
-				compiledFramesList.add(frame);
 			}
 
-			final CompiledFrames frames = new CompiledFrames(readValue.getMatrixId(), compiledFramesList);
-			entityManager.merge(frames);
 		} catch (JMSException e) {
 			e.printStackTrace();
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
+	}
+
+	private List<FrameJpa> mapCompiledFramesFromEventToJpaModel(final List<List<List<LedView>>> compiledFrames) {
+		return compiledFrames.stream().map(frame -> {
+			final List<LedRowJpa> frameJpaList = frame.stream().map(ledRow -> {
+				final List<LedJpa> ledRowJpaList = ledRow.stream().map(led -> {
+					final String text = led.getText();
+					final RgbColorJpa rgbColor = mapRgbColorFromEventToJpa(led.getRgbColor());
+
+					return new LedJpa(text, rgbColor);
+				}).collect(Collectors.toList());
+				return new LedRowJpa(ledRowJpaList);
+			}).collect(Collectors.toList());
+			return new FrameJpa(frameJpaList);
+		}).collect(Collectors.toList());
+	}
+
+	private RgbColorJpa mapRgbColorFromEventToJpa(RgbColorView rgbColor) {
+		return new RgbColorJpa(rgbColor.getR(), rgbColor.getG(), rgbColor.getB());
 	}
 }

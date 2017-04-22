@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.domain.event;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +15,8 @@ import lombok.Value;
  *
  */
 @Value
-public class RgbColorView {
+public class RgbColorView implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public static final RgbColorView WHITE = new RgbColorView(255, 255, 255);
 	public static final RgbColorView BLACK = new RgbColorView(0, 0, 0);
 
@@ -29,7 +32,8 @@ public class RgbColorView {
 	private final int b;
 
 	@JsonCreator
-	public RgbColorView(@JsonProperty("r") final int r, @JsonProperty("g") final int g, @JsonProperty("b") final int b) {
+	public RgbColorView(@JsonProperty("r") final int r, @JsonProperty("g") final int g,
+			@JsonProperty("b") final int b) {
 		this.r = r;
 		this.g = g;
 		this.b = b;

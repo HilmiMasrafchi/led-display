@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.consumer;
+package me.hmasrafchi.leddisplay.consumer.model.jpa;
 
 import java.util.List;
 
@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * @author michelin
@@ -24,22 +22,21 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
-@EqualsAndHashCode
-public class Frame {
+public class FrameJpa {
 	@Id
 	@GeneratedValue
 	private Integer id;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn
 	@OrderColumn
-	private List<FrameRow> frameData;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<LedRowJpa> frameRows;
 
-	public Frame() {
+	public FrameJpa(final List<LedRowJpa> frameRows) {
+		this.frameRows = frameRows;
 	}
 
-	public Frame(List<FrameRow> frameData) {
-		this.frameData = frameData;
+	FrameJpa() {
+
 	}
 }

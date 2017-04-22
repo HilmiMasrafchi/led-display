@@ -16,5 +16,5 @@ public interface MatrixRepository {
 
 	Optional<MatrixView> find(Object matrixId);
 
-	void update(MatrixView matrix);
+	MatrixView update(MatrixView matrix);
 }

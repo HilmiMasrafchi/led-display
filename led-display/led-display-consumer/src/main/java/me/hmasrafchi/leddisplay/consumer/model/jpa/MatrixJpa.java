@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.consumer;
+package me.hmasrafchi.leddisplay.consumer.model.jpa;
 
 import java.util.List;
 
@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * @author michelin
@@ -23,22 +21,20 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@ToString
-@EqualsAndHashCode
-public class CompiledFrames {
+public class MatrixJpa {
 	@Id
 	private Integer matrixId;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn
 	@OrderColumn
-	private List<Frame> compiledFrames;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<FrameJpa> compiledFrames;
 
-	public CompiledFrames(int matrixId, List<Frame> compiledFrames) {
+	public MatrixJpa(final Integer matrixId, final List<FrameJpa> compiledFrames) {
 		this.matrixId = matrixId;
 		this.compiledFrames = compiledFrames;
 	}
 
-	public CompiledFrames() {
+	MatrixJpa() {
 	}
 }

@@ -37,29 +37,77 @@
 									+ matrixId);
 					socket.onmessage = onMessage;
 
+					var canvas = document.getElementById('canvas');
+					var ctx = canvas.getContext('2d');
+					
+					var canvasWidth = canvas.width;
+					var canvasHeight = canvas.height;
+					
+					
+					var rowCount;
+					var columnCount;
+					var compiledFrames;
+					
+					var frameIndex;
+					var frameCount;
+					var skipFrameUntil = 10;
+					var animationCounter = 0;
+					var animationId;
+					
+					var requestAnimationFrame = window.requestAnimationFrame || 
+                    	window.mozRequestAnimationFrame || 
+                    	window.webkitRequestAnimationFrame || 
+                    	window.msRequestAnimationFrame;
+					
+					function drawCurrentFrame() {
+						animationCounter++;
+						if(animationCounter > skipFrameUntil) {
+							ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+							
+							var frameRows = compiledFrames[frameIndex].frameRows;
+							for(var frameRowIndex in frameRows) {
+								var frameRow = frameRows[frameRowIndex];
+								var frameRowLeds = frameRow.leds;
+								for(var ledIndex = 0; ledIndex < frameRowLeds.length; ledIndex++) {
+									var led = frameRowLeds[ledIndex];
+							    		
+									var ledColor = led.rgbColor;
+									var red = ledColor.r;
+									var green = ledColor.g;
+									var blue = ledColor.b;
+									var color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+									ctx.fillStyle = color;
+							    		
+									ctx.fillRect(ledIndex * 25, (frameRowIndex * 25), 25, 25);
+								}
+							}
+								
+							frameIndex++;
+							if(frameIndex == frameCount) {
+								frameIndex = 0;
+							}
+
+							animationCounter = 0;
+						}
+						
+						animationId = requestAnimationFrame(drawCurrentFrame);
+					}
+					
 					function onMessage(event) {
+						cancelAnimationFrame(animationId);
+
 						var matrix = JSON.parse(event.data);
-						 var canvas = document.getElementById('canvas');
-						  if (canvas.getContext) {
-						    var ctx = canvas.getContext('2d');
-						    
-						    var frames = matrix.compiledFrames;
-						    for(var frameIndex in frames) {
-						    	var frameData = frames[frameIndex].frameData;
-						    	for(var dataIndex in frameData) {
-						    		var datas = frameData[dataIndex];
-						    		for(var i = 0; i < datas.data.length; i++) {
-						    			var led = datas.data[i];
-						    			var red = led.rgbColor.r;
-						    			var green = led.rgbColor.g;
-						    			var blue = led.rgbColor.b;
-						    			var color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
-						    			ctx.fillStyle = color;
-						    		    ctx.fillRect(i * 25, (dataIndex * 25) + (frameIndex * 6 * 25), 25, 25);
-						    		}
-						    	}
-						    }
-						  }
+						
+						rowCount = matrix.rowCount;
+						columnCount = matrix.columnCount;
+						compiledFrames = matrix.compiledFrames;
+						
+						frameIndex = 0;
+						frameCount = compiledFrames.length;
+						
+						animationCounter = 0;
+						
+						drawCurrentFrame();
 					}
 				});
 	</script>

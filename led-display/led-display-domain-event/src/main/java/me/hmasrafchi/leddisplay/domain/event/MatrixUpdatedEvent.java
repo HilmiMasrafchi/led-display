@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.domain.event;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Getter;
@@ -12,7 +13,9 @@ import lombok.Getter;
  *
  */
 @Getter
-public final class MatrixUpdatedEvent {
+public final class MatrixUpdatedEvent implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	private Integer matrixId;
 	private List<List<List<LedView>>> compiledFrames;
 
