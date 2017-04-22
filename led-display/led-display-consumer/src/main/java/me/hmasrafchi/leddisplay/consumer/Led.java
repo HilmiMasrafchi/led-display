@@ -13,9 +13,9 @@ import lombok.ToString;
  * @author michelin
  *
  */
-@Embeddable
 @Data
 @ToString
+@Embeddable
 @EqualsAndHashCode
 public class Led {
 	private String text;

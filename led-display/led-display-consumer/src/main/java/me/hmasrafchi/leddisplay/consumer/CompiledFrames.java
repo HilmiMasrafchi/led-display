@@ -27,7 +27,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class CompiledFrames {
 	@Id
-	private int matrixId;
+	private Integer matrixId;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn

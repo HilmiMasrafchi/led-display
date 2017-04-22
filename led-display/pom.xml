@@ -9,13 +9,19 @@
 	<modules>
 		<module>led-display-administration</module>
 		<module>led-display-consumer</module>
-		<module>led-display-model-domain</module>
+		<module>led-display-domain</module>
+		<module>led-display-domain-event</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>me.hmasrafchi.leddisplay</groupId>
-				<artifactId>led-display-model-domain</artifactId>
+				<artifactId>led-display-domain</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>me.hmasrafchi.leddisplay</groupId>
+				<artifactId>led-display-domain-event</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

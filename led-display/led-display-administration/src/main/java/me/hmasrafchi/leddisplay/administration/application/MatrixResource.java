@@ -31,8 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.domain.event.LedView;
+import me.hmasrafchi.leddisplay.domain.event.MatrixUpdatedEvent;
 
 /**
  * @author michelin
@@ -63,10 +64,15 @@ public class MatrixResource {
 		if (compiledFrames != null && !compiledFrames.isEmpty()) {
 			try {
 				final ObjectMapper objectMapper = new ObjectMapper();
-				final String compiledFramesJson = objectMapper.writeValueAsString(compiledFrames);
+
+				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(matrixViewCreated.getId(),
+						compiledFrames);
+
+				final String compiledFramesJson = objectMapper.writeValueAsString(matrixUpdatedEvent);
 				jms.createProducer().send(outgoingQueue, compiledFramesJson);
 			} catch (final Exception e) {
 				// TODO: handle exception
+				e.printStackTrace();
 			}
 		}
 

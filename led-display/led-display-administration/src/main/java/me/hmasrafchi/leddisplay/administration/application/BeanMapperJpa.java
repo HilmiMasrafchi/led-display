@@ -10,16 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import me.hmasrafchi.leddisplay.administration.model.domain.CompiledFrames;
-import me.hmasrafchi.leddisplay.administration.model.domain.Led;
-import me.hmasrafchi.leddisplay.administration.model.domain.Matrix;
-import me.hmasrafchi.leddisplay.administration.model.domain.Overlay;
-import me.hmasrafchi.leddisplay.administration.model.domain.OverlayRollHorizontally;
-import me.hmasrafchi.leddisplay.administration.model.domain.OverlayStationary;
-import me.hmasrafchi.leddisplay.administration.model.domain.RgbColor;
-import me.hmasrafchi.leddisplay.administration.model.domain.Scene;
-import me.hmasrafchi.leddisplay.administration.model.domain.SceneComposite;
-import me.hmasrafchi.leddisplay.administration.model.domain.SceneOverlayed;
 import me.hmasrafchi.leddisplay.administration.model.jpa.FrameEntity;
 import me.hmasrafchi.leddisplay.administration.model.jpa.LedEmbeddable;
 import me.hmasrafchi.leddisplay.administration.model.jpa.LedRowEntity;
@@ -32,12 +22,22 @@ import me.hmasrafchi.leddisplay.administration.model.jpa.OverlayStationaryEntity
 import me.hmasrafchi.leddisplay.administration.model.jpa.RgbColorEmbeddable;
 import me.hmasrafchi.leddisplay.administration.model.jpa.SceneEntity;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.domain.CompiledFrames;
+import me.hmasrafchi.leddisplay.domain.Led;
+import me.hmasrafchi.leddisplay.domain.Matrix;
+import me.hmasrafchi.leddisplay.domain.Overlay;
+import me.hmasrafchi.leddisplay.domain.OverlayRollHorizontally;
+import me.hmasrafchi.leddisplay.domain.OverlayStationary;
+import me.hmasrafchi.leddisplay.domain.RgbColor;
+import me.hmasrafchi.leddisplay.domain.Scene;
+import me.hmasrafchi.leddisplay.domain.SceneComposite;
+import me.hmasrafchi.leddisplay.domain.SceneOverlayed;
+import me.hmasrafchi.leddisplay.domain.event.LedView;
+import me.hmasrafchi.leddisplay.domain.event.RgbColorView;
 
 /**
  * @author michelin

@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import me.hmasrafchi.leddisplay.administration.model.domain.DomainContraintViolationException;
+import me.hmasrafchi.leddisplay.domain.DomainContraintViolationException;
 
 /**
  * @author michelin

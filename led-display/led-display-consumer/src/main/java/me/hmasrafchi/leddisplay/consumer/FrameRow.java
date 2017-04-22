@@ -28,7 +28,7 @@ public class FrameRow {
 	@JsonIgnore
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@ElementCollection
 	private List<Led> data;

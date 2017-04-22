@@ -10,11 +10,11 @@ import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.OF
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.ON;
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.TRANSPARENT;
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.UNRECOGNIZED;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLACK;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLUE;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.GREEN;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.RED;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.YELLOW;
+import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.BLACK;
+import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.BLUE;
+import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.GREEN;
+import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.RED;
+import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.YELLOW;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -38,11 +38,11 @@ import org.junit.runner.RunWith;
 
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.domain.event.LedView;
+import me.hmasrafchi.leddisplay.domain.event.RgbColorView;
 
 /**
  * @author michelin
@@ -150,21 +150,18 @@ public final class TestMatrixResource {
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
 			@ArquillianResteasyResource("") final WebTarget webTarget4) {
+		// TODO: the test is not as described in the title
 		final Response postMatrixResponse = postCreateMatrixCommand(webTarget1);
 		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
 		final MatrixView expectedMatrix = webTarget2.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get()
 				.readEntity(MatrixView.class);
 
 		final List<List<LedStateView>> overlayStationaryStates = asList( //
-				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON,
-						LedStateView.ON, LedStateView.ON), //
-				asList(LedStateView.ON, LedStateView.OFF, LedStateView.ON, LedStateView.TRANSPARENT, LedStateView.ON,
-						LedStateView.TRANSPARENT, LedStateView.ON), //
-				asList(LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON, LedStateView.ON,
-						LedStateView.ON, LedStateView.ON), //
-				asList(LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED,
-						LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED, LedStateView.UNRECOGNIZED,
-						LedStateView.UNRECOGNIZED));
+				asList(ON, ON, ON, ON, ON, ON, ON), //
+				asList(ON, OFF, ON, TRANSPARENT, ON, TRANSPARENT, ON), //
+				asList(ON, ON, ON, ON, ON, ON, ON), //
+				asList(UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED, UNRECOGNIZED,
+						UNRECOGNIZED));
 		final OverlayStationaryView overlay = new OverlayStationaryView(overlayStationaryStates,
 				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
 		expectedMatrix.appendNewSceneAndAppendOverlayToIt(overlay);

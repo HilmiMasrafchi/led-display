@@ -29,7 +29,7 @@ import lombok.ToString;
 public class Frame {
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn

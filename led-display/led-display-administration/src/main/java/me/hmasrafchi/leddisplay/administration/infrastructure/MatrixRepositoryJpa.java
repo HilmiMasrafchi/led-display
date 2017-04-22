@@ -10,10 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import me.hmasrafchi.leddisplay.administration.application.BeanMapper;
-import me.hmasrafchi.leddisplay.administration.model.domain.CompiledFrames;
-import me.hmasrafchi.leddisplay.administration.model.domain.Matrix;
 import me.hmasrafchi.leddisplay.administration.model.jpa.MatrixEntity;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.domain.CompiledFrames;
+import me.hmasrafchi.leddisplay.domain.Matrix;
 
 /**
  * @author michelin

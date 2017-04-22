@@ -27,7 +27,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-model-domain</artifactId>
+			<artifactId>led-display-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-domain-event</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
