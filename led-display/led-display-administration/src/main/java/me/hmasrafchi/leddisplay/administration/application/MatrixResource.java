@@ -99,4 +99,11 @@ public class MatrixResource {
 		return matrixRepository.find(matrixId).map(matrix -> Response.ok(matrix).build())
 				.orElse(Response.status(Status.NOT_FOUND).build());
 	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAll() {
+		final List<MatrixView> allMatrices = matrixRepository.findAll();
+		return allMatrices.isEmpty() ? Response.status(Status.NOT_FOUND).build() : Response.ok(allMatrices).build();
+	}
 }
