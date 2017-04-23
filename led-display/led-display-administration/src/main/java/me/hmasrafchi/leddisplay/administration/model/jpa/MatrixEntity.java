@@ -27,6 +27,7 @@ public class MatrixEntity {
 	@GeneratedValue
 	private Integer id;
 
+	private String name;
 	private int rowCount;
 	private int columnCount;
 
@@ -40,9 +41,10 @@ public class MatrixEntity {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<FrameEntity> compiledFrames;
 
-	public MatrixEntity(final Integer id, final int rowCount, final int columnCount, final List<SceneEntity> scenes,
-			final List<FrameEntity> compiledFrames) {
+	public MatrixEntity(final Integer id, final String name, final int rowCount, final int columnCount,
+			final List<SceneEntity> scenes, final List<FrameEntity> compiledFrames) {
 		this.id = id;
+		this.name = name;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;

@@ -109,12 +109,13 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	public MatrixEntity mapMatrixFromViewToDataModel(final MatrixView matrixView,
 			final Optional<CompiledFrames> compiledFrames) {
 		final Integer matrixId = matrixView.getId();
+		final String name = matrixView.getName();
 		final int rowCount = matrixView.getRowCount();
 		final int columnCount = matrixView.getColumnCount();
 		final List<SceneEntity> scenes = mapScenesFromViewToDataModel(matrixView.getScenes());
 		final List<FrameEntity> compiledFramesData = mapCompiledFramesFromDomainToDataModel(compiledFrames);
 
-		return new MatrixEntity(matrixId, rowCount, columnCount, scenes, compiledFramesData);
+		return new MatrixEntity(matrixId, name, rowCount, columnCount, scenes, compiledFramesData);
 	}
 
 	private List<FrameEntity> mapCompiledFramesFromDomainToDataModel(final Optional<CompiledFrames> compiledFrames) {
@@ -197,13 +198,14 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	@Override
 	public MatrixView mapMatrixFromDataToViewModel(final MatrixEntity matrixEntity) {
 		final Integer matrixId = matrixEntity.getId();
+		final String name = matrixEntity.getName();
 		final int rowCount = matrixEntity.getRowCount();
 		final int columnCount = matrixEntity.getColumnCount();
 
 		final List<List<OverlayView>> scenes = mapScenesFromDataToViewModel(matrixEntity.getScenes());
 		final List<List<List<LedView>>> compiledFrames = mapCompiledFramesFromDataToViewModel(
 				matrixEntity.getCompiledFrames());
-		return new MatrixView(matrixId, rowCount, columnCount, scenes, compiledFrames);
+		return new MatrixView(matrixId, name, rowCount, columnCount, scenes, compiledFrames);
 	}
 
 	private List<List<List<LedView>>> mapCompiledFramesFromDataToViewModel(final List<FrameEntity> compiledFrames) {

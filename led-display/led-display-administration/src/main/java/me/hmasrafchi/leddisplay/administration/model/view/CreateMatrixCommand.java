@@ -18,21 +18,23 @@ import lombok.Value;
  */
 @Value
 public final class CreateMatrixCommand {
+	private final String name;
 	private final int rowCount;
 	private final int columnCount;
 
 	private final List<List<OverlayView>> scenes;
 
 	@JsonCreator
-	public CreateMatrixCommand(@JsonProperty("rowCount") final int rowCount,
+	public CreateMatrixCommand(@JsonProperty("name") final String name, @JsonProperty("rowCount") final int rowCount,
 			@JsonProperty("columnCount") final int columnCount,
 			@JsonProperty("scenes") final List<List<OverlayView>> scenes) {
+		this.name = name;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;
 	}
 
 	public CreateMatrixCommand(final int rowCount, final int columnCount) {
-		this(rowCount, columnCount, emptyList());
+		this("", rowCount, columnCount, emptyList());
 	}
 }

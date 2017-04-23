@@ -193,7 +193,7 @@ public final class TestMatrixResource {
 						UNRECOGNIZED));
 		final OverlayStationaryView overlayStationary1 = new OverlayStationaryView(overlayStationaryStates,
 				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 6,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 5, 6,
 				asList(asList(overlayStationary1)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
@@ -237,7 +237,7 @@ public final class TestMatrixResource {
 						UNRECOGNIZED));
 		final OverlayStationaryView overlayStationary1 = new OverlayStationaryView(overlayStationaryStates,
 				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 6,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 5, 6,
 				asList(asList(overlayStationary1)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
@@ -282,7 +282,7 @@ public final class TestMatrixResource {
 						UNRECOGNIZED));
 		final OverlayStationaryView overlayStationary1 = new OverlayStationaryView(overlayStationaryStates,
 				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 6,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 5, 6,
 				asList(asList(overlayStationary1)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
@@ -326,7 +326,7 @@ public final class TestMatrixResource {
 						UNRECOGNIZED));
 		final OverlayStationaryView overlayStationary1 = new OverlayStationaryView(overlayStationaryStates,
 				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 10);
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 6,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 5, 6,
 				asList(asList(overlayStationary1)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
@@ -403,7 +403,7 @@ public final class TestMatrixResource {
 		final OverlayRollHorizontallyView overlayRollHorizontallyToPost2 = new OverlayRollHorizontallyView(
 				overlayRollHorizontallyStates2, RgbColorView.GREEN, RgbColorView.BLUE, 5, 1);
 
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(6, 5,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 6, 5,
 				asList(asList(overlayRollHorizontallyToPost1), asList(overlayRollHorizontallyToPost2)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
@@ -758,7 +758,7 @@ public final class TestMatrixResource {
 		final OverlayStationaryView overlayStationaryToPost = new OverlayStationaryView(overlayStationaryStates,
 				RgbColorView.RED, RgbColorView.YELLOW, 1);
 
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(6, 5,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 6, 5,
 				asList(asList(overlayRollHorizontallyToPost, overlayStationaryToPost)));
 		final Response postMatrixResponse = webTarget1.path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));

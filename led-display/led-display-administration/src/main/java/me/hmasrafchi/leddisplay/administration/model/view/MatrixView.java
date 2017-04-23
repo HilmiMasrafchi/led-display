@@ -25,6 +25,7 @@ import me.hmasrafchi.leddisplay.domain.event.LedView;
 public final class MatrixView {
 	private final Integer id;
 
+	private final String name;
 	private final int rowCount;
 	private final int columnCount;
 
@@ -33,19 +34,20 @@ public final class MatrixView {
 	private final List<List<List<LedView>>> compiledFrames;
 
 	public MatrixView(final int rowCount, final int columnCount) {
-		this(null, rowCount, columnCount, new ArrayList<>(), null);
+		this(null, "", rowCount, columnCount, new ArrayList<>(), null);
 	}
 
 	public MatrixView(final int rowCount, final int columnCount, final List<List<OverlayView>> scenes) {
-		this(null, rowCount, columnCount, scenes, null);
+		this(null, "", rowCount, columnCount, scenes, null);
 	}
 
 	@JsonCreator
-	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("rowCount") final int rowCount,
-			@JsonProperty("columnCount") final int columnCount,
+	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("name") final String name,
+			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
 			@JsonProperty("scenes") final List<List<OverlayView>> scenes,
 			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
 		this.id = id;
+		this.name = name;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.scenes = scenes;

@@ -45,7 +45,7 @@ public final class TestMest {
 		final OverlayStationaryView overlayStationaryToPost = new OverlayStationaryView(overlayStationaryStates,
 				RgbColorView.RED, RgbColorView.YELLOW, 1);
 
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(6, 5,
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 6, 5,
 				asList(asList(overlayRollHorizontallyToPost), asList(overlayStationaryToPost)));
 
 		ObjectMapper o = new ObjectMapper();
