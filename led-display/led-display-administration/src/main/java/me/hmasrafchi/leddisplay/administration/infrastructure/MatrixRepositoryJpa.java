@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.administration.infrastructure;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -57,12 +58,14 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	@Override
 	public List<MatrixView> findAll() {
 		final CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-		final CriteriaQuery<MatrixView> criteriaQuery = criteriaBuilder.createQuery(MatrixView.class);
-		final Root<MatrixView> rootEntry = criteriaQuery.from(MatrixView.class);
-		final CriteriaQuery<MatrixView> all = criteriaQuery.select(rootEntry);
-		final TypedQuery<MatrixView> allQuery = em.createQuery(all);
+		final CriteriaQuery<MatrixEntity> criteriaQuery = criteriaBuilder.createQuery(MatrixEntity.class);
+		final Root<MatrixEntity> rootEntry = criteriaQuery.from(MatrixEntity.class);
+		final CriteriaQuery<MatrixEntity> all = criteriaQuery.select(rootEntry);
+		final TypedQuery<MatrixEntity> allQuery = em.createQuery(all);
 
-		return allQuery.getResultList();
+		final List<MatrixEntity> resultList = allQuery.getResultList();
+		return resultList.stream().map(matrixEntity -> beanMapper.mapMatrixFromDataToViewModel(matrixEntity))
+				.collect(Collectors.toList());
 	}
 
 	@Override

@@ -53,7 +53,7 @@ public class MatrixResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createMatrix(final CreateMatrixCommand createMatrixCommand, @Context final UriInfo uriInfo) {
-		final MatrixView matrixView = new MatrixView(createMatrixCommand.getRowCount(),
+		final MatrixView matrixView = new MatrixView(createMatrixCommand.getName(), createMatrixCommand.getRowCount(),
 				createMatrixCommand.getColumnCount(), createMatrixCommand.getScenes());
 
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);

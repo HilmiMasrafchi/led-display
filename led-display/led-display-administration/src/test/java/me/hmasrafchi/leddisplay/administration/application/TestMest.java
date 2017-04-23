@@ -45,9 +45,8 @@ public final class TestMest {
 		final OverlayStationaryView overlayStationaryToPost = new OverlayStationaryView(overlayStationaryStates,
 				RgbColorView.RED, RgbColorView.YELLOW, 1);
 
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("", 6, 5,
-				asList(asList(overlayRollHorizontallyToPost), asList(overlayStationaryToPost)));
-
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand("PostmanMatrix", 6, 5, asList(
+				asList(overlayRollHorizontallyToPost, overlayStationaryToPost), asList(overlayRollHorizontallyToPost)));
 		ObjectMapper o = new ObjectMapper();
 		String writeValueAsString = o.writeValueAsString(createMatrixCommand);
 		System.out.println(writeValueAsString);
