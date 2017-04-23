@@ -25,11 +25,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import me.hmasrafchi.leddisplay.domain.Led;
-import me.hmasrafchi.leddisplay.domain.Overlay;
-import me.hmasrafchi.leddisplay.domain.OverlayStationary;
-import me.hmasrafchi.leddisplay.domain.RgbColor;
-
 /**
  * @author michelin
  *
@@ -80,14 +75,14 @@ public final class TestOverlayStationary {
 	}
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfDurationIsZero() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfDurationIsZero() {
+		expectedException.expect(DomainContraintViolationException.class);
 		this.overlayStationary = new OverlayStationary(STATES, ON_COLOR, OFF_COLOR, 0);
 	}
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfDurationIsNegative() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfDurationIsNegative() {
+		expectedException.expect(DomainContraintViolationException.class);
 		this.overlayStationary = new OverlayStationary(STATES, ON_COLOR, OFF_COLOR, -1);
 	}
 

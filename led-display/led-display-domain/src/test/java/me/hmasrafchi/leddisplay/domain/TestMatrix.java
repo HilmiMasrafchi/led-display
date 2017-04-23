@@ -27,18 +27,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import me.hmasrafchi.leddisplay.domain.CompiledFrames;
-import me.hmasrafchi.leddisplay.domain.Frame;
-import me.hmasrafchi.leddisplay.domain.Led;
-import me.hmasrafchi.leddisplay.domain.Matrix;
-import me.hmasrafchi.leddisplay.domain.Overlay;
-import me.hmasrafchi.leddisplay.domain.OverlayRollHorizontally;
-import me.hmasrafchi.leddisplay.domain.OverlayStationary;
-import me.hmasrafchi.leddisplay.domain.RgbColor;
-import me.hmasrafchi.leddisplay.domain.Scene;
-import me.hmasrafchi.leddisplay.domain.SceneComposite;
-import me.hmasrafchi.leddisplay.domain.SceneOverlayed;
-
 /**
  * @author michelin
  *
@@ -48,26 +36,26 @@ public final class TestMatrix {
 	public final ExpectedException expectedException = ExpectedException.none();
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfRowCountIsNegative() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfRowCountIsNegative() {
+		expectedException.expect(DomainContraintViolationException.class);
 		new Matrix(-1, 10, Optional.empty());
 	}
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfRowCountIsZero() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfRowCountIsZero() {
+		expectedException.expect(DomainContraintViolationException.class);
 		new Matrix(0, 10, Optional.empty());
 	}
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfColumnCountIsNegative() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfColumnCountIsNegative() {
+		expectedException.expect(DomainContraintViolationException.class);
 		new Matrix(10, -1, Optional.empty());
 	}
 
 	@Test
-	public void constructor_shouldThrowIllegalArgumentExceptionIfColumnCountIsZero() {
-		expectedException.expect(IllegalArgumentException.class);
+	public void constructor_shouldThrowDomainContraintViolationExceptionIfColumnCountIsZero() {
+		expectedException.expect(DomainContraintViolationException.class);
 		new Matrix(10, 0, Optional.empty());
 	}
 

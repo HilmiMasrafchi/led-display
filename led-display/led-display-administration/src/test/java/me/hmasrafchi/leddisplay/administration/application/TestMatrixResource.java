@@ -57,6 +57,7 @@ public final class TestMatrixResource {
 				.addPackages(true, "me.hmasrafchi.leddisplay.administration.application") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.administration.infrastructure") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.administration.model") //
+				.addPackages(true, "me.hmasrafchi.leddisplay.domain") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.util") //
 				.addAsResource("persistence.xml", "META-INF/persistence.xml") //
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
