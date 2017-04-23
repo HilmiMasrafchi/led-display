@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-domain-event</artifactId>
+			<artifactId>led-display-model-domain-event</artifactId>
 		</dependency>
 	</dependencies>
 	<properties>

@@ -27,11 +27,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-domain</artifactId>
+			<artifactId>led-display-model-domain</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-domain-event</artifactId>
+			<artifactId>led-display-model-domain-event</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model-view</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
