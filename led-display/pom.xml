@@ -11,6 +11,7 @@
 		<module>led-display-consumer</module>
 		<module>led-display-domain</module>
 		<module>led-display-domain-event</module>
+		<module>led-display-administration-gui-javafx</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
