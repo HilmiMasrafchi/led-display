@@ -7,7 +7,6 @@ import static java.util.Arrays.asList;
 
 import java.util.List;
 
-import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
@@ -17,11 +16,28 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  *
  */
 public final class OverlayWithStatesGui extends VBox {
+	private final LedStateComponent ledStateGui;
+	private final RgbColorGui onColorGui;
+	private final RgbColorGui offColorGui;
+
 	public OverlayWithStatesGui(final List<List<LedStateView>> states, final RgbColorView onColor,
 			final RgbColorView offColor) {
-		final Node ledStateGui = new LedStateComponent(states);
-		final Node onColorGui = new RgbColorGui("On color: ", onColor);
-		final Node offColorGui = new RgbColorGui("Off color: ", offColor);
+		this.ledStateGui = new LedStateComponent(states);
+		this.onColorGui = new RgbColorGui("On color: ", onColor);
+		this.offColorGui = new RgbColorGui("Off color: ", offColor);
 		getChildren().addAll(asList(ledStateGui, onColorGui, offColorGui));
+	}
+
+	public List<List<LedStateView>> getLedStatesModel() {
+		return this.ledStateGui.getLedStatesModel();
+	}
+
+	public RgbColorView getOnColorModel() {
+		return onColorGui.getColorModel();
+
+	}
+
+	public RgbColorView getOffColorModel() {
+		return offColorGui.getColorModel();
 	}
 }

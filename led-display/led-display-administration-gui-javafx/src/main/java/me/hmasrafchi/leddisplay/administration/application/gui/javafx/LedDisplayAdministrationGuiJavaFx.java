@@ -36,6 +36,8 @@ public final class LedDisplayAdministrationGuiJavaFx extends Application {
 
 	private Map<MatrixView, MatrixGui> listItemToMatrixGuiMapping = new HashMap<>();
 
+	private MatrixGui currentlyShownGui;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -49,7 +51,10 @@ public final class LedDisplayAdministrationGuiJavaFx extends Application {
 			final List<MatrixView> allMatrices = getAllMatricesResponse.readEntity(new GenericType<List<MatrixView>>() {
 			});
 
-			allMatrices.forEach(matrix -> listItemToMatrixGuiMapping.put(matrix, new MatrixGui(matrix)));
+			allMatrices.forEach(matrix -> {
+				final MatrixGui value = new MatrixGui(matrix);
+				listItemToMatrixGuiMapping.put(matrix, value);
+			});
 			setBorderPaneLeft(allMatrices);
 		}
 
@@ -78,12 +83,18 @@ public final class LedDisplayAdministrationGuiJavaFx extends Application {
 			@Override
 			public void changed(final ObservableValue<? extends MatrixView> observable, final MatrixView oldValue,
 					final MatrixView newValue) {
-				final ScrollPane sp = new ScrollPane();
+				if (currentlyShownGui != null) {
+					currentlyShownGui.getAnimation().stop();
+				}
+
 				final MatrixGui matrixGui = listItemToMatrixGuiMapping.get(newValue);
-				sp.setContent(matrixGui);
-				borderPane.setCenter(sp);
+				currentlyShownGui = matrixGui;
+				currentlyShownGui.getAnimation().play();
+				borderPane.setCenter(new ScrollPane(matrixGui));
 			}
 		});
+
+		listView.getSelectionModel().select(0);
 
 		borderPane.setLeft(listView);
 	}

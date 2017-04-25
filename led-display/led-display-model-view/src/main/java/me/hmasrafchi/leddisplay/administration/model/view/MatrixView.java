@@ -32,6 +32,7 @@ public final class MatrixView {
 
 	private final List<List<List<LedView>>> compiledFrames;
 
+	// TODO: remove this constructor, you can pass empty list instead
 	public MatrixView(final int rowCount, final int columnCount) {
 		this(null, "", rowCount, columnCount, new ArrayList<>(), null);
 	}

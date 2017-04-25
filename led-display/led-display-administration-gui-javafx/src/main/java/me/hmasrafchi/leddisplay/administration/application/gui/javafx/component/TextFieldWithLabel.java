@@ -12,9 +12,20 @@ import javafx.scene.layout.HBox;
  *
  */
 public final class TextFieldWithLabel extends HBox {
+	private final TextField textField;
+
 	public TextFieldWithLabel(final String labelText, final String textFieldValue) {
-		final Label durationLabel = new Label(labelText);
-		final TextField durationTextField = new TextField(textFieldValue);
-		getChildren().addAll(durationLabel, durationTextField);
+		this(labelText, textFieldValue, false);
+	}
+
+	public TextFieldWithLabel(final String labelText, final String textFieldValue, final boolean disabled) {
+		final Label label = new Label(labelText);
+		this.textField = new TextField(textFieldValue);
+		this.textField.setDisable(disabled);
+		getChildren().addAll(label, textField);
+	}
+
+	public String getText() {
+		return textField.getText();
 	}
 }

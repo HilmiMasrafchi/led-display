@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javafx.scene.Node;
@@ -22,21 +21,25 @@ import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
  *
  */
 public final class LedStateComponent extends BorderPane {
-	private static final int BUTTON_MIN_DIMENSION = 40;
+	private static final String TRANSPARENT_STATE_LABEL = " ";
+	private static final String ON_STATE_LABEL = "●";
+	private static final String OFF_STATE_LABEL = "◌";
+	private static final String UNRECOGNIZED_STATE_LABEL = "x";
+
+	private static final int BUTTON_MIN_DIMENSION = 30;
 
 	private static Map<LedStateView, String> LEDSTATE_TO_TEXT_MAPPING = new LinkedHashMap<>();
 	static {
-		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.TRANSPARENT, "");
-		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.ON, "●");
-		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.OFF, "◌");
-		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.UNRECOGNIZED, "x");
+		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.TRANSPARENT, TRANSPARENT_STATE_LABEL);
+		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.ON, ON_STATE_LABEL);
+		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.OFF, OFF_STATE_LABEL);
+		LEDSTATE_TO_TEXT_MAPPING.put(LedStateView.UNRECOGNIZED, UNRECOGNIZED_STATE_LABEL);
 	}
 
 	private final List<List<LedStateView>> states;
 
 	public LedStateComponent(final List<List<LedStateView>> states) {
-		this.states = states.stream().map(stateRow -> new ArrayList<>(stateRow))
-				.collect(Collectors.toCollection(ArrayList::new));
+		this.states = states;
 
 		setTop(getTopNode());
 		initCenterPane();
@@ -49,7 +52,7 @@ public final class LedStateComponent extends BorderPane {
 				return;
 			}
 
-			this.states.stream().forEach(statesRow -> {
+			states.stream().forEach(statesRow -> {
 				statesRow.remove(statesRow.size() - 1);
 			});
 			initCenterPane();
@@ -57,7 +60,7 @@ public final class LedStateComponent extends BorderPane {
 
 		final Button addColumnButton = getControlButton("→");
 		addColumnButton.setOnAction(event -> {
-			this.states.stream().forEach(statesRow -> {
+			states.stream().forEach(statesRow -> {
 				statesRow.add(LedStateView.TRANSPARENT);
 			});
 			initCenterPane();
@@ -65,20 +68,20 @@ public final class LedStateComponent extends BorderPane {
 
 		final Button removeRowButton = getControlButton("↑");
 		removeRowButton.setOnAction(event -> {
-			if (this.states.size() == 1) {
+			if (states.size() == 1) {
 				return;
 			}
 
-			this.states.remove(this.states.size() - 1);
+			states.remove(states.size() - 1);
 			initCenterPane();
 		});
 
 		final Button addRowButton = getControlButton("↓");
 		addRowButton.setOnAction(event -> {
-			final int rowSize = this.states.get(0).size();
+			final int rowSize = states.get(0).size();
 			final List<LedStateView> newStateRow = new ArrayList<>(rowSize);
 			IntStream.range(0, rowSize).forEach(i -> newStateRow.add(LedStateView.TRANSPARENT));
-			this.states.add(newStateRow);
+			states.add(newStateRow);
 
 			initCenterPane();
 		});
@@ -96,30 +99,21 @@ public final class LedStateComponent extends BorderPane {
 
 	private void initCenterPane() {
 		final GridPane gridPane = new GridPane();
-		states.forEach(stateRow -> {
-			final Node[] statesRowArray = new Node[stateRow.size()];
-			stateRow.stream().map(state -> {
-				final String initialText = LEDSTATE_TO_TEXT_MAPPING.get(state);
-				return new LedStateButton(initialText);
-			}).collect(Collectors.toList()).toArray(statesRowArray);
 
-			final int lastRowIndex = findGridPaneLastRowIndex(gridPane);
-			gridPane.addRow(lastRowIndex + 1, statesRowArray);
+		IntStream.range(0, states.size()).forEach(rowIndex -> {
+			final List<LedStateView> list = states.get(rowIndex);
+			IntStream.range(0, list.size()).forEach(columnIndex -> {
+				final String initialText = LEDSTATE_TO_TEXT_MAPPING.get(states.get(rowIndex).get(columnIndex));
+				final LedStateButton ledStateButton = new LedStateButton(initialText);
+				GridPane.setConstraints(ledStateButton, columnIndex, rowIndex);
+				gridPane.getChildren().add(ledStateButton);
+			});
 		});
 
 		setCenter(gridPane);
 	}
 
-	private int findGridPaneLastRowIndex(final GridPane pane) {
-		return pane.getChildren().stream().mapToInt(n -> {
-			Integer row = GridPane.getRowIndex(n);
-			Integer rowSpan = GridPane.getRowSpan(n);
-			return (row == null ? 0 : row) + (rowSpan == null ? 0 : rowSpan - 1);
-		}).max().orElse(-1);
-	}
-
 	private class LedStateButton extends Button {
-
 		private int currentIndex;
 
 		public LedStateButton(final String initialText) {
@@ -133,7 +127,28 @@ public final class LedStateComponent extends BorderPane {
 			this.setOnAction(event -> {
 				this.currentIndex = ++this.currentIndex % texts.size();
 				setText(texts.get(currentIndex));
+
+				final int columnIndex = GridPane.getColumnIndex(this);
+				final int rowIndex = GridPane.getRowIndex(this);
+
+				final String newText = getText();
+				final LedStateView ledState = getStateFromText(newText);
+				states.get(rowIndex).set(columnIndex, ledState);
 			});
 		}
+
+		private LedStateView getStateFromText(final String text) {
+			for (Map.Entry<LedStateView, String> mapEntries : LEDSTATE_TO_TEXT_MAPPING.entrySet()) {
+				if (mapEntries.getValue().equals(text)) {
+					return mapEntries.getKey();
+				}
+			}
+
+			throw new RuntimeException();
+		}
+	}
+
+	public List<List<LedStateView>> getLedStatesModel() {
+		return states;
 	}
 }
