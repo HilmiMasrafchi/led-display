@@ -9,22 +9,22 @@
 	<artifactId>led-display-administration-gui-javafx</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model-view</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>2.24.1</version>
 		</dependency>
 		<dependency>
-			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-model-view</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.26-b03</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
 </project>

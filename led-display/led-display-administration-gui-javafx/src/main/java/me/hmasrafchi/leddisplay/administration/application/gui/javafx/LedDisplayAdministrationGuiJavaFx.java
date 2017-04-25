@@ -3,7 +3,6 @@
  */
 package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Value;
@@ -33,8 +33,6 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  */
 public final class LedDisplayAdministrationGuiJavaFx extends Application {
 	private final BorderPane borderPane = new BorderPane();
-
-	private List<MatrixView> allMatrices = Collections.emptyList();
 
 	private Map<MatrixView, MatrixGui> listItemToMatrixGuiMapping = new HashMap<>();
 
@@ -80,7 +78,10 @@ public final class LedDisplayAdministrationGuiJavaFx extends Application {
 			@Override
 			public void changed(final ObservableValue<? extends MatrixView> observable, final MatrixView oldValue,
 					final MatrixView newValue) {
-				borderPane.setCenter(listItemToMatrixGuiMapping.get(newValue));
+				final ScrollPane sp = new ScrollPane();
+				final MatrixGui matrixGui = listItemToMatrixGuiMapping.get(newValue);
+				sp.setContent(matrixGui);
+				borderPane.setCenter(sp);
 			}
 		});
 
