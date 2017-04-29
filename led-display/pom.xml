@@ -10,7 +10,7 @@
 		<module>led-display-administration</module>
 		<module>led-display-consumer</module>
 		<module>led-display-model-domain</module>
-		<module>led-display-model-domain-event</module>
+		
 		<module>led-display-administration-gui-javafx</module>
 		<module>led-display-model-view</module>
 	</modules>
@@ -19,11 +19,6 @@
 			<dependency>
 				<groupId>me.hmasrafchi.leddisplay</groupId>
 				<artifactId>led-display-model-domain</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>me.hmasrafchi.leddisplay</groupId>
-				<artifactId>led-display-model-domain-event</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

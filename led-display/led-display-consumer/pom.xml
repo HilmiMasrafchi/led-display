@@ -31,10 +31,6 @@
 			<artifactId>resteasy-jackson2-provider</artifactId>
 			<version>3.0.19.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>me.hmasrafchi.leddisplay</groupId>
-			<artifactId>led-display-model-domain-event</artifactId>
-		</dependency>
 	</dependencies>
 	<properties>
 		<failOnMissingWebXml>false</failOnMissingWebXml>

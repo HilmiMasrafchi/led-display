@@ -41,6 +41,10 @@ public final class MatrixView {
 		this(null, "", rowCount, columnCount, scenes, null);
 	}
 
+	public MatrixView(final String name, int rowCount, int columnCount, List<List<OverlayView>> scenes) {
+		this(null, name, rowCount, columnCount, scenes, null);
+	}
+
 	@JsonCreator
 	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("name") final String name,
 			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
@@ -64,5 +68,10 @@ public final class MatrixView {
 	public void appendNewOverlayToScene(final int sceneIndex, final OverlayView overlay) {
 		final List<OverlayView> scene = this.scenes.get(sceneIndex);
 		scene.add(overlay);
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

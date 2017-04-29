@@ -1,6 +1,6 @@
 /**
- * 
- */
+* 
+*/
 package me.hmasrafchi.leddisplay.administration.application;
 
 import static java.lang.String.valueOf;
@@ -29,10 +29,10 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
+import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixUpdatedEvent;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.domain.event.LedView;
-import me.hmasrafchi.leddisplay.domain.event.MatrixUpdatedEvent;
 
 /**
  * @author michelin

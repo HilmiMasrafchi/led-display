@@ -10,11 +10,11 @@ import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.OF
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.ON;
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.TRANSPARENT;
 import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.UNRECOGNIZED;
-import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.BLACK;
-import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.BLUE;
-import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.GREEN;
-import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.RED;
-import static me.hmasrafchi.leddisplay.domain.event.RgbColorView.YELLOW;
+import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLACK;
+import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLUE;
+import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.GREEN;
+import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.RED;
+import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.YELLOW;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,16 +34,17 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.domain.event.LedView;
-import me.hmasrafchi.leddisplay.domain.event.RgbColorView;
+import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
 
 /**
  * @author michelin
@@ -919,5 +921,29 @@ public final class TestMatrixResource {
 				frame6, frame7, frame8, frame9, frame10, frame11, frame12);
 
 		assertThat(actualCompiledFrames, equalTo(expectedCompiledFrames));
+	}
+
+	@Test
+	public void get_allmatrices_shoulReturnNotFoundStatus(@ArquillianResteasyResource("") final WebTarget webTarget1) {
+		final Response response = webTarget1.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
+	}
+
+	@Test
+	@Ignore
+	public void get_allmatrices_shoulReturnAllMatricesWithOkStatus(
+			@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2,
+			@ArquillianResteasyResource("") final WebTarget webTarget3,
+			@ArquillianResteasyResource("") final WebTarget webTarget4) {
+		final Response postCreateMatrixCommand1 = postCreateMatrixCommand(webTarget1);
+		final Response postCreateMatrixCommand2 = postCreateMatrixCommand(webTarget2);
+		final Response postCreateMatrixCommand3 = postCreateMatrixCommand(webTarget3);
+		final Response response = webTarget4.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+
+		final List<MatrixView> readEntity = response.readEntity(new GenericType<List<MatrixView>>() {
+		});
+		assertThat(readEntity.size(), equalTo(2));
 	}
 }

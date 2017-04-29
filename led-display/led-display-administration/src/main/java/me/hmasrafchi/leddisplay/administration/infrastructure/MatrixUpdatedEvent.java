@@ -1,12 +1,13 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.domain.event;
+package me.hmasrafchi.leddisplay.administration.infrastructure;
 
 import java.io.Serializable;
 import java.util.List;
 
 import lombok.Getter;
+import me.hmasrafchi.leddisplay.administration.model.view.LedView;
 
 /**
  * @author michelin

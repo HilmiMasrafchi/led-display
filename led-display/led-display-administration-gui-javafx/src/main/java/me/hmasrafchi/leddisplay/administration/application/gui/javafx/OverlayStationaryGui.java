@@ -42,4 +42,9 @@ public final class OverlayStationaryGui extends VBox implements OverlayGui {
 
 		return new OverlayStationaryView(ledStatesModel, onColorModel, offColorModel, duration);
 	}
+
+	@Override
+	public String toString() {
+		return "OverlayStationary";
+	}
 }

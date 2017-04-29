@@ -19,7 +19,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.domain.event.RgbColorView;
+import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
 
 /**
  * @author michelin

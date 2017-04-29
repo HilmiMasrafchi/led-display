@@ -45,4 +45,9 @@ public final class OverlayRollHorizontallyGui extends VBox implements OverlayGui
 
 		return new OverlayRollHorizontallyView(ledStates, onColor, offColor, beginIndexMark, yposition);
 	}
+
+	@Override
+	public String toString() {
+		return "OverlayRollHorizontally";
+	}
 }
