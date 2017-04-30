@@ -11,14 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * @author michelin
  *
  */
 @Getter
-@ToString
 // TODO: remove this
 @EqualsAndHashCode(exclude = "compiledFrames")
 public final class MatrixView {
@@ -37,6 +35,10 @@ public final class MatrixView {
 		this(null, "", rowCount, columnCount, new ArrayList<>(), null);
 	}
 
+	public MatrixView(final String name, final int rowCount, final int columnCount) {
+		this(null, name, rowCount, columnCount, new ArrayList<>(), null);
+	}
+
 	public MatrixView(final int rowCount, final int columnCount, final List<List<OverlayView>> scenes) {
 		this(null, "", rowCount, columnCount, scenes, null);
 	}
@@ -50,6 +52,10 @@ public final class MatrixView {
 			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
 			@JsonProperty("scenes") final List<List<OverlayView>> scenes,
 			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
+		if (name == null || name.trim().isEmpty()) {
+			throw new IllegalArgumentException("name can not be null or empty");
+		}
+
 		this.id = id;
 		this.name = name;
 		this.rowCount = rowCount;

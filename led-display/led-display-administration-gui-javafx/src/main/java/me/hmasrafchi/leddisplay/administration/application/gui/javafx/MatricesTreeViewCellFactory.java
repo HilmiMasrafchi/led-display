@@ -3,13 +3,10 @@
  */
 package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
-import java.io.InputStream;
 import java.util.EnumSet;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -32,13 +29,10 @@ public final class MatricesTreeViewCellFactory extends TreeCell<TreeItemModel> {
 			borderPane.setLeft(label);
 
 			final EnumSet<TreeViewControlButtonIcons> allowedControlButtonIcons = item.getAllowedControlButtonIcons();
-			final ImageView[] iconNodesArray = allowedControlButtonIcons.stream().map(controlButtonIcon -> {
-				final InputStream plusSignResourceAsStream = getClass()
-						.getResourceAsStream(controlButtonIcon.getIconPath());
-				final Image plusSignImage = new Image(plusSignResourceAsStream);
-				return new ImageView(plusSignImage);
-			}).toArray(size -> new ImageView[size]);
-			final HBox hbox = new HBox(iconNodesArray);
+			final TreeViewControlButton[] iconNodesArray = allowedControlButtonIcons.stream()
+					.map(controlButtonIcon -> new TreeViewControlButton(item, controlButtonIcon))
+					.toArray(size -> new TreeViewControlButton[size]);
+			final HBox hbox = new HBox(10, iconNodesArray);
 			borderPane.setRight(hbox);
 
 			// plusSignImageView.setOnMouseClicked(event -> {

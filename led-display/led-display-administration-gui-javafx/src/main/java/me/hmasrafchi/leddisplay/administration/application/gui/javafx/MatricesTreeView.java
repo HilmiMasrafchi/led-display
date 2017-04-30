@@ -3,24 +3,42 @@
  */
 package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.PLUS_SIGN;
-import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.PLUS_SIGN2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
+
 import javafx.scene.Node;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
+import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
+import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
 
 /**
  * @author michelin
@@ -82,21 +100,6 @@ final class MatricesTreeView extends TreeView<TreeItemModel> {
 			parent.setCenter(vBox);
 		});
 	}
-
-	MatrixView getSelectedMatrixModel() {
-		// final MultipleSelectionModel<TreeItem<TreeItemModel>> selectionModel
-		// = getSelectionModel();
-		// final TreeItem<TreeItemModel> selectedItem =
-		// selectionModel.getSelectedItem();
-		// final TreeItemModel value = selectedItem.getValue();
-		// final MatrixGui matrixGui = value.getMatrixGui();
-		// if (matrixGui == null) {
-		// return null;
-		// }
-		// return matrixGui.getMatrixModel();
-
-		return null;
-	}
 }
 
 @RequiredArgsConstructor
@@ -122,6 +125,10 @@ abstract class TreeItemModel {
 
 	void stopAnimation() {
 	}
+
+	void onPlusSignAction() {
+
+	}
 }
 
 class MatricesTreeItemModel extends TreeItemModel {
@@ -136,7 +143,29 @@ class MatricesTreeItemModel extends TreeItemModel {
 
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
-		return EnumSet.of(PLUS_SIGN, PLUS_SIGN2);
+		return EnumSet.of(PLUS_SIGN);
+	}
+
+	@Override
+	void onPlusSignAction() {
+		super.onPlusSignAction();
+
+		final MatrixView matrix = new MatrixView("Name", 5, 20);
+		final MatrixInfoGui matrixInfoGui = new MatrixInfoGui(matrix);
+
+		final Dialog<CreateMatrixCommand> dialog = new ControlButtonDialog<>(matrixInfoGui);
+		dialog.setResultConverter(buttonType -> {
+			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
+				return null;
+			}
+			return new CreateMatrixCommand(matrixInfoGui.getMatrixName(), matrixInfoGui.getMatrixRowCount(),
+					matrixInfoGui.getMatrixColumnCount(), new ArrayList<>());
+		});
+
+		final Optional<CreateMatrixCommand> result = dialog.showAndWait();
+		result.ifPresent(createMatrixCommand -> {
+			RestClient.createMatrix(createMatrixCommand);
+		});
 	}
 }
 
@@ -174,7 +203,60 @@ class MatrixTreeItemModel extends TreeItemModel {
 
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
-		return EnumSet.noneOf(TreeViewControlButtonIcons.class);
+		return EnumSet.of(PLUS_SIGN);
+	}
+
+	@Override
+	void onPlusSignAction() {
+		super.onPlusSignAction();
+
+		final List<LedStateView> a = new ArrayList<>();
+		a.add(LedStateView.ON);
+		final List<List<LedStateView>> asd = new ArrayList<>();
+		asd.add(a);
+		final OverlayStationaryView overlayStationaryView = new OverlayStationaryView(asd, new RgbColorView(255, 0, 0),
+				new RgbColorView(0, 255, 0), 1);
+		final OverlayStationaryGui overlayStationaryGui = new OverlayStationaryGui(overlayStationaryView);
+
+		final List<LedStateView> a2 = new ArrayList<>();
+		a2.add(LedStateView.ON);
+		final List<List<LedStateView>> asd1 = new ArrayList<>();
+		asd1.add(a2);
+		final OverlayRollHorizontallyView overlayRollHorizontallyView = new OverlayRollHorizontallyView(asd1,
+				new RgbColorView(255, 0, 0), new RgbColorView(0, 255, 0), 5, 1);
+		final OverlayRollHorizontallyGui overlayRollHorizontallyGui = new OverlayRollHorizontallyGui(
+				overlayRollHorizontallyView);
+
+		final Tab tab1 = new Tab("Stationary");
+		tab1.setUserData(overlayStationaryGui);
+		tab1.setContent(new ScrollPane(overlayStationaryGui));
+
+		final Tab tab2 = new Tab("Roll horizontally");
+		tab2.setUserData(overlayRollHorizontallyGui);
+		tab2.setContent(new ScrollPane(overlayRollHorizontallyGui));
+
+		final TabPane tabPane = new TabPane(tab1, tab2);
+
+		final Dialog<OverlayView> dialog = new ControlButtonDialog<>(tabPane);
+		dialog.getDialogPane().setContent(tabPane);
+
+		dialog.setResultConverter(buttonType -> {
+			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
+				return null;
+			}
+
+			Tab selectedItem = tabPane.getSelectionModel().getSelectedItem();
+			return ((OverlayGui) selectedItem.getUserData()).getOverlayModel();
+		});
+
+		final Optional<OverlayView> showAndWait = dialog.showAndWait();
+		showAndWait.ifPresent(overlayView -> {
+			final MatrixView selectedMatrix = matrixGui.getMatrixModel();
+			selectedMatrix.appendNewSceneAndAppendOverlayToIt(overlayView);
+			final Client jaxRsClient = ClientBuilder.newClient();
+			final Response postMatrixResponse = jaxRsClient.target("http://localhost:8080/led-display-administration")
+					.path("matrices").request(APPLICATION_JSON).put(Entity.json(selectedMatrix));
+		});
 	}
 }
 
