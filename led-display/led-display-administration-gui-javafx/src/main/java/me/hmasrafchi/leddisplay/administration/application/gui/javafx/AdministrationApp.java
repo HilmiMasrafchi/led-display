@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -13,7 +14,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
@@ -23,6 +23,8 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  *
  */
 public final class AdministrationApp extends Application {
+	public static final String API_DOMAIN = "http://localhost:8080/led-display-administration";
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -30,19 +32,21 @@ public final class AdministrationApp extends Application {
 	@Override
 	public void start(final Stage primaryStage) throws Exception {
 		final Client jaxRsClient = ClientBuilder.newClient();
-		final Response getAllMatricesResponse = jaxRsClient.target("http://localhost:8080/led-display-administration")
-				.path("matrices").request(APPLICATION_JSON).get();
-		if (getAllMatricesResponse.getStatus() == Response.Status.OK.getStatusCode()) {
+		final Response getAllMatricesResponse = jaxRsClient.target(API_DOMAIN).path("matrices")
+				.request(APPLICATION_JSON).get();
+		final int responseStatusCode = getAllMatricesResponse.getStatus();
+		if (responseStatusCode == Response.Status.OK.getStatusCode()
+				|| responseStatusCode == Response.Status.NOT_FOUND.getStatusCode()) {
 			final List<MatrixView> matrices = getAllMatricesResponse.readEntity(new GenericType<List<MatrixView>>() {
 			});
 
-			final AdministrationGui root = new AdministrationGui(matrices);
-			primaryStage.setScene(new Scene(root, 1200, 800));
+			final AdministrationGui2 root = new AdministrationGui2(matrices == null ? new ArrayList<>() : matrices);
+			final Scene scene = new Scene(root, 1200, 800);
+			primaryStage.setScene(scene);
+			primaryStage.setTitle("Administration Panel");
+			primaryStage.show();
 		} else {
-			primaryStage.setScene(new Scene(new Group()));
+			throw new RuntimeException("can not get list of matrices: " + responseStatusCode);
 		}
-
-		primaryStage.setTitle("Administration Panel");
-		primaryStage.show();
 	}
 }
