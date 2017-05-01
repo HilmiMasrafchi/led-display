@@ -24,4 +24,8 @@ public final class RestClient {
 		return JAXRS_CLIENT.target(API_DOMAIN).path("matrices").request(APPLICATION_JSON)
 				.post(json(createMatrixCommand));
 	}
+
+	public static Response getAllMatrices() {
+		return JAXRS_CLIENT.target(API_DOMAIN).path("matrices").request(APPLICATION_JSON).get();
+	}
 }

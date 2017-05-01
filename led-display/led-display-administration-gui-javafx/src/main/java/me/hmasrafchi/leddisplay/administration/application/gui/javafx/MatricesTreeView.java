@@ -45,7 +45,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  *
  */
 final class MatricesTreeView extends TreeView<TreeItemModel> {
-	private CompiledFramesGui currentlySelectedCompiledFrameGui;
+	private TreeItemModel currentlySelectedTreeItemModel;
 
 	MatricesTreeView(final List<MatrixView> matrices, final BorderPane parent) {
 		setPrefWidth(400);
@@ -91,14 +91,20 @@ final class MatricesTreeView extends TreeView<TreeItemModel> {
 				previouslySelectedTreeItemModel.stopAnimation();
 			}
 
-			final TreeItemModel currentlySelectedTreeItemModel = newValue.getValue();
-			currentlySelectedTreeItemModel.startAnimation();
+			if(newValue != null) {
+				currentlySelectedTreeItemModel = newValue.getValue();
+				currentlySelectedTreeItemModel.startAnimation();
+			}
 
 			final Collection<Node> guis = currentlySelectedTreeItemModel.getNonNullGuis();
 			final VBox vBox = new VBox();
 			vBox.getChildren().addAll(guis);
 			parent.setCenter(vBox);
 		});
+	}
+
+	public void stopAllAnimations() {
+		currentlySelectedTreeItemModel.stopAnimation();
 	}
 }
 
@@ -127,7 +133,7 @@ abstract class TreeItemModel {
 	}
 
 	void onPlusSignAction() {
-
+		AdministrationApp.showProgressBar();
 	}
 }
 
@@ -163,9 +169,13 @@ class MatricesTreeItemModel extends TreeItemModel {
 		});
 
 		final Optional<CreateMatrixCommand> result = dialog.showAndWait();
-		result.ifPresent(createMatrixCommand -> {
+		if (result.isPresent()) {
+			final CreateMatrixCommand createMatrixCommand = result.get();
 			RestClient.createMatrix(createMatrixCommand);
-		});
+			AdministrationApp.refreshGui();
+		} else {
+			AdministrationApp.hideProgressBar();
+		}
 	}
 }
 
@@ -250,13 +260,17 @@ class MatrixTreeItemModel extends TreeItemModel {
 		});
 
 		final Optional<OverlayView> showAndWait = dialog.showAndWait();
-		showAndWait.ifPresent(overlayView -> {
+		if (showAndWait.isPresent()) {
+			final OverlayView overlayView = showAndWait.get();
 			final MatrixView selectedMatrix = matrixGui.getMatrixModel();
 			selectedMatrix.appendNewSceneAndAppendOverlayToIt(overlayView);
 			final Client jaxRsClient = ClientBuilder.newClient();
 			final Response postMatrixResponse = jaxRsClient.target("http://localhost:8080/led-display-administration")
 					.path("matrices").request(APPLICATION_JSON).put(Entity.json(selectedMatrix));
-		});
+			AdministrationApp.refreshGui();
+		} else {
+			AdministrationApp.hideProgressBar();
+		}
 	}
 }
 
