@@ -23,6 +23,9 @@ final class TreeViewControlButton extends ImageView {
 			case PLUS_SIGN:
 				treeItemModel.onPlusSignAction();
 				break;
+			case MINUS_SIGN:
+				treeItemModel.onMinusSignAction();
+				break;
 			default:
 				throw new RuntimeException(
 						"no corresponding handler method for control button: " + controlButtonIcon.name());

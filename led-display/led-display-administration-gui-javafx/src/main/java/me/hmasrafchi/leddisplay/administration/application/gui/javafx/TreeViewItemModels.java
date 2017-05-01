@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
 import static java.util.Arrays.asList;
 import static java.util.EnumSet.of;
+import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.MINUS_SIGN;
 import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.PLUS_SIGN;
 
 import java.util.ArrayList;
@@ -17,7 +18,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -57,6 +61,16 @@ abstract class TreeItemModel {
 
 	void onPlusSignAction() {
 		AdministrationApp.showProgressBar();
+	}
+
+	public void onMinusSignAction() {
+		final Alert alert = new Alert(AlertType.CONFIRMATION);
+		Optional<ButtonType> showAndWait = alert.showAndWait();
+		showAndWait.ifPresent(buttonType -> {
+			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.OK_DONE)) {
+				System.out.println("Boom");
+			}
+		});
 	}
 
 	Dialog<OverlayView> getOverlaysDialog(final Integer matrixRowCount, final Integer matrixColumnCount) {
@@ -193,7 +207,7 @@ class MatrixTreeItemModel extends TreeItemModel {
 
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
-		return of(PLUS_SIGN);
+		return of(PLUS_SIGN, MINUS_SIGN);
 	}
 
 	@Override
@@ -236,7 +250,7 @@ class SceneTreeItemModel extends TreeItemModel {
 
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
-		return of(PLUS_SIGN);
+		return of(PLUS_SIGN, MINUS_SIGN);
 	}
 
 	@Override
@@ -280,6 +294,6 @@ class OverlayTreeItemModel extends TreeItemModel {
 
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
-		return EnumSet.noneOf(TreeViewControlButtonIcons.class);
+		return of(MINUS_SIGN);
 	}
 }

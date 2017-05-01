@@ -52,9 +52,9 @@ public final class MatrixView {
 			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
 			@JsonProperty("scenes") final List<List<OverlayView>> scenes,
 			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
-		if (name == null || name.trim().isEmpty()) {
-			throw new IllegalArgumentException("name can not be null or empty");
-		}
+		// if (name == null || name.trim().isEmpty()) {
+		// throw new IllegalArgumentException("name can not be null or empty");
+		// }
 
 		this.id = id;
 		this.name = name;

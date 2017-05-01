@@ -10,7 +10,7 @@ import lombok.Getter;
  *
  */
 enum TreeViewControlButtonIcons {
-	PLUS_SIGN("/plus-sign.gif");
+	MINUS_SIGN("/minus.gif"), PLUS_SIGN("/plus-sign.gif");
 
 	@Getter
 	private final String iconPath;

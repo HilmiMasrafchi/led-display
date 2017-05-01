@@ -3,7 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
-import java.util.EnumSet;
+import java.util.Collection;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeCell;
@@ -42,7 +42,8 @@ final class TreeViewCellFactoryMatrices extends TreeCell<TreeItemModel> {
 			final Label label = new Label(item.getLabel());
 			borderPane.setLeft(label);
 
-			final EnumSet<TreeViewControlButtonIcons> allowedControlButtonIcons = item.getAllowedControlButtonIcons();
+			final Collection<TreeViewControlButtonIcons> allowedControlButtonIcons = item
+					.getAllowedControlButtonIcons();
 			final TreeViewControlButton[] iconNodesArray = allowedControlButtonIcons.stream()
 					.map(controlButtonIcon -> new TreeViewControlButton(item, controlButtonIcon))
 					.toArray(size -> new TreeViewControlButton[size]);
