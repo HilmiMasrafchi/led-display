@@ -65,6 +65,7 @@ final class GuiContext {
 			}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
 
-		return new MatrixView(id, name, rowCount, columnCount, scenes, null);
+		return new MatrixView(id, name, rowCount, columnCount,
+				scenes.size() == 1 && scenes.get(0).isEmpty() ? null : scenes, null);
 	}
 }

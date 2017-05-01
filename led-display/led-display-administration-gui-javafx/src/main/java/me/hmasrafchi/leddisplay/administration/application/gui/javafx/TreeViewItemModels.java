@@ -63,14 +63,25 @@ abstract class TreeItemModel {
 		AdministrationApp.showProgressBar();
 	}
 
-	public void onMinusSignAction() {
-		final Alert alert = new Alert(AlertType.CONFIRMATION);
+	final void onMinusSignAction() {
+		AdministrationApp.showProgressBar();
+
+		final Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure want to delete selected item?");
+		alert.setHeaderText(null);
 		Optional<ButtonType> showAndWait = alert.showAndWait();
 		showAndWait.ifPresent(buttonType -> {
+			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
+				AdministrationApp.hideProgressBar();
+			}
+
 			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.OK_DONE)) {
-				System.out.println("Boom");
+				onMinusSignActionOK();
 			}
 		});
+	}
+
+	void onMinusSignActionOK() {
+
 	}
 
 	Dialog<OverlayView> getOverlaysDialog(final Integer matrixRowCount, final Integer matrixColumnCount) {
@@ -295,5 +306,16 @@ class OverlayTreeItemModel extends TreeItemModel {
 	@Override
 	EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons() {
 		return of(MINUS_SIGN);
+	}
+
+	@Override
+	void onMinusSignActionOK() {
+		matrixGui.getScenesGui().forEach(scene -> {
+			scene.remove(overlayGui);
+		});
+
+		final MatrixView matrixModel = matrixGui.getMatrixModel();
+		RestClient.updateMatrix(matrixModel);
+		AdministrationApp.refreshGui();
 	}
 }
