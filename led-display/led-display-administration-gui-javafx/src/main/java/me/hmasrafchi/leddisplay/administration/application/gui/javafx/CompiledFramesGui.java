@@ -23,13 +23,13 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  * @author michelin
  *
  */
-public final class CompiledFramesGui extends ScrollPane {
-	private static final int LED_WIDTH = 30;
-	private static final int LED_HEIGHT = 30;
+final class CompiledFramesGui extends ScrollPane {
+	private static final int LED_WIDTH = 20;
+	private static final int LED_HEIGHT = 20;
 
 	private final Animation animation;
 
-	public CompiledFramesGui(final int matrixRowCount, final int matrixColumnCount,
+	CompiledFramesGui(final int matrixRowCount, final int matrixColumnCount,
 			final List<List<List<LedView>>> compiledFrames) {
 		final Canvas canvas = new Canvas();
 		canvas.setHeight(matrixRowCount * LED_HEIGHT);

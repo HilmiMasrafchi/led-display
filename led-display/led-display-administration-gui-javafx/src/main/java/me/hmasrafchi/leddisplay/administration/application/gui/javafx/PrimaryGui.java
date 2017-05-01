@@ -22,11 +22,11 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  * @author michelin
  *
  */
-public final class PrimaryGui extends StackPane {
+final class PrimaryGui extends StackPane {
 	private BorderPane borderPane;
-	private MatricesTreeView matricesTreeView;
+	private TreeViewMatrices matricesTreeView;
 
-	public PrimaryGui() {
+	PrimaryGui() {
 		this.borderPane = getBorderPaneGui();
 		getChildren().add(borderPane);
 	}
@@ -34,13 +34,14 @@ public final class PrimaryGui extends StackPane {
 	private BorderPane getBorderPaneGui() {
 		final BorderPane borderPane = new BorderPane();
 
-		this.matricesTreeView = new MatricesTreeView(getAllMatrices(), borderPane);
+		final List<MatrixView> allMatrices = getAllMatrices();
+		this.matricesTreeView = new TreeViewMatrices(allMatrices, borderPane);
 		borderPane.setLeft(matricesTreeView);
 
 		return borderPane;
 	}
 
-	public List<MatrixView> getAllMatrices() {
+	List<MatrixView> getAllMatrices() {
 		final Response allMatricesResponse = RestClient.getAllMatrices();
 		final int responseStatusCode = allMatricesResponse.getStatus();
 		if (responseStatusCode == Response.Status.OK.getStatusCode()
@@ -54,7 +55,7 @@ public final class PrimaryGui extends StackPane {
 		}
 	}
 
-	public void refreshGui() {
+	void refreshGui() {
 		matricesTreeView.stopAllAnimations();
 
 		getChildren().clear();
@@ -62,7 +63,7 @@ public final class PrimaryGui extends StackPane {
 		getChildren().add(borderPane);
 	}
 
-	public void showProgressBar() {
+	void showProgressBar() {
 		final ObservableList<Node> children = getChildren();
 		if (children.size() == 1) {
 			final ProgressIndicator pi = new ProgressIndicator();
@@ -73,7 +74,7 @@ public final class PrimaryGui extends StackPane {
 		}
 	}
 
-	public void hideProgressBar() {
+	void hideProgressBar() {
 		final ObservableList<Node> children = getChildren();
 		if (children.size() == 2) {
 			borderPane.setDisable(false);

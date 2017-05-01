@@ -9,6 +9,6 @@ import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
  * @author michelin
  *
  */
-public interface OverlayGui {
+interface OverlayGui {
 	OverlayView getOverlayModel();
 }

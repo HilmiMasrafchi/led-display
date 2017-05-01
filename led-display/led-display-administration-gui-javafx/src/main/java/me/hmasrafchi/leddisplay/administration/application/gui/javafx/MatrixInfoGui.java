@@ -13,13 +13,13 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  * @author michelin
  *
  */
-public final class MatrixInfoGui extends VBox {
+final class MatrixInfoGui extends VBox {
 	private TextFieldWithLabel labelId;
 	private TextFieldWithLabel labelName;
 	private TextFieldWithLabel rowCountLabel;
 	private TextFieldWithLabel columnCountLabel;
 
-	public MatrixInfoGui(final MatrixView matrix) {
+	MatrixInfoGui(final MatrixView matrix) {
 		final Integer id = matrix.getId();
 		this.labelId = new TextFieldWithLabel("matrix id: ", String.valueOf(id), true);
 

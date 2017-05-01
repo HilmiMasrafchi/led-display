@@ -16,7 +16,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
  * @author michelin
  *
  */
-public final class MatrixGui {
+final class GuiContext {
 	@Getter
 	private final MatrixInfoGui matrixInfoGui;
 	@Getter
@@ -24,7 +24,7 @@ public final class MatrixGui {
 	@Getter
 	private final CompiledFramesGui compiledFramesGui;
 
-	public MatrixGui(final MatrixView matrix) {
+	GuiContext(final MatrixView matrix) {
 		this.matrixInfoGui = getMatrixInfoGui(matrix);
 		this.scenesGui = getScenesGui(matrix);
 		this.compiledFramesGui = getCompiledFramesGui(matrix);

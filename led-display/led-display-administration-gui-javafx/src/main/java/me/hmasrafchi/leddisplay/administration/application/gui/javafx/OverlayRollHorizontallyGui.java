@@ -18,12 +18,12 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  * @author michelin
  *
  */
-public final class OverlayRollHorizontallyGui extends VBox implements OverlayGui {
+final class OverlayRollHorizontallyGui extends VBox implements OverlayGui {
 	private final OverlayWithStatesGui overlayWithStatesGui;
 	private final TextFieldWithLabel beginIndexMarkTextField;
 	private final TextFieldWithLabel yPositionTextField;
 
-	public OverlayRollHorizontallyGui(final OverlayRollHorizontallyView overlayRollHorizontallyView) {
+	OverlayRollHorizontallyGui(final OverlayRollHorizontallyView overlayRollHorizontallyView) {
 		this.overlayWithStatesGui = new OverlayWithStatesGui(overlayRollHorizontallyView.getStates(),
 				overlayRollHorizontallyView.getOnColor(), overlayRollHorizontallyView.getOffColor());
 

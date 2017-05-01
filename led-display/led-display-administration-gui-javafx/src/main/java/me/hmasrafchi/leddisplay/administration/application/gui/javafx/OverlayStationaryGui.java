@@ -18,7 +18,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  * @author michelin
  *
  */
-public final class OverlayStationaryGui extends VBox implements OverlayGui {
+final class OverlayStationaryGui extends VBox implements OverlayGui {
 	// TODO: move this to overlaygui
 	private final OverlayWithStatesGui overlayWithStatesGui;
 	private TextFieldWithLabel durationTextField;

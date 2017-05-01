@@ -12,9 +12,8 @@ import javafx.scene.image.ImageView;
  * @author michelin
  *
  */
-public final class TreeViewControlButton extends ImageView {
-	public TreeViewControlButton(final TreeItemModel treeItemModel,
-			final TreeViewControlButtonIcons controlButtonIcon) {
+final class TreeViewControlButton extends ImageView {
+	TreeViewControlButton(final TreeItemModel treeItemModel, final TreeViewControlButtonIcons controlButtonIcon) {
 		final InputStream resourceAsStream = getClass().getResourceAsStream(controlButtonIcon.getIconPath());
 		final Image image = new Image(resourceAsStream);
 		setImage(image);

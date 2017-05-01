@@ -7,17 +7,19 @@ import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.util.Callback;
 
 /**
  * @author michelin
  *
  */
-public final class ControlButtonDialog<T> extends Dialog<T> {
-	public ControlButtonDialog(final Node content) {
+final class ControlButtonDialog<T> extends Dialog<T> {
+	ControlButtonDialog(final Node content, final Callback<ButtonType, T> callback) {
 		final ButtonType buttonTypeOk = new ButtonType("OK", ButtonData.OK_DONE);
 		final ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 		getDialogPane().getButtonTypes().addAll(buttonTypeOk, buttonTypeCancel);
 		getDialogPane().setContent(content);
 		setResizable(true);
+		setResultConverter(callback);
 	}
 }
