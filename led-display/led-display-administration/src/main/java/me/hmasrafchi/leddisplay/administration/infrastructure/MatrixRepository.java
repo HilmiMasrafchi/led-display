@@ -20,4 +20,6 @@ public interface MatrixRepository {
 	List<MatrixView> findAll();
 
 	MatrixView update(MatrixView matrix);
+
+	boolean delete(Object matrixId);
 }

@@ -242,6 +242,15 @@ class MatrixTreeItemModel extends TreeItemModel {
 
 		AdministrationApp.hideProgressBar();
 	}
+
+	@Override
+	void onMinusSignActionOK() {
+		super.onMinusSignActionOK();
+
+		final Integer matrixId = matrixGui.getMatrixInfoGui().getMatrixId();
+		RestClient.deleteMatrix(matrixId);
+		AdministrationApp.refreshGui();
+	}
 }
 
 class SceneTreeItemModel extends TreeItemModel {

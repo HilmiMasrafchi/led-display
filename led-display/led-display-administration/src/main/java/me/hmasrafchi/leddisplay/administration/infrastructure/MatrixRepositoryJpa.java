@@ -78,4 +78,15 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 
 		return beanMapper.mapMatrixFromDataToViewModel(matrixEntityMerged);
 	}
+
+	@Override
+	public boolean delete(final Object matrixId) {
+		final MatrixEntity foundEntity = em.find(MatrixEntity.class, matrixId);
+		if (foundEntity == null) {
+			return false;
+		}
+
+		em.remove(foundEntity);
+		return true;
+	}
 }

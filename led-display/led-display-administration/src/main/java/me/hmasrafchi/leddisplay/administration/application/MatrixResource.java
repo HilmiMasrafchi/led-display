@@ -15,6 +15,7 @@ import javax.jms.JMSContext;
 import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -105,5 +106,15 @@ public class MatrixResource {
 	public Response getAll() {
 		final List<MatrixView> allMatrices = matrixRepository.findAll();
 		return allMatrices.isEmpty() ? Response.status(Status.NOT_FOUND).build() : Response.ok(allMatrices).build();
+	}
+
+	@DELETE
+	@Path("{matrixId}")
+	public Response deleteMatrix(@PathParam("matrixId") final int matrixId) {
+		if (matrixRepository.delete(matrixId)) {
+			return Response.ok().build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
 	}
 }

@@ -34,4 +34,8 @@ final class RestClient {
 	static Response getAllMatrices() {
 		return JAXRS_CLIENT.target(API_DOMAIN).path("matrices").request(APPLICATION_JSON).get();
 	}
+
+	static Response deleteMatrix(final int matrixId) {
+		return JAXRS_CLIENT.target(API_DOMAIN).path(String.format("%s/%d", "matrices", matrixId)).request().delete();
+	}
 }
