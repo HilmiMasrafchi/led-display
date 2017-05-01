@@ -41,7 +41,7 @@ final class TreeViewMatrices extends TreeView<TreeItemModel> {
 
 			final List<List<OverlayGui>> scenesGui = matrixGui.getScenesGui();
 			scenesGui.forEach(scene -> {
-				final TreeItemModel sceneItemModel = new SceneTreeItemModel(matrixGui);
+				final TreeItemModel sceneItemModel = new SceneTreeItemModel(matrixGui, scene);
 				final TreeItem<TreeItemModel> sceneTreeItem = new TreeItem<>(sceneItemModel);
 				sceneTreeItem.setExpanded(true);
 				matrixTreeItem.getChildren().add(sceneTreeItem);
