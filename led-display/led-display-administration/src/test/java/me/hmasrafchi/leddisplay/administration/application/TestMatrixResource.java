@@ -34,7 +34,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,7 +50,7 @@ import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
  *
  */
 @RunWith(Arquillian.class)
-public final class TestMatrixResource {
+public class TestMatrixResource {
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
 		return ShrinkWrap.create(WebArchive.class) //
@@ -930,20 +929,79 @@ public final class TestMatrixResource {
 	}
 
 	@Test
-	@Ignore
 	public void get_allmatrices_shoulReturnAllMatricesWithOkStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
 			@ArquillianResteasyResource("") final WebTarget webTarget3,
-			@ArquillianResteasyResource("") final WebTarget webTarget4) {
-		final Response postCreateMatrixCommand1 = postCreateMatrixCommand(webTarget1);
-		final Response postCreateMatrixCommand2 = postCreateMatrixCommand(webTarget2);
-		final Response postCreateMatrixCommand3 = postCreateMatrixCommand(webTarget3);
-		final Response response = webTarget4.path("matrices").request(APPLICATION_JSON).get();
-		assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
-
-		final List<MatrixView> readEntity = response.readEntity(new GenericType<List<MatrixView>>() {
+			@ArquillianResteasyResource("") final WebTarget webTarget4,
+			@ArquillianResteasyResource("") final WebTarget webTarget5) {
+		final Response response1 = webTarget1.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response1.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+		final List<MatrixView> existingMatrices = response1.readEntity(new GenericType<List<MatrixView>>() {
 		});
-		assertThat(readEntity.size(), equalTo(2));
+		final int existingMatricesSize = existingMatrices.size();
+
+		postCreateMatrixCommand(webTarget2);
+		postCreateMatrixCommand(webTarget3);
+		postCreateMatrixCommand(webTarget4);
+
+		final Response response2 = webTarget5.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response2.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+
+		final List<MatrixView> actualMatrices = response2.readEntity(new GenericType<List<MatrixView>>() {
+		});
+		final int actualMatricesSize = actualMatrices.size();
+		final int expectedMatricesSize = existingMatricesSize + 3;
+		assertThat(actualMatricesSize, equalTo(expectedMatricesSize));
+	}
+
+	@Test
+	public void delete_matrices_shoulReturnNotFoundIfMatrixNotFound(
+			@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2,
+			@ArquillianResteasyResource("") final WebTarget webTarget3) {
+		final Response postMatrixResponse = postCreateMatrixCommand(webTarget1);
+		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
+		final Response getMatrixResponse = webTarget2.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get();
+		final MatrixView actualMatrix = getMatrixResponse.readEntity(MatrixView.class);
+
+		final int fooId = actualMatrix.getId() * 2;
+		final Response deleteResponse = webTarget3.path("matrices/" + fooId).request().delete();
+
+		assertThat(deleteResponse.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
+	}
+
+	@Test
+	public void delete_matrices_shoulReturnOKAndDeleteTheMatrix(
+			@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2,
+			@ArquillianResteasyResource("") final WebTarget webTarget3,
+			@ArquillianResteasyResource("") final WebTarget webTarget4,
+			@ArquillianResteasyResource("") final WebTarget webTarget5) {
+		final Response getAllMatricesResponse = webTarget1.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(getAllMatricesResponse.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+		final List<MatrixView> existingMatrices = getAllMatricesResponse
+				.readEntity(new GenericType<List<MatrixView>>() {
+				});
+		final int existingMatricesSize = existingMatrices.size();
+
+		final Response postMatrixResponse = postCreateMatrixCommand(webTarget2);
+		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
+		final Response getMatrixResponse = webTarget3.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get();
+		final MatrixView actualMatrix = getMatrixResponse.readEntity(MatrixView.class);
+
+		final int matrixId = actualMatrix.getId();
+		final Response deleteResponse = webTarget4.path("matrices/" + matrixId).request().delete();
+
+		assertThat(deleteResponse.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+
+		final Response getAllMatricesResponse2 = webTarget5.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(getAllMatricesResponse2.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+		final List<MatrixView> existingMatrices2 = getAllMatricesResponse2
+				.readEntity(new GenericType<List<MatrixView>>() {
+				});
+		final int matricesSizeAfterDelete = existingMatrices2.size();
+
+		assertThat(matricesSizeAfterDelete, equalTo(existingMatricesSize));
 	}
 }
