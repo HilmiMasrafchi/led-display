@@ -286,6 +286,15 @@ class SceneTreeItemModel extends TreeItemModel {
 
 		AdministrationApp.hideProgressBar();
 	}
+
+	@Override
+	void onMinusSignActionOK() {
+		matrixGui.getScenesGui().remove(scene);
+
+		final MatrixView matrixModel = matrixGui.getMatrixModel();
+		RestClient.updateMatrix(matrixModel);
+		AdministrationApp.refreshGui();
+	}
 }
 
 class OverlayTreeItemModel extends TreeItemModel {
