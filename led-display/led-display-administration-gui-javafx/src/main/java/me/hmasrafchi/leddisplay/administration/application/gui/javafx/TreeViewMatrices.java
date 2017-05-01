@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
@@ -66,6 +67,11 @@ final class TreeViewMatrices extends TreeView<TreeItemModel> {
 			}
 
 			final Collection<Node> guis = currentlySelectedTreeItemModel.getNonNullGuis();
+			final Button updateButton = new Button("Update");
+			updateButton.setOnAction(event -> {
+				currentlySelectedTreeItemModel.onUpdateAction();
+			});
+			guis.add(updateButton);
 			final VBox vBox = new VBox();
 			vBox.getChildren().addAll(guis);
 			parent.setCenter(vBox);

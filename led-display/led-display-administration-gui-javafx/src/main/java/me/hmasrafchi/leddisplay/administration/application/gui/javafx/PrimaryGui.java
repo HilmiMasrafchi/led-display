@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -26,9 +27,13 @@ final class PrimaryGui extends StackPane {
 	private BorderPane borderPane;
 	private TreeViewMatrices matricesTreeView;
 
+	private Button updateButton;
+
 	PrimaryGui() {
 		this.borderPane = getBorderPaneGui();
 		getChildren().add(borderPane);
+
+		this.updateButton = new Button("Update");
 	}
 
 	private BorderPane getBorderPaneGui() {

@@ -146,6 +146,10 @@ abstract class TreeItemModel {
 			}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
 	}
+
+	void onUpdateAction() {
+		AdministrationApp.showProgressBar();
+	}
 }
 
 class MatricesTreeItemModel extends TreeItemModel {
@@ -251,6 +255,15 @@ class MatrixTreeItemModel extends TreeItemModel {
 		RestClient.deleteMatrix(matrixId);
 		AdministrationApp.refreshGui();
 	}
+
+	@Override
+	void onUpdateAction() {
+		super.onUpdateAction();
+
+		final MatrixView matrixModel = matrixGui.getMatrixModel();
+		RestClient.updateMatrix(matrixModel);
+		AdministrationApp.refreshGui();
+	}
 }
 
 class SceneTreeItemModel extends TreeItemModel {
@@ -304,6 +317,15 @@ class SceneTreeItemModel extends TreeItemModel {
 		RestClient.updateMatrix(matrixModel);
 		AdministrationApp.refreshGui();
 	}
+
+	@Override
+	void onUpdateAction() {
+		super.onUpdateAction();
+
+		final MatrixView matrixModel = matrixGui.getMatrixModel();
+		RestClient.updateMatrix(matrixModel);
+		AdministrationApp.refreshGui();
+	}
 }
 
 class OverlayTreeItemModel extends TreeItemModel {
@@ -331,6 +353,15 @@ class OverlayTreeItemModel extends TreeItemModel {
 		matrixGui.getScenesGui().forEach(scene -> {
 			scene.remove(overlayGui);
 		});
+
+		final MatrixView matrixModel = matrixGui.getMatrixModel();
+		RestClient.updateMatrix(matrixModel);
+		AdministrationApp.refreshGui();
+	}
+
+	@Override
+	void onUpdateAction() {
+		super.onUpdateAction();
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
 		RestClient.updateMatrix(matrixModel);
