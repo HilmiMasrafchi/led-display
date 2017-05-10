@@ -8,8 +8,8 @@ import static java.util.Arrays.asList;
 import java.util.List;
 
 import javafx.scene.layout.VBox;
-import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

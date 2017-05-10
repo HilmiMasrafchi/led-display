@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import me.hmasrafchi.leddisplay.domain.DomainContraintViolationException;
+import me.hmasrafchi.leddisplay.model.domain.DomainConstraintViolationException;
 
 /**
  * @author michelin
@@ -22,7 +22,7 @@ public class JaxRsExceptionMapper implements ExceptionMapper<EJBException> {
 	@Override
 	public Response toResponse(final EJBException exception) {
 		final Throwable cause1 = exception.getCause();
-		if (cause1 != null && cause1 instanceof DomainContraintViolationException) {
+		if (cause1 != null && cause1 instanceof DomainConstraintViolationException) {
 			final String errorMessage = cause1.getMessage();
 			return Response.status(BAD_REQUEST).entity(errorMessage).type(MediaType.APPLICATION_JSON).build();
 		}

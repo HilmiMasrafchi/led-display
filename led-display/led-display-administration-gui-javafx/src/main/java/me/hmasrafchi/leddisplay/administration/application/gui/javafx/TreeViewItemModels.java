@@ -29,13 +29,13 @@ import javafx.scene.control.TabPane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.administration.application.AdministrationApp;
-import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.OverlayRollHorizontallyView;
+import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.model.view.OverlayView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

@@ -6,15 +6,15 @@ package me.hmasrafchi.leddisplay.administration.application;
 import static java.util.Arrays.asList;
 import static javax.ws.rs.client.Entity.json;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.OFF;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.ON;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.TRANSPARENT;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.UNRECOGNIZED;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLACK;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.BLUE;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.GREEN;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.RED;
-import static me.hmasrafchi.leddisplay.administration.model.view.RgbColorView.YELLOW;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.OFF;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.ON;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.UNRECOGNIZED;
+import static me.hmasrafchi.leddisplay.model.view.RgbColorView.BLACK;
+import static me.hmasrafchi.leddisplay.model.view.RgbColorView.BLUE;
+import static me.hmasrafchi.leddisplay.model.view.RgbColorView.GREEN;
+import static me.hmasrafchi.leddisplay.model.view.RgbColorView.RED;
+import static me.hmasrafchi.leddisplay.model.view.RgbColorView.YELLOW;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -37,13 +37,13 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.model.view.LedView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.OverlayRollHorizontallyView;
+import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

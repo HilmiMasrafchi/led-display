@@ -16,8 +16,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.LedView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

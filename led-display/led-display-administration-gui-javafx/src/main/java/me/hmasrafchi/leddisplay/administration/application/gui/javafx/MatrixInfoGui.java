@@ -7,7 +7,7 @@ import static java.lang.Integer.valueOf;
 
 import javafx.scene.layout.VBox;
 import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.TextFieldWithLabel;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin

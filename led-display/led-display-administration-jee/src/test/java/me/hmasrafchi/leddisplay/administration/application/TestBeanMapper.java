@@ -10,8 +10,8 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.domain.Matrix;
+import me.hmasrafchi.leddisplay.model.domain.Matrix;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin

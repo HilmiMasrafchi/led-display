@@ -9,10 +9,10 @@ import java.util.List;
 import javafx.scene.layout.VBox;
 import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.OverlayWithStatesGui;
 import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.TextFieldWithLabel;
-import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.model.view.OverlayView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

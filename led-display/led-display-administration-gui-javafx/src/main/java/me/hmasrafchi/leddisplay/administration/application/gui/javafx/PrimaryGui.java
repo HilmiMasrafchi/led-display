@@ -16,7 +16,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin

@@ -4,9 +4,9 @@
 package me.hmasrafchi.leddisplay.administration.application;
 
 import static java.util.Arrays.asList;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.OFF;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.ON;
-import static me.hmasrafchi.leddisplay.administration.model.view.LedStateView.TRANSPARENT;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.OFF;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.ON;
+import static me.hmasrafchi.leddisplay.model.view.LedStateView.TRANSPARENT;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.RgbColorView;
+import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.model.view.LedStateView;
+import me.hmasrafchi.leddisplay.model.view.OverlayRollHorizontallyView;
+import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin

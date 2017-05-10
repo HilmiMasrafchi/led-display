@@ -11,8 +11,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Response;
 
-import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin

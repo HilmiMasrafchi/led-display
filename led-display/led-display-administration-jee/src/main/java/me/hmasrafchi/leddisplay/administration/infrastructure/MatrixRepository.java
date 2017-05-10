@@ -6,7 +6,7 @@ package me.hmasrafchi.leddisplay.administration.infrastructure;
 import java.util.List;
 import java.util.Optional;
 
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin

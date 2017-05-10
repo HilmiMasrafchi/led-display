@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayRollHorizontallyView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayStationaryView;
-import me.hmasrafchi.leddisplay.administration.model.view.OverlayView;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
+import me.hmasrafchi.leddisplay.model.view.OverlayRollHorizontallyView;
+import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
+import me.hmasrafchi.leddisplay.model.view.OverlayView;
 
 /**
  * @author michelin

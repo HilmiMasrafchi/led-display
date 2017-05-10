@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.administration.model.view.LedView;
+import me.hmasrafchi.leddisplay.model.view.LedView;
 
 /**
  * @author michelin

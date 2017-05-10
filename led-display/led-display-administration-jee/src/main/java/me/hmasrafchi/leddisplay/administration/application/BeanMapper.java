@@ -5,10 +5,10 @@ package me.hmasrafchi.leddisplay.administration.application;
 
 import java.util.Optional;
 
-import me.hmasrafchi.leddisplay.administration.model.jpa.MatrixEntity;
-import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
-import me.hmasrafchi.leddisplay.domain.CompiledFrames;
-import me.hmasrafchi.leddisplay.domain.Matrix;
+import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixEntity;
+import me.hmasrafchi.leddisplay.model.domain.CompiledFrames;
+import me.hmasrafchi.leddisplay.model.domain.Matrix;
+import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
  * @author michelin
