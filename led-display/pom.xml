@@ -9,9 +9,11 @@
 	<modules>
 		<module>led-display-model-domain</module>
 		<module>led-display-model-view</module>
+		<module>led-display-model-events</module>
 		<module>led-display-administration-jee</module>
 		<module>led-display-administration-gui-javafx</module>
 		<module>led-display-consumer-jee</module>
+		<module>led-display-model-events</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -23,6 +25,11 @@
 			<dependency>
 				<groupId>me.hmasrafchi.leddisplay</groupId>
 				<artifactId>led-display-model-view</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>me.hmasrafchi.leddisplay</groupId>
+				<artifactId>led-display-model-events</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>

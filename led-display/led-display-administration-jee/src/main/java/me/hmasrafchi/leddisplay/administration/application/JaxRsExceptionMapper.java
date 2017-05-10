@@ -26,6 +26,7 @@ public class JaxRsExceptionMapper implements ExceptionMapper<EJBException> {
 			final String errorMessage = cause1.getMessage();
 			return Response.status(BAD_REQUEST).entity(errorMessage).type(MediaType.APPLICATION_JSON).build();
 		}
+
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 	}
 }

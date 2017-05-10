@@ -30,7 +30,7 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
-import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixUpdatedEvent;
+import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
 import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.model.view.LedView;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.infrastructure;
+package me.hmasrafchi.leddisplay.model.event;
 
 import java.io.Serializable;
 import java.util.List;
