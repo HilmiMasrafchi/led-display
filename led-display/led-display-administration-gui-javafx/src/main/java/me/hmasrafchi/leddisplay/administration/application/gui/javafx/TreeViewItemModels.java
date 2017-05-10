@@ -28,6 +28,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.hmasrafchi.leddisplay.administration.application.AdministrationApp;
 import me.hmasrafchi.leddisplay.administration.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.administration.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;

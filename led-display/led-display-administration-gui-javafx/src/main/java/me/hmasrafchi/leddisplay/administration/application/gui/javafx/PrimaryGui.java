@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -23,17 +22,13 @@ import me.hmasrafchi.leddisplay.administration.model.view.MatrixView;
  * @author michelin
  *
  */
-final class PrimaryGui extends StackPane {
+public final class PrimaryGui extends StackPane {
 	private BorderPane borderPane;
 	private TreeViewMatrices matricesTreeView;
 
-	private Button updateButton;
-
-	PrimaryGui() {
+	public PrimaryGui() {
 		this.borderPane = getBorderPaneGui();
 		getChildren().add(borderPane);
-
-		this.updateButton = new Button("Update");
 	}
 
 	private BorderPane getBorderPaneGui() {
@@ -60,7 +55,7 @@ final class PrimaryGui extends StackPane {
 		}
 	}
 
-	void refreshGui() {
+	public void refreshGui() {
 		matricesTreeView.stopAllAnimations();
 
 		getChildren().clear();
@@ -68,7 +63,7 @@ final class PrimaryGui extends StackPane {
 		getChildren().add(borderPane);
 	}
 
-	void showProgressBar() {
+	public void showProgressBar() {
 		final ObservableList<Node> children = getChildren();
 		if (children.size() == 1) {
 			final ProgressIndicator pi = new ProgressIndicator();
@@ -79,7 +74,7 @@ final class PrimaryGui extends StackPane {
 		}
 	}
 
-	void hideProgressBar() {
+	public void hideProgressBar() {
 		final ObservableList<Node> children = getChildren();
 		if (children.size() == 2) {
 			borderPane.setDisable(false);

@@ -1,11 +1,12 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
+package me.hmasrafchi.leddisplay.administration.application;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import me.hmasrafchi.leddisplay.administration.application.gui.javafx.PrimaryGui;
 
 /**
  * @author michelin
