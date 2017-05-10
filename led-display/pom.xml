@@ -7,12 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>led-display-administration</module>
-		<module>led-display-consumer</module>
 		<module>led-display-model-domain</module>
-		
-		<module>led-display-administration-gui-javafx</module>
 		<module>led-display-model-view</module>
+		<module>led-display-administration-jee</module>
+		<module>led-display-administration-gui-javafx</module>
+		<module>led-display-consumer-jee</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
