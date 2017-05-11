@@ -5,7 +5,9 @@ package me.hmasrafchi.leddisplay.consumer.application;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
@@ -22,7 +24,14 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import me.hmasrafchi.leddisplay.consumer.model.jpa.FrameJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.LedJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.LedRowJpa;
 import me.hmasrafchi.leddisplay.consumer.model.jpa.MatrixJpa;
+import me.hmasrafchi.leddisplay.consumer.model.jpa.RgbColorJpa;
+import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
+import me.hmasrafchi.leddisplay.model.view.LedView;
+import me.hmasrafchi.leddisplay.model.view.RgbColorView;
 
 /**
  * @author michelin
@@ -44,18 +53,19 @@ public class Server implements MessageListener {
 
 		final MatrixJpa matrix = entityManager.find(MatrixJpa.class, matrixId);
 		if (matrix != null) {
-			sendMatrixUpdatedEventToClient(session, matrix);
+			final MatrixUpdatedEvent event = mapDataModelToEvent(matrix);
+			sendMatrixUpdatedEventToClient(session, event);
 		}
 	}
 
-	private void sendMatrixUpdatedEventToClient(Session session, final MatrixJpa matrix) {
+	private void sendMatrixUpdatedEventToClient(final Session session, final MatrixUpdatedEvent matrix) {
 		final ObjectMapper objectMapper = new ObjectMapper();
 
 		try {
 			final String json = objectMapper.writeValueAsString(matrix);
 			session.getBasicRemote().sendText(json);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (final IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
 
@@ -64,50 +74,71 @@ public class Server implements MessageListener {
 		final ObjectMessage objectMessage = (ObjectMessage) message;
 		try {
 			final Object object = objectMessage.getObject();
-			// if (object instanceof MatrixUpdatedEvent) {
-			// final MatrixUpdatedEvent matrixCreatedEvent =
-			// (MatrixUpdatedEvent) objectMessage.getObject();
-			//
-			// final int matrixId = matrixCreatedEvent.getMatrixId();
-			// final List<FrameJpa> compiledFrames =
-			// mapCompiledFramesFromEventToJpaModel(
-			// matrixCreatedEvent.getCompiledFrames());
-			//
-			// final MatrixJpa matrix = new MatrixJpa(matrixId, compiledFrames);
-			// entityManager.merge(matrix);
-			//
-			// final Session session =
-			// sessions.get(matrixCreatedEvent.getMatrixId());
-			// if (session != null) {
-			// sendMatrixUpdatedEventToClient(session, matrix);
-			// }
-			// }
+			if (object instanceof MatrixUpdatedEvent) {
+				final MatrixUpdatedEvent matrixUpdatedEvent = (MatrixUpdatedEvent) objectMessage.getObject();
 
+				final MatrixJpa matrix = mapEventToDataModel(matrixUpdatedEvent);
+				entityManager.merge(matrix);
+
+				final Session session = sessions.get(matrixUpdatedEvent.getMatrixId());
+				if (session != null) {
+					sendMatrixUpdatedEventToClient(session, matrixUpdatedEvent);
+				}
+			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private MatrixUpdatedEvent mapDataModelToEvent(final MatrixJpa matrixDataModel) {
+		final Integer matrixId = matrixDataModel.getMatrixId();
+		final int rowCount = matrixDataModel.getRowCount();
+		final int columnCount = matrixDataModel.getColumnCount();
+		final List<List<List<LedView>>> compiledFrames = mapCompiledFramesFromDataModelToEvent(
+				matrixDataModel.getCompiledFrames());
+
+		return new MatrixUpdatedEvent(matrixId, rowCount, columnCount, compiledFrames);
+	}
+
+	private List<List<List<LedView>>> mapCompiledFramesFromDataModelToEvent(final List<FrameJpa> compiledFrames) {
+		return compiledFrames.stream().map(frame -> {
+			return frame.getLedRows().stream().map(frameRow -> {
+				return frameRow.getLeds().stream().map(led -> {
+					final String text = led.getText();
+					final RgbColorJpa rgbColor = led.getRgbColor();
+					return new LedView(text, new RgbColorView(rgbColor.getR(), rgbColor.getG(), rgbColor.getB()));
+				}).collect(Collectors.toList());
+			}).collect(Collectors.toList());
+		}).collect(Collectors.toList());
+	}
+
+	private MatrixJpa mapEventToDataModel(final MatrixUpdatedEvent matrixUpdatedEvent) {
+		final Integer matrixId = matrixUpdatedEvent.getMatrixId();
+		final int rowCount = matrixUpdatedEvent.getRowCount();
+		final int columnCount = matrixUpdatedEvent.getColumnCount();
+		final List<FrameJpa> mapCompiledFramesFromEventToJpaModel = mapCompiledFramesFromEventToDataModel(
+				matrixUpdatedEvent.getCompiledFrames());
+
+		return new MatrixJpa(matrixId, rowCount, columnCount, mapCompiledFramesFromEventToJpaModel);
+	}
+
+	private List<FrameJpa> mapCompiledFramesFromEventToDataModel(final List<List<List<LedView>>> compiledFrames) {
+		return compiledFrames.stream().map(frame -> {
+			final List<LedRowJpa> frameJpaList = frame.stream().map(ledRow -> {
+				final List<LedJpa> ledRowJpaList = ledRow.stream().map(led -> {
+					final String text = led.getText();
+					final RgbColorJpa rgbColor = mapRgbColorFromEventToJpa(led.getRgbColor());
+
+					return new LedJpa(text, rgbColor);
+				}).collect(Collectors.toList());
+				return new LedRowJpa(ledRowJpaList);
+			}).collect(Collectors.toList());
+			return new FrameJpa(frameJpaList);
+		}).collect(Collectors.toList());
 
 	}
 
-	// private List<FrameJpa> mapCompiledFramesFromEventToJpaModel(final
-	// List<List<List<LedView>>> compiledFrames) {
-	// return compiledFrames.stream().map(frame -> {
-	// final List<LedRowJpa> frameJpaList = frame.stream().map(ledRow -> {
-	// final List<LedJpa> ledRowJpaList = ledRow.stream().map(led -> {
-	// final String text = led.getText();
-	// final RgbColorJpa rgbColor =
-	// mapRgbColorFromEventToJpa(led.getRgbColor());
-	//
-	// return new LedJpa(text, rgbColor);
-	// }).collect(Collectors.toList());
-	// return new LedRowJpa(ledRowJpaList);
-	// }).collect(Collectors.toList());
-	// return new FrameJpa(frameJpaList);
-	// }).collect(Collectors.toList());
-	// }
-	//
-	// private RgbColorJpa mapRgbColorFromEventToJpa(RgbColorView rgbColor) {
-	// return new RgbColorJpa(rgbColor.getR(), rgbColor.getG(),
-	// rgbColor.getB());
-	// }
+	private RgbColorJpa mapRgbColorFromEventToJpa(RgbColorView rgbColor) {
+		return new RgbColorJpa(rgbColor.getR(), rgbColor.getG(), rgbColor.getB());
+	}
 }

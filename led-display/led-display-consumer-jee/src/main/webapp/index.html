@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<canvas id="canvas" width="300" height="20800"></canvas>
+	<canvas id="canvas"></canvas>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
@@ -29,6 +29,10 @@
 			})(window.location.search.substr(1).split('&'))
 		})(jQuery);
 
+		var canvasWidth;
+		var canvasHeight;
+		var compiledFrames;
+		var canvas;
 		$(document).ready(
 				function() {
 					var matrixId = $.QueryString.matrixId
@@ -37,20 +41,15 @@
 									+ matrixId);
 					socket.onmessage = onMessage;
 
-					var canvas = document.getElementById('canvas');
+					canvas = document.getElementById('canvas');
 					var ctx = canvas.getContext('2d');
 					
-					var canvasWidth = canvas.width;
-					var canvasHeight = canvas.height;
-					
-					
-					var rowCount;
-					var columnCount;
-					var compiledFrames;
+					var ledWidth = 25;
+					var ledHeight = 25;
 					
 					var frameIndex;
 					var frameCount;
-					var skipFrameUntil = 10;
+					var skipFrameUntil = 4;
 					var animationCounter = 0;
 					var animationId;
 					
@@ -64,10 +63,9 @@
 						if(animationCounter > skipFrameUntil) {
 							ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 							
-							var frameRows = compiledFrames[frameIndex].frameRows;
-							for(var frameRowIndex in frameRows) {
-								var frameRow = frameRows[frameRowIndex];
-								var frameRowLeds = frameRow.leds;
+							var ledRows = compiledFrames[frameIndex];
+							for(var frameRowIndex in ledRows) {
+								var frameRowLeds = ledRows[frameRowIndex];
 								for(var ledIndex = 0; ledIndex < frameRowLeds.length; ledIndex++) {
 									var led = frameRowLeds[ledIndex];
 							    		
@@ -78,7 +76,7 @@
 									var color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
 									ctx.fillStyle = color;
 							    		
-									ctx.fillRect(ledIndex * 25, (frameRowIndex * 25), 25, 25);
+									ctx.fillRect((ledIndex * ledWidth) + 5, frameRowIndex * ledHeight, ledWidth, ledHeight);
 								}
 							}
 								
@@ -97,10 +95,17 @@
 						cancelAnimationFrame(animationId);
 
 						var matrix = JSON.parse(event.data);
-						
-						rowCount = matrix.rowCount;
-						columnCount = matrix.columnCount;
+
 						compiledFrames = matrix.compiledFrames;
+
+						var rowCount = matrix.rowCount;
+						var columnCount = matrix.columnCount;
+						
+						canvasWidth = columnCount * ledWidth;
+						canvasHeight = rowCount * ledHeight;
+						
+						canvas.width = canvasWidth;
+						canvas.height = canvasHeight;
 						
 						frameIndex = 0;
 						frameCount = compiledFrames.length;

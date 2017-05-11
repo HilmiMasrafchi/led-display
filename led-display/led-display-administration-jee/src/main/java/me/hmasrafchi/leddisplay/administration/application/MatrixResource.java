@@ -73,7 +73,10 @@ public class MatrixResource {
 		if (compiledFrames != null && !compiledFrames.isEmpty()) {
 			try {
 				final Integer id = matrixView.getId();
-				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, compiledFrames);
+				final int rowCount = matrixView.getRowCount();
+				final int columnCount = matrixView.getColumnCount();
+				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, rowCount, columnCount,
+						compiledFrames);
 
 				final ObjectMessage createObjectMessage = jms.createObjectMessage();
 				createObjectMessage.setObject(matrixUpdatedEvent);

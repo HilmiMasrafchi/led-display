@@ -17,11 +17,16 @@ import me.hmasrafchi.leddisplay.model.view.LedView;
 public final class MatrixUpdatedEvent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer matrixId;
-	private List<List<List<LedView>>> compiledFrames;
+	private final Integer matrixId;
+	private final int rowCount;
+	private final int columnCount;
+	private final List<List<List<LedView>>> compiledFrames;
 
-	public MatrixUpdatedEvent(final Integer matrixId, final List<List<List<LedView>>> compiledFrames) {
+	public MatrixUpdatedEvent(final Integer matrixId, final int rowCount, final int columnCount,
+			final List<List<List<LedView>>> compiledFrames) {
 		this.matrixId = matrixId;
+		this.rowCount = rowCount;
+		this.columnCount = columnCount;
 		this.compiledFrames = compiledFrames;
 	}
 }

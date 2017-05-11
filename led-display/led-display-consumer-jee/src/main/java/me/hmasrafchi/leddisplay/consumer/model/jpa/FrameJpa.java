@@ -30,10 +30,10 @@ public class FrameJpa {
 	@JoinColumn
 	@OrderColumn
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<LedRowJpa> frameRows;
+	private List<LedRowJpa> ledRows;
 
-	public FrameJpa(final List<LedRowJpa> frameRows) {
-		this.frameRows = frameRows;
+	public FrameJpa(final List<LedRowJpa> ledRows) {
+		this.ledRows = ledRows;
 	}
 
 	FrameJpa() {

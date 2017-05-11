@@ -16,7 +16,11 @@ public final class AdministrationApp extends Application {
 	private static PrimaryGui gui;
 
 	public static void main(String[] args) {
-		launch(args);
+		try {
+			launch(args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -26,6 +30,7 @@ public final class AdministrationApp extends Application {
 		final Scene scene = new Scene(gui, 1200, 800);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Administration Panel");
+		primaryStage.setOnCloseRequest((e) -> RestClient.close());
 		primaryStage.show();
 	}
 

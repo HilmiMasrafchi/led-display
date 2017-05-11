@@ -17,6 +17,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.ws.rs.client.InvocationCallback;
+import javax.ws.rs.core.Response;
+
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -29,6 +32,7 @@ import javafx.scene.control.TabPane;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.administration.application.AdministrationApp;
+import me.hmasrafchi.leddisplay.administration.application.RestClient;
 import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;
@@ -49,6 +53,17 @@ abstract class TreeItemModel {
 	Collection<Node> getNonNullGuis() {
 		return getGuis().stream().filter(node -> node != null).collect(Collectors.toList());
 	}
+
+	InvocationCallback<Response> defaultInvocationCallback = new InvocationCallback<Response>() {
+		@Override
+		public void completed(final Response response) {
+			AdministrationApp.refreshGui();
+		}
+
+		@Override
+		public void failed(final Throwable throwable) {
+		}
+	};
 
 	abstract EnumSet<TreeViewControlButtonIcons> getAllowedControlButtonIcons();
 
@@ -95,6 +110,7 @@ abstract class TreeItemModel {
 			final Tab selectedTab = tabPane.getSelectionModel().getSelectedItem();
 			return ((OverlayGui) selectedTab.getUserData()).getOverlayModel();
 		});
+
 		return dialog;
 	}
 
@@ -176,18 +192,15 @@ class MatricesTreeItemModel extends TreeItemModel {
 		final MatrixInfoGui matrixInfoGui = new MatrixInfoGui(matrix);
 
 		final Dialog<CreateMatrixCommand> dialog = new ControlButtonDialog<>(matrixInfoGui, buttonType -> {
-			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
-				return null;
-			}
-			return new CreateMatrixCommand(matrixInfoGui.getMatrixName(), matrixInfoGui.getMatrixRowCount(),
-					matrixInfoGui.getMatrixColumnCount(), new ArrayList<>());
+			return buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE) ? null
+					: new CreateMatrixCommand(matrixInfoGui.getMatrixName(), matrixInfoGui.getMatrixRowCount(),
+							matrixInfoGui.getMatrixColumnCount(), new ArrayList<>());
 		});
 
 		final Optional<CreateMatrixCommand> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			final CreateMatrixCommand createMatrixCommand = result.get();
-			RestClient.createMatrix(createMatrixCommand);
-			AdministrationApp.refreshGui();
+			RestClient.createMatrix(createMatrixCommand, defaultInvocationCallback);
 		} else {
 			AdministrationApp.hideProgressBar();
 		}
@@ -241,11 +254,8 @@ class MatrixTreeItemModel extends TreeItemModel {
 
 			matrix.appendNewSceneAndAppendOverlayToIt(overlayView);
 
-			RestClient.updateMatrix(matrix);
-			AdministrationApp.refreshGui();
+			RestClient.updateMatrix(matrix, defaultInvocationCallback);
 		}
-
-		AdministrationApp.hideProgressBar();
 	}
 
 	@Override
@@ -253,8 +263,7 @@ class MatrixTreeItemModel extends TreeItemModel {
 		super.onMinusSignActionOK();
 
 		final Integer matrixId = matrixGui.getMatrixInfoGui().getMatrixId();
-		RestClient.deleteMatrix(matrixId);
-		AdministrationApp.refreshGui();
+		RestClient.deleteMatrix(matrixId, defaultInvocationCallback);
 	}
 
 	@Override
@@ -262,8 +271,7 @@ class MatrixTreeItemModel extends TreeItemModel {
 		super.onUpdateAction();
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
-		RestClient.updateMatrix(matrixModel);
-		AdministrationApp.refreshGui();
+		RestClient.updateMatrix(matrixModel, defaultInvocationCallback);
 	}
 }
 
@@ -302,12 +310,8 @@ class SceneTreeItemModel extends TreeItemModel {
 
 			final int sceneIndex = matrixGui.getScenesGui().indexOf(scene);
 			matrix.appendNewOverlayToScene(sceneIndex, overlayView);
-
-			RestClient.updateMatrix(matrix);
-			AdministrationApp.refreshGui();
+			RestClient.updateMatrix(matrix, defaultInvocationCallback);
 		}
-
-		AdministrationApp.hideProgressBar();
 	}
 
 	@Override
@@ -315,8 +319,7 @@ class SceneTreeItemModel extends TreeItemModel {
 		matrixGui.getScenesGui().remove(scene);
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
-		RestClient.updateMatrix(matrixModel);
-		AdministrationApp.refreshGui();
+		RestClient.updateMatrix(matrixModel, defaultInvocationCallback);
 	}
 
 	@Override
@@ -324,8 +327,7 @@ class SceneTreeItemModel extends TreeItemModel {
 		super.onUpdateAction();
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
-		RestClient.updateMatrix(matrixModel);
-		AdministrationApp.refreshGui();
+		RestClient.updateMatrix(matrixModel, defaultInvocationCallback);
 	}
 }
 
@@ -356,8 +358,7 @@ class OverlayTreeItemModel extends TreeItemModel {
 		});
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
-		RestClient.updateMatrix(matrixModel);
-		AdministrationApp.refreshGui();
+		RestClient.updateMatrix(matrixModel, defaultInvocationCallback);
 	}
 
 	@Override
@@ -365,7 +366,6 @@ class OverlayTreeItemModel extends TreeItemModel {
 		super.onUpdateAction();
 
 		final MatrixView matrixModel = matrixGui.getMatrixModel();
-		RestClient.updateMatrix(matrixModel);
-		AdministrationApp.refreshGui();
+		RestClient.updateMatrix(matrixModel, defaultInvocationCallback);
 	}
 }
