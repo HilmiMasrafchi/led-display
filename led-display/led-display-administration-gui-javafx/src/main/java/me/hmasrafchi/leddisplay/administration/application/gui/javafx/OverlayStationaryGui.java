@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.layout.VBox;
-import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.OverlayWithStatesGui;
-import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.TextFieldWithLabel;
 import me.hmasrafchi.leddisplay.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.model.view.OverlayStationaryView;
 import me.hmasrafchi.leddisplay.model.view.OverlayView;
@@ -20,11 +18,11 @@ import me.hmasrafchi.leddisplay.model.view.RgbColorView;
  */
 final class OverlayStationaryGui extends VBox implements OverlayGui {
 	// TODO: move this to overlaygui
-	private final OverlayWithStatesGui overlayWithStatesGui;
+	private final OverlayStatesGui overlayWithStatesGui;
 	private TextFieldWithLabel durationTextField;
 
-	public OverlayStationaryGui(final OverlayStationaryView overlayStationaryView) {
-		this.overlayWithStatesGui = new OverlayWithStatesGui(overlayStationaryView.getStates(),
+	OverlayStationaryGui(final OverlayStationaryView overlayStationaryView) {
+		this.overlayWithStatesGui = new OverlayStatesGui(overlayStationaryView.getStates(),
 				overlayStationaryView.getOnColor(), overlayStationaryView.getOffColor());
 
 		final int duration = overlayStationaryView.getDuration();

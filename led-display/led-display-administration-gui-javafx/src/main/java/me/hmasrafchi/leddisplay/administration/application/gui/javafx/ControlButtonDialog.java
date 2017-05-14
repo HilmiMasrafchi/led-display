@@ -18,8 +18,10 @@ final class ControlButtonDialog<T> extends Dialog<T> {
 		final ButtonType buttonTypeOk = new ButtonType("OK", ButtonData.OK_DONE);
 		final ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 		getDialogPane().getButtonTypes().addAll(buttonTypeOk, buttonTypeCancel);
-		getDialogPane().setContent(content);
+
 		setResizable(true);
 		setResultConverter(callback);
+
+		getDialogPane().setContent(content);
 	}
 }

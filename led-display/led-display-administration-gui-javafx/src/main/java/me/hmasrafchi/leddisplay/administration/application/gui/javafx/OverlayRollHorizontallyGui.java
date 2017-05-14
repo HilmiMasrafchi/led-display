@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.layout.VBox;
-import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.OverlayWithStatesGui;
-import me.hmasrafchi.leddisplay.administration.application.gui.javafx.component.TextFieldWithLabel;
 import me.hmasrafchi.leddisplay.model.view.LedStateView;
 import me.hmasrafchi.leddisplay.model.view.OverlayRollHorizontallyView;
 import me.hmasrafchi.leddisplay.model.view.OverlayView;
@@ -19,12 +17,12 @@ import me.hmasrafchi.leddisplay.model.view.RgbColorView;
  *
  */
 final class OverlayRollHorizontallyGui extends VBox implements OverlayGui {
-	private final OverlayWithStatesGui overlayWithStatesGui;
+	private final OverlayStatesGui overlayWithStatesGui;
 	private final TextFieldWithLabel beginIndexMarkTextField;
 	private final TextFieldWithLabel yPositionTextField;
 
 	OverlayRollHorizontallyGui(final OverlayRollHorizontallyView overlayRollHorizontallyView) {
-		this.overlayWithStatesGui = new OverlayWithStatesGui(overlayRollHorizontallyView.getStates(),
+		this.overlayWithStatesGui = new OverlayStatesGui(overlayRollHorizontallyView.getStates(),
 				overlayRollHorizontallyView.getOnColor(), overlayRollHorizontallyView.getOffColor());
 
 		final int beginIndexMark = overlayRollHorizontallyView.getBeginIndexMark();

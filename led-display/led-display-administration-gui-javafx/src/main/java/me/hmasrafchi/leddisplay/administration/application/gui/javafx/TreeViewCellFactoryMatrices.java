@@ -19,20 +19,6 @@ final class TreeViewCellFactoryMatrices extends TreeCell<TreeItemModel> {
 	protected void updateItem(final TreeItemModel item, final boolean empty) {
 		super.updateItem(item, empty);
 
-		// setOnMouseEntered(mouseEvent -> {
-		// if (!isEmpty() && !isSelected()) {
-		// final Node node = (Node) mouseEvent.getSource();
-		// node.setStyle("-fx-background-color: lightblue;");
-		// }
-		// });
-		//
-		// setOnMouseExited(mouseEvent -> {
-		// if (!isEmpty()) {
-		// final Node node = (Node) mouseEvent.getSource();
-		// node.setStyle("-fx-background-color: white;");
-		// }
-		// });
-
 		if (empty || item == null) {
 			setGraphic(null);
 			setText(null);

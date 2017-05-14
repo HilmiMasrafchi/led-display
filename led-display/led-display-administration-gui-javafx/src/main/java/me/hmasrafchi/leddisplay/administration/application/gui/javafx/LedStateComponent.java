@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application.gui.javafx.component;
+package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,7 +20,7 @@ import me.hmasrafchi.leddisplay.model.view.LedStateView;
  * @author michelin
  *
  */
-public final class LedStateComponent extends BorderPane {
+final class LedStateComponent extends BorderPane {
 	private static final String TRANSPARENT_STATE_LABEL = " ";
 	private static final String ON_STATE_LABEL = "●";
 	private static final String OFF_STATE_LABEL = "◌";

@@ -35,6 +35,7 @@ final class CompiledFramesGui extends ScrollPane {
 		canvas.setHeight(matrixRowCount * LED_HEIGHT);
 		canvas.setWidth(matrixColumnCount * LED_WIDTH);
 		setContent(canvas);
+
 		this.animation = getAnimation(canvas.getGraphicsContext2D(), compiledFrames);
 	}
 

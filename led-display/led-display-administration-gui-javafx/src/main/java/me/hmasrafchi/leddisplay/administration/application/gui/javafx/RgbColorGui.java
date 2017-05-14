@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application.gui.javafx.component;
+package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
 import static javafx.scene.paint.Color.rgb;
 
@@ -15,10 +15,10 @@ import me.hmasrafchi.leddisplay.model.view.RgbColorView;
  * @author michelin
  *
  */
-public final class RgbColorGui extends HBox {
+final class RgbColorGui extends HBox {
 	private ColorPicker colorPicker;
 
-	public RgbColorGui(final String labelText, final RgbColorView rgbColor) {
+	RgbColorGui(final String labelText, final RgbColorView rgbColor) {
 		final Label label = new Label(labelText);
 
 		this.colorPicker = new ColorPicker();
@@ -26,7 +26,7 @@ public final class RgbColorGui extends HBox {
 		getChildren().addAll(label, colorPicker);
 	}
 
-	public RgbColorView getColorModel() {
+	RgbColorView getColorModel() {
 		final Color color = this.colorPicker.getValue();
 		return new RgbColorView((int) (color.getRed() * 255), (int) (color.getGreen() * 255),
 				(int) (color.getBlue() * 255));

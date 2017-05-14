@@ -50,7 +50,7 @@ abstract class TreeItemModel {
 	final String label;
 	final Button updateButton;
 
-	public TreeItemModel(final String label) {
+	TreeItemModel(final String label) {
 		this.label = label;
 		this.updateButton = new Button("Update");
 		this.updateButton.setOnAction(event -> onUpdateAction());
