@@ -19,7 +19,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -188,11 +187,11 @@ class PrimaryPane extends BorderPane {
 				}
 
 				final Collection<Node> guis = currentlySelectedTreeItemModel.getNonNullGuis();
-				final Button updateButton = new Button("Update");
-				updateButton.setOnAction(event -> {
-					currentlySelectedTreeItemModel.onUpdateAction();
-				});
-				guis.add(updateButton);
+				// final Button updateButton = new Button("Update");
+				// updateButton.setOnAction(event -> {
+				// currentlySelectedTreeItemModel.onUpdateAction();
+				// });
+				// guis.add(updateButton);
 				final VBox vBox = new VBox();
 				vBox.getChildren().addAll(guis);
 				setCenter(vBox);

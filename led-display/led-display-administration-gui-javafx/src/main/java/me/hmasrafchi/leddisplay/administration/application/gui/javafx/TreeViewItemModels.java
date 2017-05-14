@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -30,7 +31,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import me.hmasrafchi.leddisplay.administration.application.AdministrationApp;
 import me.hmasrafchi.leddisplay.administration.application.RestClient;
 import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
@@ -45,16 +45,22 @@ import me.hmasrafchi.leddisplay.model.view.RgbColorView;
  * @author michelin
  *
  */
-@RequiredArgsConstructor
 abstract class TreeItemModel {
 	@Getter
 	final String label;
+	final Button updateButton;
+
+	public TreeItemModel(final String label) {
+		this.label = label;
+		this.updateButton = new Button("Update");
+		this.updateButton.setOnAction(event -> onUpdateAction());
+	}
 
 	Collection<Node> getNonNullGuis() {
 		return getGuis().stream().filter(node -> node != null).collect(Collectors.toList());
 	}
 
-	InvocationCallback<Response> defaultInvocationCallback = new InvocationCallback<Response>() {
+	final InvocationCallback<Response> defaultInvocationCallback = new InvocationCallback<Response>() {
 		@Override
 		public void completed(final Response response) {
 			AdministrationApp.refreshGui();
@@ -231,7 +237,7 @@ class MatrixTreeItemModel extends TreeItemModel {
 
 	@Override
 	Collection<Node> getGuis() {
-		return asList(matrixGui.getMatrixInfoGui(), matrixGui.getCompiledFramesGui());
+		return asList(matrixGui.getMatrixInfoGui(), matrixGui.getCompiledFramesGui(), updateButton);
 	}
 
 	@Override
@@ -287,7 +293,7 @@ class SceneTreeItemModel extends TreeItemModel {
 
 	@Override
 	Collection<Node> getGuis() {
-		return asList(matrixGui.getMatrixInfoGui());
+		return asList(matrixGui.getMatrixInfoGui(), updateButton);
 	}
 
 	@Override
@@ -343,7 +349,7 @@ class OverlayTreeItemModel extends TreeItemModel {
 
 	@Override
 	Collection<Node> getGuis() {
-		return asList(matrixGui.getMatrixInfoGui(), (Node) overlayGui);
+		return asList(matrixGui.getMatrixInfoGui(), (Node) overlayGui, updateButton);
 	}
 
 	@Override
