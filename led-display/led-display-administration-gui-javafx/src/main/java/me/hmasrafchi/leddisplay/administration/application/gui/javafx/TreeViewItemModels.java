@@ -90,7 +90,7 @@ abstract class TreeItemModel {
 
 		final Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure want to delete selected item?");
 		alert.setHeaderText(null);
-		Optional<ButtonType> showAndWait = alert.showAndWait();
+		final Optional<ButtonType> showAndWait = alert.showAndWait();
 		showAndWait.ifPresent(buttonType -> {
 			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
 				AdministrationApp.hideProgressBar();

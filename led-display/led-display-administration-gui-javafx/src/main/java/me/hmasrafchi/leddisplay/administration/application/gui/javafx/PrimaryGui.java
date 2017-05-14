@@ -68,7 +68,9 @@ public final class PrimaryGui extends StackPane {
 						alertInfo.setHeaderText(null);
 						alertInfo.setContentText("There aren't any matrices created");
 						alertInfo.showAndWait();
-						hideProgressBar();
+						getChildren().clear();
+						currentPrimaryPane = new PrimaryPane();
+						getChildren().add(currentPrimaryPane);
 					});
 					break;
 				default:
@@ -187,11 +189,6 @@ class PrimaryPane extends BorderPane {
 				}
 
 				final Collection<Node> guis = currentlySelectedTreeItemModel.getNonNullGuis();
-				// final Button updateButton = new Button("Update");
-				// updateButton.setOnAction(event -> {
-				// currentlySelectedTreeItemModel.onUpdateAction();
-				// });
-				// guis.add(updateButton);
 				final VBox vBox = new VBox();
 				vBox.getChildren().addAll(guis);
 				setCenter(vBox);
