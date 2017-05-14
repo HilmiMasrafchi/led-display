@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>me.hmasrafchi.leddisplay</groupId>
+		<artifactId>led-display</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>led-display-model</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>led-display-model-domain</module>
+		<module>led-display-model-events</module>
+		<module>led-display-model-view</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>2.8.7</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
