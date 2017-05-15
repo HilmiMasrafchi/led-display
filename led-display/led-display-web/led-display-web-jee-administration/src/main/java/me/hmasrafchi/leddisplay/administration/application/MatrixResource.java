@@ -108,7 +108,7 @@ public class MatrixResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
 		final List<MatrixView> allMatrices = matrixRepository.findAll();
-		return allMatrices.isEmpty() ? Response.status(Status.NOT_FOUND).build() : Response.ok(allMatrices).build();
+		return Response.ok(allMatrices).build();
 	}
 
 	@DELETE

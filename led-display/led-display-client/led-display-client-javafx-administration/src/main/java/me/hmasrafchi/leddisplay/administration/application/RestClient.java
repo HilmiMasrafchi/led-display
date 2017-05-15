@@ -22,7 +22,7 @@ import me.hmasrafchi.leddisplay.model.view.MatrixView;
  *
  */
 public final class RestClient {
-	private static final String API_DOMAIN = "http://localhost:8080/led-display-administration";
+	private static final String API_DOMAIN = "http://localhost:8080/led-display-web-jee-administration";
 	private static final Client JAXRS_CLIENT = ClientBuilder.newClient();
 
 	public static Future<Response> createMatrix(final CreateMatrixCommand createMatrixCommand,

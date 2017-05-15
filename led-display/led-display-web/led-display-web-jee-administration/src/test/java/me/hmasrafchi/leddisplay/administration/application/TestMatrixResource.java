@@ -21,6 +21,7 @@ import static org.junit.Assert.assertThat;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
@@ -64,61 +66,61 @@ public class TestMatrixResource {
 	}
 
 	@Test
-	public void post_matrices_shouldReturnBadRequestIfRowCountIsNegative(
-			@ArquillianResteasyResource("") final WebTarget webTarget) {
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(-1, 6);
-		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
-				.post(json(createMatrixCommand));
-
-		final int actualResponseStatusCode = postMatrixResponse.getStatus();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+	@InSequence(1)
+	public void get_allmatrices_shoulReturnOKStatusIfWithEmptyCollectionOfMatrices(
+			@ArquillianResteasyResource("") final WebTarget webTarget1) {
+		final Response response = webTarget1.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+		final List<MatrixView> existingMatrices = response.readEntity(new GenericType<List<MatrixView>>() {
+		});
+		assertThat(existingMatrices, equalTo(Collections.emptyList()));
 	}
 
 	@Test
-	public void post_matrices_shouldReturnBadRequestIfRowCountIsZero(
-			@ArquillianResteasyResource("") final WebTarget webTarget) {
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(0, 6);
-		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
-				.post(json(createMatrixCommand));
+	@InSequence(2)
+	public void get_allmatrices_shoulReturnAllMatricesWithOkStatus(
+			@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2,
+			@ArquillianResteasyResource("") final WebTarget webTarget3,
+			@ArquillianResteasyResource("") final WebTarget webTarget4,
+			@ArquillianResteasyResource("") final WebTarget webTarget5) {
+		final Response response1 = webTarget1.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response1.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+		final List<MatrixView> existingMatrices = response1.readEntity(new GenericType<List<MatrixView>>() {
+		});
+		final int existingMatricesSize = existingMatrices.size();
 
-		final int actualResponseStatusCode = postMatrixResponse.getStatus();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+		postCreateMatrixCommand(webTarget2);
+		postCreateMatrixCommand(webTarget3);
+		postCreateMatrixCommand(webTarget4);
+
+		final Response response2 = webTarget5.path("matrices").request(APPLICATION_JSON).get();
+		assertThat(response2.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
+
+		final List<MatrixView> actualMatrices = response2.readEntity(new GenericType<List<MatrixView>>() {
+		});
+		final int actualMatricesSize = actualMatrices.size();
+		final int expectedMatricesSize = existingMatricesSize + 3;
+		assertThat(actualMatricesSize, equalTo(expectedMatricesSize));
 	}
 
 	@Test
-	public void post_matrices_shouldReturnBadRequestIfColumnCountIsNegative(
-			@ArquillianResteasyResource("") final WebTarget webTarget) {
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, -1);
-		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
-				.post(json(createMatrixCommand));
+	@InSequence(3)
+	public void get_matrix_shouldReturnNotFoundStatus(@ArquillianResteasyResource("") final WebTarget webTarget1,
+			@ArquillianResteasyResource("") final WebTarget webTarget2) {
+		final Response postMatrixResponse = postCreateMatrixCommand(webTarget1);
+		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
 
-		final int actualResponseStatusCode = postMatrixResponse.getStatus();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+		final Response getMatrixResponse = webTarget2.path(newlyCreatedMatrixPath + "FOO").request(APPLICATION_JSON)
+				.get();
+
+		final int actualResponseStatusCode = getMatrixResponse.getStatus();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.NOT_FOUND.getStatusCode()));
 	}
 
 	@Test
-	public void post_matrices_shouldReturnBadRequestIfColumnCountIsZero(
-			@ArquillianResteasyResource("") final WebTarget webTarget) {
-		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 0);
-		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
-				.post(json(createMatrixCommand));
-
-		final int actualResponseStatusCode = postMatrixResponse.getStatus();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
-	}
-
-	@Test
-	public void post_matrices_shouldCreateNewMatrix(@ArquillianResteasyResource("") final WebTarget webTarget) {
-		final Response postMatrixResponse = postCreateMatrixCommand(webTarget);
-
-		final int actualResponseStatusCode = postMatrixResponse.getStatus();
-		final URI actualResponseHeaderLocation = postMatrixResponse.getLocation();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.CREATED.getStatusCode()));
-		assertThat(actualResponseHeaderLocation, notNullValue());
-	}
-
-	@Test
-	public void get_matrices_shouldReturnMatrixAndReturnOKStatus(
+	@InSequence(4)
+	public void get_matrix_shouldReturnMatrixAndReturnOKStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2) {
 		final Response postMatrixResponse = postCreateMatrixCommand(webTarget1);
@@ -133,19 +135,66 @@ public class TestMatrixResource {
 	}
 
 	@Test
-	public void get_matrices_shouldReturnNotFoundStatus(@ArquillianResteasyResource("") final WebTarget webTarget1,
-			@ArquillianResteasyResource("") final WebTarget webTarget2) {
-		final Response postMatrixResponse = postCreateMatrixCommand(webTarget1);
-		final String newlyCreatedMatrixPath = getWebTargetPath(postMatrixResponse);
+	@InSequence(5)
+	public void post_matrices_shouldReturnBadRequestIfRowCountIsNegative(
+			@ArquillianResteasyResource("") final WebTarget webTarget) {
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(-1, 6);
+		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
+				.post(json(createMatrixCommand));
 
-		final Response getMatrixResponse = webTarget2.path(newlyCreatedMatrixPath + "FOO").request(APPLICATION_JSON)
-				.get();
-
-		final int actualResponseStatusCode = getMatrixResponse.getStatus();
-		assertThat(actualResponseStatusCode, equalTo(Response.Status.NOT_FOUND.getStatusCode()));
+		final int actualResponseStatusCode = postMatrixResponse.getStatus();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
 	}
 
 	@Test
+	@InSequence(6)
+	public void post_matrices_shouldReturnBadRequestIfRowCountIsZero(
+			@ArquillianResteasyResource("") final WebTarget webTarget) {
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(0, 6);
+		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
+				.post(json(createMatrixCommand));
+
+		final int actualResponseStatusCode = postMatrixResponse.getStatus();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+	}
+
+	@Test
+	@InSequence(7)
+	public void post_matrices_shouldReturnBadRequestIfColumnCountIsNegative(
+			@ArquillianResteasyResource("") final WebTarget webTarget) {
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, -1);
+		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
+				.post(json(createMatrixCommand));
+
+		final int actualResponseStatusCode = postMatrixResponse.getStatus();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+	}
+
+	@Test
+	@InSequence(8)
+	public void post_matrices_shouldReturnBadRequestIfColumnCountIsZero(
+			@ArquillianResteasyResource("") final WebTarget webTarget) {
+		final CreateMatrixCommand createMatrixCommand = new CreateMatrixCommand(5, 0);
+		final Response postMatrixResponse = webTarget.path("matrices").request(APPLICATION_JSON)
+				.post(json(createMatrixCommand));
+
+		final int actualResponseStatusCode = postMatrixResponse.getStatus();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
+	}
+
+	@Test
+	@InSequence(9)
+	public void post_matrices_shouldCreateNewMatrix(@ArquillianResteasyResource("") final WebTarget webTarget) {
+		final Response postMatrixResponse = postCreateMatrixCommand(webTarget);
+
+		final int actualResponseStatusCode = postMatrixResponse.getStatus();
+		final URI actualResponseHeaderLocation = postMatrixResponse.getLocation();
+		assertThat(actualResponseStatusCode, equalTo(Response.Status.CREATED.getStatusCode()));
+		assertThat(actualResponseHeaderLocation, notNullValue());
+	}
+
+	@Test
+	@InSequence(10)
 	public void put_matrices_shouldCreateNewSceneWithOverlayAndReturnNoContentStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -181,6 +230,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(11)
 	public void put_matrices_shouldAppendNewSceneToAlreadyExistingScenesWithOverlayFromTheSameTypeAndReturnNoContentStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -225,6 +275,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(12)
 	public void put_matrices_shouldAppendNewSceneToAlreadyExistingScenesWithOverlayFromDifferentTypeAndReturnNoContentStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -270,6 +321,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(13)
 	public void put_matrices_shouldAppendOverlayWithTheSameTypeToSceneWithOneOverlayAndReturnNoContentStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -314,6 +366,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(14)
 	public void put_matrices_shouldAppendOverlayWithDifferentTypeToSceneWithOneOverlayAndReturnNoContentStatus(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -372,6 +425,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(15)
 	public void get_compiledFrames_shoulReturnNotFoundIfNoScenesArePresent(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2) {
@@ -385,6 +439,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(16)
 	public void get_compiledFrames_shoulReturnCompiledFramesForTwoDifferentTypeOfScenes(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -736,6 +791,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(17)
 	public void get_compiledFrames_shoulReturnCompiledFramesForTwoDifferentTypeScenesFromSceneOverlayed(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -922,39 +978,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
-	public void get_allmatrices_shoulReturnNotFoundStatus(@ArquillianResteasyResource("") final WebTarget webTarget1) {
-		final Response response = webTarget1.path("matrices").request(APPLICATION_JSON).get();
-		assertThat(response.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
-	}
-
-	@Test
-	public void get_allmatrices_shoulReturnAllMatricesWithOkStatus(
-			@ArquillianResteasyResource("") final WebTarget webTarget1,
-			@ArquillianResteasyResource("") final WebTarget webTarget2,
-			@ArquillianResteasyResource("") final WebTarget webTarget3,
-			@ArquillianResteasyResource("") final WebTarget webTarget4,
-			@ArquillianResteasyResource("") final WebTarget webTarget5) {
-		final Response response1 = webTarget1.path("matrices").request(APPLICATION_JSON).get();
-		assertThat(response1.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
-		final List<MatrixView> existingMatrices = response1.readEntity(new GenericType<List<MatrixView>>() {
-		});
-		final int existingMatricesSize = existingMatrices.size();
-
-		postCreateMatrixCommand(webTarget2);
-		postCreateMatrixCommand(webTarget3);
-		postCreateMatrixCommand(webTarget4);
-
-		final Response response2 = webTarget5.path("matrices").request(APPLICATION_JSON).get();
-		assertThat(response2.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
-
-		final List<MatrixView> actualMatrices = response2.readEntity(new GenericType<List<MatrixView>>() {
-		});
-		final int actualMatricesSize = actualMatrices.size();
-		final int expectedMatricesSize = existingMatricesSize + 3;
-		assertThat(actualMatricesSize, equalTo(expectedMatricesSize));
-	}
-
-	@Test
+	@InSequence(18)
 	public void delete_matrices_shoulReturnNotFoundIfMatrixNotFound(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,
@@ -971,6 +995,7 @@ public class TestMatrixResource {
 	}
 
 	@Test
+	@InSequence(19)
 	public void delete_matrices_shoulReturnOKAndDeleteTheMatrix(
 			@ArquillianResteasyResource("") final WebTarget webTarget1,
 			@ArquillianResteasyResource("") final WebTarget webTarget2,

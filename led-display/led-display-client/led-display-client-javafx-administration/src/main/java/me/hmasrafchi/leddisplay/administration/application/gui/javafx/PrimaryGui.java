@@ -88,6 +88,7 @@ public final class PrimaryGui extends StackPane {
 
 			@Override
 			public void failed(final Throwable throwable) {
+				throwable.printStackTrace();
 			}
 		});
 	}
