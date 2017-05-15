@@ -74,12 +74,12 @@ public final class PrimaryGui extends StackPane {
 					});
 					break;
 				default:
+					RestClient.close();
 					Platform.runLater(() -> {
 						final Alert alertError = new Alert(AlertType.ERROR);
 						alertError.setHeaderText(null);
 						alertError.setContentText("Unexpected error");
 						alertError.showAndWait();
-						RestClient.close();
 						Platform.exit();
 						System.exit(0);
 					});
@@ -88,7 +88,15 @@ public final class PrimaryGui extends StackPane {
 
 			@Override
 			public void failed(final Throwable throwable) {
-				throwable.printStackTrace();
+				RestClient.close();
+				Platform.runLater(() -> {
+					final Alert alertError = new Alert(AlertType.ERROR);
+					alertError.setHeaderText(null);
+					alertError.setContentText("Unexpected error");
+					alertError.showAndWait();
+					Platform.exit();
+					System.exit(0);
+				});
 			}
 		});
 	}
