@@ -59,8 +59,10 @@ public class TestMatrixResource {
 				.addPackages(true, "me.hmasrafchi.leddisplay.model.view") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.model.domain") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.model.event") //
+				.addPackages(true, "me.hmasrafchi.leddisplay.model.mapping") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.administration.infrastructure") //
 				.addPackages(true, "me.hmasrafchi.leddisplay.administration.application") //
+				.addPackages(true, "me.hmasrafchi.leddisplay.data.jpa") //
 				.addAsResource("persistence.xml", "META-INF/persistence.xml") //
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 	}

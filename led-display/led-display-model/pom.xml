@@ -12,6 +12,8 @@
 		<module>led-display-model-domain</module>
 		<module>led-display-model-events</module>
 		<module>led-display-model-view</module>
+		<module>led-display-model-mapping</module>
+		<module>led-display-model-jpa</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -22,4 +24,18 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+		</dependency>
+	</dependencies>
 </project>

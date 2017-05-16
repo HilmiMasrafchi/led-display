@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.infrastructure;
+package me.hmasrafchi.leddisplay.data.jpa;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

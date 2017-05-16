@@ -1,11 +1,11 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application;
+package me.hmasrafchi.leddisplay.model.mapping;
 
 import java.util.Optional;
 
-import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixEntity;
+import me.hmasrafchi.leddisplay.data.jpa.MatrixEntity;
 import me.hmasrafchi.leddisplay.model.domain.CompiledFrames;
 import me.hmasrafchi.leddisplay.model.domain.Matrix;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;

@@ -11,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import me.hmasrafchi.leddisplay.model.domain.Matrix;
+import me.hmasrafchi.leddisplay.model.mapping.BeanMapperJpa;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**

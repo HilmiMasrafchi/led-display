@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application;
+package me.hmasrafchi.leddisplay.model.mapping;
 
 import static java.util.Optional.of;
 
@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import me.hmasrafchi.leddisplay.administration.infrastructure.FrameEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.LedEmbeddable;
-import me.hmasrafchi.leddisplay.administration.infrastructure.LedRowEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.LedStateEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.LedStateRowEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.OverlayEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.OverlayRollHorizontallyEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.OverlayStationaryEntity;
-import me.hmasrafchi.leddisplay.administration.infrastructure.RgbColorEmbeddable;
-import me.hmasrafchi.leddisplay.administration.infrastructure.SceneEntity;
+import me.hmasrafchi.leddisplay.data.jpa.FrameEntity;
+import me.hmasrafchi.leddisplay.data.jpa.LedEmbeddable;
+import me.hmasrafchi.leddisplay.data.jpa.LedRowEntity;
+import me.hmasrafchi.leddisplay.data.jpa.LedStateEntity;
+import me.hmasrafchi.leddisplay.data.jpa.LedStateRowEntity;
+import me.hmasrafchi.leddisplay.data.jpa.MatrixEntity;
+import me.hmasrafchi.leddisplay.data.jpa.OverlayEntity;
+import me.hmasrafchi.leddisplay.data.jpa.OverlayRollHorizontallyEntity;
+import me.hmasrafchi.leddisplay.data.jpa.OverlayStationaryEntity;
+import me.hmasrafchi.leddisplay.data.jpa.RgbColorEmbeddable;
+import me.hmasrafchi.leddisplay.data.jpa.SceneEntity;
 import me.hmasrafchi.leddisplay.model.domain.CompiledFrames;
 import me.hmasrafchi.leddisplay.model.domain.Led;
 import me.hmasrafchi.leddisplay.model.domain.Matrix;

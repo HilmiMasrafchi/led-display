@@ -20,6 +20,7 @@ public final class MatrixUpdatedEvent implements Serializable {
 	private final Integer matrixId;
 	private final int rowCount;
 	private final int columnCount;
+	// TODO: maybe implement own model, it drags the view module
 	private final List<List<List<LedView>>> compiledFrames;
 
 	public MatrixUpdatedEvent(final Integer matrixId, final int rowCount, final int columnCount,

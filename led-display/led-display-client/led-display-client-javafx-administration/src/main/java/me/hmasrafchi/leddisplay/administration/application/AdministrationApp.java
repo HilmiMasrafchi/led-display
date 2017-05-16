@@ -3,6 +3,9 @@
  */
 package me.hmasrafchi.leddisplay.administration.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,9 +16,12 @@ import me.hmasrafchi.leddisplay.administration.application.gui.javafx.PrimaryGui
  *
  */
 public final class AdministrationApp extends Application {
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationApp.class);
+
 	private static PrimaryGui gui;
 
 	public static void main(String[] args) {
+		LOGGER.debug("launching main gui");
 		try {
 			launch(args);
 		} catch (Exception e) {

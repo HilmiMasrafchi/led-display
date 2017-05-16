@@ -6,11 +6,19 @@
 		<artifactId>led-display-model</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>led-display-model-view</artifactId>
+	<artifactId>led-display-model-mapping</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-annotations</artifactId>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model-domain</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model-view</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>me.hmasrafchi.leddisplay</groupId>
+			<artifactId>led-display-model-jpa</artifactId>
 		</dependency>
 	</dependencies>
 </project>

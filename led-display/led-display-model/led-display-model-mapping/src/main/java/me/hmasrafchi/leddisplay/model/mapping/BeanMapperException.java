@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.application;
+package me.hmasrafchi.leddisplay.model.mapping;
 
 /**
  * @author michelin

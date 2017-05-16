@@ -1,7 +1,7 @@
 /**
  * 
  */
-package me.hmasrafchi.leddisplay.administration.infrastructure;
+package me.hmasrafchi.leddisplay.data.jpa;
 
 import java.util.List;
 
@@ -17,16 +17,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author michelin
  *
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
-public class OverlayStationaryEntity extends OverlayEntity {
-	@JoinColumn
+public class OverlayRollHorizontallyEntity extends OverlayEntity {
 	@OrderColumn
+	@JoinColumn
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<LedStateRowEntity> states;
 
@@ -42,16 +44,18 @@ public class OverlayStationaryEntity extends OverlayEntity {
 			@AttributeOverride(name = "b", column = @Column(name = "offColorB")) })
 	private RgbColorEmbeddable offColor;
 
-	private int duration;
+	private int beginIndexMark;
+	private int yPosition;
 
-	public OverlayStationaryEntity(final List<LedStateRowEntity> states, final RgbColorEmbeddable onColor,
-			final RgbColorEmbeddable offColor, final int duration) {
+	public OverlayRollHorizontallyEntity(final List<LedStateRowEntity> states, final RgbColorEmbeddable onColor,
+			final RgbColorEmbeddable offColor, final int beginIndexMark, final int yPosition) {
 		this.states = states;
 		this.onColor = onColor;
 		this.offColor = offColor;
-		this.duration = duration;
+		this.beginIndexMark = beginIndexMark;
+		this.yPosition = yPosition;
 	}
 
-	OverlayStationaryEntity() {
+	OverlayRollHorizontallyEntity() {
 	}
 }

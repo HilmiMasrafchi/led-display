@@ -3,8 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>me.hmasrafchi.leddisplay</groupId>
-		<artifactId>led-display-client</artifactId>
+		<artifactId>led-display-model</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>led-display-client-javafx-administration</artifactId>
+	<artifactId>led-display-model-jpa</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>

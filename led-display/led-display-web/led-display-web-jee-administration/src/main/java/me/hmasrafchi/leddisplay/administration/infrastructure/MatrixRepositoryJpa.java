@@ -15,9 +15,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import me.hmasrafchi.leddisplay.administration.application.BeanMapper;
+import me.hmasrafchi.leddisplay.data.jpa.MatrixEntity;
 import me.hmasrafchi.leddisplay.model.domain.CompiledFrames;
 import me.hmasrafchi.leddisplay.model.domain.Matrix;
+import me.hmasrafchi.leddisplay.model.mapping.BeanMapper;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
