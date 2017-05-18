@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,19 +33,26 @@ public final class MatrixController {
 	@Autowired
 	private MatrixRepository matrixRepository;
 
+	@Autowired
+	private JmsTemplate jmsTemplate;
+
 	@PostMapping("/matrices")
 	public ResponseEntity<?> createMatrix(@RequestBody final CreateMatrixCommand createMatrixCommand) {
 		final MatrixView matrixView = new MatrixView(createMatrixCommand.getName(), createMatrixCommand.getRowCount(),
 				createMatrixCommand.getColumnCount(), createMatrixCommand.getScenes());
 
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);
-		// sendMatrixUpdatedEvent(matrixViewCreated);
+		sendMatrixUpdatedEvent(matrixViewCreated);
 
 		final Integer matrixId = matrixViewCreated.getId();
 		final URI createdMatrixLocationURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(valueOf(matrixId)).toUri();
 
 		return ResponseEntity.created(createdMatrixLocationURI).build();
+	}
+
+	private void sendMatrixUpdatedEvent(final MatrixView matrixView) {
+		jmsTemplate.convertAndSend("matrixUpdated", matrixView);
 	}
 
 	@GetMapping("/matrices/{matrixId}")

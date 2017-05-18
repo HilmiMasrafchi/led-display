@@ -12,6 +12,7 @@
 		<module>led-display-web-jee-administration</module>
 		<module>led-display-web-jee-display</module>
 		<module>led-display-web-spring-administration</module>
+		<module>led-display-web-spring-display</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
