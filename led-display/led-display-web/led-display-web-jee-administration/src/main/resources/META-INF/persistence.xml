@@ -6,6 +6,16 @@
 	<persistence-unit name="primary" transaction-type="JTA">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+		<class>me.hmasrafchi.leddisplay.data.jpa.MatrixEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.SceneEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.OverlayEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.OverlayRollHorizontallyEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.OverlayStationaryEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.FrameEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.RgbColorEmbeddable</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.LedEmbeddable</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.LedRowEntity</class>
+		<class>me.hmasrafchi.leddisplay.data.jpa.LedStateRowEntity</class>
 		<properties>
 			<property name="hibernate.enable_lazy_load_no_trans" value="true"/>
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />

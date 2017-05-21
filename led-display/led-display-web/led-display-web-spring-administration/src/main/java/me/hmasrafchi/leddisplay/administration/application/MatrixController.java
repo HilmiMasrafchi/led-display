@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import lombok.extern.slf4j.Slf4j;
 import me.hmasrafchi.leddisplay.administration.infrastructure.MatrixRepository;
+import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
 import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
+import me.hmasrafchi.leddisplay.model.view.LedView;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
 /**
@@ -29,6 +32,7 @@ import me.hmasrafchi.leddisplay.model.view.MatrixView;
  *
  */
 @RestController
+@Slf4j
 public final class MatrixController {
 	@Autowired
 	private MatrixRepository matrixRepository;
@@ -52,7 +56,17 @@ public final class MatrixController {
 	}
 
 	private void sendMatrixUpdatedEvent(final MatrixView matrixView) {
-		jmsTemplate.convertAndSend("matrixUpdated", matrixView);
+		log.info("sending: " + matrixView.toString());
+		final List<List<List<LedView>>> compiledFrames = matrixView.getCompiledFrames();
+
+		if (compiledFrames != null && !compiledFrames.isEmpty()) {
+			final Integer id = matrixView.getId();
+			final int rowCount = matrixView.getRowCount();
+			final int columnCount = matrixView.getColumnCount();
+			final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, rowCount, columnCount,
+					compiledFrames);
+			jmsTemplate.convertAndSend("domainEvents", matrixUpdatedEvent);
+		}
 	}
 
 	@GetMapping("/matrices/{matrixId}")
@@ -70,7 +84,7 @@ public final class MatrixController {
 	@PutMapping("/matrices")
 	public ResponseEntity<?> updateMatrix(@RequestBody final MatrixView matrix) {
 		final MatrixView matrixUpdated = matrixRepository.update(matrix);
-		// sendMatrixUpdatedEvent(matrixUpdated);
+		sendMatrixUpdatedEvent(matrixUpdated);
 
 		return ResponseEntity.noContent().build();
 	}

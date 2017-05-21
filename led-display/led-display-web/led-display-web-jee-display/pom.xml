@@ -9,7 +9,7 @@
 	<artifactId>led-display-web-jee-display</artifactId>
 	<packaging>war</packaging>
 	<build>
-		<finalName>led-display-consumer</finalName>
+		<finalName>led-display-web-jee-display</finalName>
 	</build>
 	<dependencies>
 		<dependency>

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.enterprise.context.Dependent;
+
 import me.hmasrafchi.leddisplay.data.jpa.FrameEntity;
 import me.hmasrafchi.leddisplay.data.jpa.LedEmbeddable;
 import me.hmasrafchi.leddisplay.data.jpa.LedRowEntity;
@@ -43,6 +45,7 @@ import me.hmasrafchi.leddisplay.model.view.RgbColorView;
  * @author michelin
  *
  */
+@Dependent
 public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	public Matrix mapMatrixFromViewToDomainModel(final MatrixView matrixView) {
 		final int rowCount = matrixView.getRowCount();

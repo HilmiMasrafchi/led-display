@@ -6,6 +6,9 @@ package me.hmasrafchi.leddisplay.model.event;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import me.hmasrafchi.leddisplay.model.view.LedView;
 
@@ -23,8 +26,10 @@ public final class MatrixUpdatedEvent implements Serializable {
 	// TODO: maybe implement own model, it drags the view module
 	private final List<List<List<LedView>>> compiledFrames;
 
-	public MatrixUpdatedEvent(final Integer matrixId, final int rowCount, final int columnCount,
-			final List<List<List<LedView>>> compiledFrames) {
+	@JsonCreator
+	public MatrixUpdatedEvent(@JsonProperty("matrixId") final Integer matrixId,
+			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
+			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
 		this.matrixId = matrixId;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;

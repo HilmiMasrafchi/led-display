@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>Insert title here</title>
+
+</head>
+<body>
+
+	<canvas id="canvas"></canvas>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+		crossorigin="anonymous"></script>
+	<script>
+		(function($) {
+			$.QueryString = (function(a) {
+				if (a == "")
+					return {};
+				var b = {};
+				for (var i = 0; i < a.length; ++i) {
+					var p = a[i].split('=', 2);
+					if (p.length != 2)
+						continue;
+					b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+				}
+				return b;
+			})(window.location.search.substr(1).split('&'))
+		})(jQuery);
+
+		var canvasWidth;
+		var canvasHeight;
+		var compiledFrames;
+		var canvas;
+		$(document).ready(
+				function() {
+					var matrixId = $.QueryString.matrixId
+					var socket = new WebSocket(
+							"ws://localhost:8080/led-display-web-jee-display/live/"
+									+ matrixId);
+					socket.onmessage = onMessage;
+
+					canvas = document.getElementById('canvas');
+					var ctx = canvas.getContext('2d');
+					
+					var ledWidth = 25;
+					var ledHeight = 25;
+					
+					var frameIndex;
+					var frameCount;
+					var skipFrameUntil = 4;
+					var animationCounter = 0;
+					var animationId;
+					
+					var requestAnimationFrame = window.requestAnimationFrame || 
+                    	window.mozRequestAnimationFrame || 
+                    	window.webkitRequestAnimationFrame || 
+                    	window.msRequestAnimationFrame;
+					
+					function drawCurrentFrame() {
+						animationCounter++;
+						if(animationCounter > skipFrameUntil) {
+							ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+							
+							var ledRows = compiledFrames[frameIndex];
+							for(var frameRowIndex in ledRows) {
+								var frameRowLeds = ledRows[frameRowIndex];
+								for(var ledIndex = 0; ledIndex < frameRowLeds.length; ledIndex++) {
+									var led = frameRowLeds[ledIndex];
+							    		
+									var ledColor = led.rgbColor;
+									var red = ledColor.r;
+									var green = ledColor.g;
+									var blue = ledColor.b;
+									var color = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+									ctx.fillStyle = color;
+							    		
+									ctx.fillRect((ledIndex * ledWidth) + 5, frameRowIndex * ledHeight, ledWidth, ledHeight);
+								}
+							}
+								
+							frameIndex++;
+							if(frameIndex == frameCount) {
+								frameIndex = 0;
+							}
+
+							animationCounter = 0;
+						}
+						
+						animationId = requestAnimationFrame(drawCurrentFrame);
+					}
+					
+					function onMessage(event) {
+						cancelAnimationFrame(animationId);
+
+						var matrix = JSON.parse(event.data);
+
+						compiledFrames = matrix.compiledFrames;
+
+						var rowCount = matrix.rowCount;
+						var columnCount = matrix.columnCount;
+						
+						canvasWidth = columnCount * ledWidth;
+						canvasHeight = rowCount * ledHeight;
+						
+						canvas.width = canvasWidth;
+						canvas.height = canvasHeight;
+						
+						frameIndex = 0;
+						frameCount = compiledFrames.length;
+						
+						animationCounter = 0;
+						
+						drawCurrentFrame();
+					}
+				});
+	</script>
+</body>
+</html>

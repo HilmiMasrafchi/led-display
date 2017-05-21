@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +26,7 @@ import me.hmasrafchi.leddisplay.model.view.MatrixView;
  * @author michelin
  *
  */
+@Dependent
 public class MatrixRepositoryJpa implements MatrixRepository {
 	@PersistenceContext
 	private EntityManager em;
