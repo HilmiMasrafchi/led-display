@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -17,6 +18,7 @@ import lombok.ToString;
  *
  */
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode
 public final class LedView implements Serializable {
@@ -24,13 +26,16 @@ public final class LedView implements Serializable {
 
 	private static final String DEFAULT_TEXT = "█";
 
-	private final String text;
-	private final RgbColorView rgbColor;
+	private String text;
+	private RgbColorView rgbColor;
 
 	@JsonCreator
 	public LedView(@JsonProperty("text") final String text, @JsonProperty("rgbColor") final RgbColorView rgbColor) {
 		this.text = text;
 		this.rgbColor = rgbColor;
+	}
+
+	public LedView() {
 	}
 
 	public LedView(final RgbColorView rgbColor) {
