@@ -12,5 +12,5 @@ import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
 public interface MatrixRepository {
 	MatrixUpdatedEvent save(MatrixUpdatedEvent matrixEvent);
 
-	MatrixUpdatedEvent findByMatrixId(Integer matrixId);
+	MatrixUpdatedEvent findById(Integer matrixId);
 }

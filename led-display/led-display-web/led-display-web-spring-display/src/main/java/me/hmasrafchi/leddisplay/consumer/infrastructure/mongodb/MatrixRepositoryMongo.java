@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.consumer.infrastructure.mongodb;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -26,7 +28,7 @@ public class MatrixRepositoryMongo implements MatrixRepository {
 	}
 
 	@Override
-	public MatrixUpdatedEvent findByMatrixId(final Integer matrixId) {
-		return matrixRepositorySpring.findByMatrixId(matrixId);
+	public MatrixUpdatedEvent findById(final Integer matrixId) {
+		return matrixRepositorySpring.findById(BigInteger.valueOf(matrixId));
 	}
 }

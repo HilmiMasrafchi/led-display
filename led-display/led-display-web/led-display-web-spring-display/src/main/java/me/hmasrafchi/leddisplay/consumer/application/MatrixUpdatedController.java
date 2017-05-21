@@ -28,12 +28,11 @@ public class MatrixUpdatedController {
 	@JmsListener(destination = "domainEvents", containerFactory = "myFactory")
 	public void receiveMessage(final MatrixUpdatedEvent matrixUpdatedEvent) {
 		matrixRepository.save(matrixUpdatedEvent);
-		messagingTemplate.convertAndSend("/topic/matrixupdates/" + matrixUpdatedEvent.getMatrixId(),
-				matrixUpdatedEvent);
+		messagingTemplate.convertAndSend("/topic/matrixupdates/" + matrixUpdatedEvent.getId(), matrixUpdatedEvent);
 	}
 
 	@SubscribeMapping("/matrix/{matrixId}")
 	public MatrixUpdatedEvent init(@DestinationVariable("matrixId") final Integer matrixId) {
-		return matrixRepository.findByMatrixId(matrixId);
+		return matrixRepository.findById(matrixId);
 	}
 }

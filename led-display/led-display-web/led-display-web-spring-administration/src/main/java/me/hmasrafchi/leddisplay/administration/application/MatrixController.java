@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.administration.application;
 
 import static java.lang.String.valueOf;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.List;
 
@@ -63,8 +64,8 @@ public final class MatrixController {
 			final Integer id = matrixView.getId();
 			final int rowCount = matrixView.getRowCount();
 			final int columnCount = matrixView.getColumnCount();
-			final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, rowCount, columnCount,
-					compiledFrames);
+			final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(BigInteger.valueOf(id), rowCount,
+					columnCount, compiledFrames);
 			jmsTemplate.convertAndSend("domainEvents", matrixUpdatedEvent);
 		}
 	}

@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.consumer.infrastructure.jpa;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,13 +38,13 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	}
 
 	private MatrixJpa mapEventToDataModel(final MatrixUpdatedEvent matrixUpdatedEvent) {
-		final Integer matrixId = matrixUpdatedEvent.getMatrixId();
+		final BigInteger matrixId = matrixUpdatedEvent.getId();
 		final int rowCount = matrixUpdatedEvent.getRowCount();
 		final int columnCount = matrixUpdatedEvent.getColumnCount();
 		final List<FrameJpa> mapCompiledFramesFromEventToJpaModel = mapCompiledFramesFromEventToDataModel(
 				matrixUpdatedEvent.getCompiledFrames());
 
-		return new MatrixJpa(matrixId, rowCount, columnCount, mapCompiledFramesFromEventToJpaModel);
+		return new MatrixJpa(matrixId.intValue(), rowCount, columnCount, mapCompiledFramesFromEventToJpaModel);
 	}
 
 	private List<FrameJpa> mapCompiledFramesFromEventToDataModel(final List<List<List<LedView>>> compiledFrames) {
@@ -66,7 +67,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	}
 
 	@Override
-	public MatrixUpdatedEvent findByMatrixId(final Integer matrixId) {
+	public MatrixUpdatedEvent findById(final Integer matrixId) {
 		final MatrixJpa matrixEntity = matrixRepositorySpring.findOne(matrixId);
 		return mapFromDataModelToEventModel(matrixEntity);
 	}
@@ -89,6 +90,6 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 			}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
 
-		return new MatrixUpdatedEvent(matrixId, rowCount, columnCount, collect);
+		return new MatrixUpdatedEvent(BigInteger.valueOf(matrixId), rowCount, columnCount, collect);
 	}
 }
