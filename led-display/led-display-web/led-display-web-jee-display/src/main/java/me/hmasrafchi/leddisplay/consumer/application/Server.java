@@ -4,6 +4,7 @@
 package me.hmasrafchi.leddisplay.consumer.application;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class Server implements MessageListener {
 				final MatrixJpa matrix = mapEventToDataModel(matrixUpdatedEvent);
 				entityManager.merge(matrix);
 
-				final Session session = sessions.get(matrixUpdatedEvent.getMatrixId());
+				final Session session = sessions.get(matrixUpdatedEvent.getId());
 				if (session != null) {
 					sendMatrixUpdatedEventToClient(session, matrixUpdatedEvent);
 				}
@@ -91,7 +92,7 @@ public class Server implements MessageListener {
 	}
 
 	private MatrixUpdatedEvent mapDataModelToEvent(final MatrixJpa matrixDataModel) {
-		final Integer matrixId = matrixDataModel.getMatrixId();
+		final BigInteger matrixId = matrixDataModel.getId();
 		final int rowCount = matrixDataModel.getRowCount();
 		final int columnCount = matrixDataModel.getColumnCount();
 		final List<List<List<LedView>>> compiledFrames = mapCompiledFramesFromDataModelToEvent(
@@ -113,7 +114,7 @@ public class Server implements MessageListener {
 	}
 
 	private MatrixJpa mapEventToDataModel(final MatrixUpdatedEvent matrixUpdatedEvent) {
-		final Integer matrixId = matrixUpdatedEvent.getMatrixId();
+		final BigInteger matrixId = matrixUpdatedEvent.getId();
 		final int rowCount = matrixUpdatedEvent.getRowCount();
 		final int columnCount = matrixUpdatedEvent.getColumnCount();
 		final List<FrameJpa> mapCompiledFramesFromEventToJpaModel = mapCompiledFramesFromEventToDataModel(

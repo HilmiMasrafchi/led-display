@@ -5,6 +5,8 @@ package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
 import static java.lang.Integer.valueOf;
 
+import java.math.BigInteger;
+
 import javafx.scene.layout.VBox;
 import me.hmasrafchi.leddisplay.model.view.MatrixView;
 
@@ -19,7 +21,7 @@ final class MatrixInfoGui extends VBox {
 	private TextFieldWithLabel columnCountLabel;
 
 	MatrixInfoGui(final MatrixView matrix) {
-		final Integer id = matrix.getId();
+		final BigInteger id = matrix.getId();
 		this.labelId = new TextFieldWithLabel("matrix id: ", String.valueOf(id), true);
 
 		final String name = matrix.getName();
@@ -34,8 +36,8 @@ final class MatrixInfoGui extends VBox {
 		getChildren().addAll(this.labelId, this.labelName, this.rowCountLabel, this.columnCountLabel);
 	}
 
-	public Integer getMatrixId() {
-		return Integer.valueOf(labelId.getText());
+	public BigInteger getMatrixId() {
+		return BigInteger.valueOf(Long.valueOf(labelId.getText()));
 	}
 
 	public String getMatrixName() {

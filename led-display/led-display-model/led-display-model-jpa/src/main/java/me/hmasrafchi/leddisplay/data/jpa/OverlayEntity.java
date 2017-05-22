@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.data.jpa;
 
+import java.math.BigInteger;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,5 +22,5 @@ import lombok.Data;
 public abstract class OverlayEntity {
 	@Id
 	@GeneratedValue
-	protected Integer id;
+	protected BigInteger id;
 }

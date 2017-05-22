@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.model.mapping;
 
 import static java.util.Optional.of;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +112,7 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 	@Override
 	public MatrixEntity mapMatrixFromViewToDataModel(final MatrixView matrixView,
 			final Optional<CompiledFrames> compiledFrames) {
-		final Integer matrixId = matrixView.getId();
+		final BigInteger matrixId = matrixView.getId();
 		final String name = matrixView.getName();
 		final int rowCount = matrixView.getRowCount();
 		final int columnCount = matrixView.getColumnCount();
@@ -200,7 +201,7 @@ public class BeanMapperJpa implements BeanMapper<MatrixEntity> {
 
 	@Override
 	public MatrixView mapMatrixFromDataToViewModel(final MatrixEntity matrixEntity) {
-		final Integer matrixId = matrixEntity.getId();
+		final BigInteger matrixId = matrixEntity.getId();
 		final String name = matrixEntity.getName();
 		final int rowCount = matrixEntity.getRowCount();
 		final int columnCount = matrixEntity.getColumnCount();

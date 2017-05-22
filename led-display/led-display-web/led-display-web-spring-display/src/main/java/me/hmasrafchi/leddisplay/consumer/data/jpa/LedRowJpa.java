@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.consumer.data.jpa;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
@@ -23,7 +24,7 @@ import lombok.Data;
 public class LedRowJpa {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private BigInteger id;
 
 	@OrderColumn
 	@ElementCollection(fetch = FetchType.EAGER)

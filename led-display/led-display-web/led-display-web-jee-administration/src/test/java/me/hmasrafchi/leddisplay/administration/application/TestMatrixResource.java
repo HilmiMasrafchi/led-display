@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +70,7 @@ public class TestMatrixResource {
 
 	@Test
 	@InSequence(1)
-	public void get_allmatrices_shoulReturnOKStatusIfWithEmptyCollectionOfMatrices(
+	public void get_allmatrices_shoulReturnOKStatusWithEmptyCollectionOfMatrices(
 			@ArquillianResteasyResource("") final WebTarget webTarget1) {
 		final Response response = webTarget1.path("matrices").request(APPLICATION_JSON).get();
 		assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
@@ -990,7 +991,7 @@ public class TestMatrixResource {
 		final Response getMatrixResponse = webTarget2.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get();
 		final MatrixView actualMatrix = getMatrixResponse.readEntity(MatrixView.class);
 
-		final int fooId = actualMatrix.getId() * 2;
+		final BigInteger fooId = actualMatrix.getId().multiply(BigInteger.valueOf(2));
 		final Response deleteResponse = webTarget3.path("matrices/" + fooId).request().delete();
 
 		assertThat(deleteResponse.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
@@ -1016,7 +1017,7 @@ public class TestMatrixResource {
 		final Response getMatrixResponse = webTarget3.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get();
 		final MatrixView actualMatrix = getMatrixResponse.readEntity(MatrixView.class);
 
-		final int matrixId = actualMatrix.getId();
+		final BigInteger matrixId = actualMatrix.getId();
 		final Response deleteResponse = webTarget4.path("matrices/" + matrixId).request().delete();
 
 		assertThat(deleteResponse.getStatus(), equalTo(Response.Status.OK.getStatusCode()));

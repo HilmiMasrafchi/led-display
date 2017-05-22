@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.administration.application.gui.javafx;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ final class GuiContext {
 	}
 
 	public MatrixView getMatrixModel() {
-		final Integer id = matrixInfoGui.getMatrixId();
+		final BigInteger id = matrixInfoGui.getMatrixId();
 		final String name = matrixInfoGui.getMatrixName();
 		final Integer rowCount = matrixInfoGui.getMatrixRowCount();
 		final Integer columnCount = matrixInfoGui.getMatrixColumnCount();

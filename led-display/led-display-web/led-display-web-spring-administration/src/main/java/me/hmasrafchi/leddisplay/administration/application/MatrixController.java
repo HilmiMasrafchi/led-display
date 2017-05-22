@@ -49,7 +49,7 @@ public final class MatrixController {
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);
 		sendMatrixUpdatedEvent(matrixViewCreated);
 
-		final Integer matrixId = matrixViewCreated.getId();
+		final BigInteger matrixId = matrixViewCreated.getId();
 		final URI createdMatrixLocationURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(valueOf(matrixId)).toUri();
 
@@ -61,11 +61,11 @@ public final class MatrixController {
 		final List<List<List<LedView>>> compiledFrames = matrixView.getCompiledFrames();
 
 		if (compiledFrames != null && !compiledFrames.isEmpty()) {
-			final Integer id = matrixView.getId();
+			final BigInteger id = matrixView.getId();
 			final int rowCount = matrixView.getRowCount();
 			final int columnCount = matrixView.getColumnCount();
-			final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(BigInteger.valueOf(id), rowCount,
-					columnCount, compiledFrames);
+			final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, rowCount, columnCount,
+					compiledFrames);
 			jmsTemplate.convertAndSend("domainEvents", matrixUpdatedEvent);
 		}
 	}

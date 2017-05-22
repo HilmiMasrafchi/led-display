@@ -46,6 +46,7 @@ public class OverlayStationaryEntity extends OverlayEntity {
 
 	private int duration;
 
+	// TODO: check using with real database; id is not set by the constructor
 	public OverlayStationaryEntity(final List<LedStateRowEntity> states, final RgbColorEmbeddable onColor,
 			final RgbColorEmbeddable offColor, final int duration) {
 		this.states = states;

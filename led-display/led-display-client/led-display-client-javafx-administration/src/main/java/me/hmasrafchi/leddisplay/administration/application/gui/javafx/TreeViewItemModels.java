@@ -8,6 +8,7 @@ import static java.util.EnumSet.of;
 import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.MINUS_SIGN;
 import static me.hmasrafchi.leddisplay.administration.application.gui.javafx.TreeViewControlButtonIcons.PLUS_SIGN;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -268,7 +269,7 @@ class MatrixTreeItemModel extends TreeItemModel {
 	void onMinusSignActionOK() {
 		super.onMinusSignActionOK();
 
-		final Integer matrixId = matrixGui.getMatrixInfoGui().getMatrixId();
+		final BigInteger matrixId = matrixGui.getMatrixInfoGui().getMatrixId();
 		RestClient.deleteMatrix(matrixId, defaultInvocationCallback);
 	}
 

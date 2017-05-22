@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.model.view;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import lombok.Getter;
 // TODO: remove this
 @EqualsAndHashCode(exclude = "compiledFrames")
 public final class MatrixView {
-	private final Integer id;
+	private final BigInteger id;
 
 	private final String name;
 	private final int rowCount;
@@ -48,14 +49,10 @@ public final class MatrixView {
 	}
 
 	@JsonCreator
-	public MatrixView(@JsonProperty("id") final Integer id, @JsonProperty("name") final String name,
+	public MatrixView(@JsonProperty("id") final BigInteger id, @JsonProperty("name") final String name,
 			@JsonProperty("rowCount") final int rowCount, @JsonProperty("columnCount") final int columnCount,
 			@JsonProperty("scenes") final List<List<OverlayView>> scenes,
 			@JsonProperty("compiledFrames") final List<List<List<LedView>>> compiledFrames) {
-		// if (name == null || name.trim().isEmpty()) {
-		// throw new IllegalArgumentException("name can not be null or empty");
-		// }
-
 		this.id = id;
 		this.name = name;
 		this.rowCount = rowCount;

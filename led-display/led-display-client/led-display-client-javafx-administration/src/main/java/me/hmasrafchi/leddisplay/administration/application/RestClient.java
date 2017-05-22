@@ -6,6 +6,7 @@ package me.hmasrafchi.leddisplay.administration.application;
 import static javax.ws.rs.client.Entity.json;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
+import java.math.BigInteger;
 import java.util.concurrent.Future;
 
 import javax.ws.rs.client.Client;
@@ -42,7 +43,7 @@ public final class RestClient {
 				.get(invocationCallback);
 	}
 
-	public static Future<Response> deleteMatrix(final int matrixId,
+	public static Future<Response> deleteMatrix(final BigInteger matrixId,
 			final InvocationCallback<Response> invocationCallback) {
 		return JAXRS_CLIENT.target(API_DOMAIN).path(String.format("%s/%d", "matrices", matrixId)).request().async()
 				.delete(invocationCallback);

@@ -5,6 +5,7 @@ package me.hmasrafchi.leddisplay.administration.application;
 
 import static java.lang.String.valueOf;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class MatrixResource {
 		final MatrixView matrixViewCreated = matrixRepository.create(matrixView);
 		sendMatrixUpdatedEvent(matrixViewCreated);
 
-		final Integer matrixId = matrixViewCreated.getId();
+		final BigInteger matrixId = matrixViewCreated.getId();
 		final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 		final URI createdMatrixLocationURI = builder.path(valueOf(matrixId)).build();
 
@@ -72,7 +73,7 @@ public class MatrixResource {
 
 		if (compiledFrames != null && !compiledFrames.isEmpty()) {
 			try {
-				final Integer id = matrixView.getId();
+				final BigInteger id = matrixView.getId();
 				final int rowCount = matrixView.getRowCount();
 				final int columnCount = matrixView.getColumnCount();
 				final MatrixUpdatedEvent matrixUpdatedEvent = new MatrixUpdatedEvent(id, rowCount, columnCount,
@@ -99,7 +100,7 @@ public class MatrixResource {
 	@GET
 	@Path("{matrixId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("matrixId") final int matrixId) {
+	public Response get(@PathParam("matrixId") final BigInteger matrixId) {
 		return matrixRepository.find(matrixId).map(matrix -> Response.ok(matrix).build())
 				.orElse(Response.status(Status.NOT_FOUND).build());
 	}
@@ -113,7 +114,7 @@ public class MatrixResource {
 
 	@DELETE
 	@Path("{matrixId}")
-	public Response deleteMatrix(@PathParam("matrixId") final int matrixId) {
+	public Response deleteMatrix(@PathParam("matrixId") final BigInteger matrixId) {
 		if (matrixRepository.delete(matrixId)) {
 			return Response.ok().build();
 		} else {

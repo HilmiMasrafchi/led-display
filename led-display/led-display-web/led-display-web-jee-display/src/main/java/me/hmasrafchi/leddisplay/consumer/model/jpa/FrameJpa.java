@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.consumer.model.jpa;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,7 +26,7 @@ import lombok.Data;
 public class FrameJpa {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private BigInteger id;
 
 	@JoinColumn
 	@OrderColumn
