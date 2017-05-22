@@ -28,7 +28,7 @@ public class MatrixRepositoryMongo implements MatrixRepository {
 	}
 
 	@Override
-	public MatrixUpdatedEvent findById(final Integer matrixId) {
-		return matrixRepositorySpring.findById(BigInteger.valueOf(matrixId));
+	public MatrixUpdatedEvent findById(final BigInteger matrixId) {
+		return matrixRepositorySpring.findById(matrixId);
 	}
 }

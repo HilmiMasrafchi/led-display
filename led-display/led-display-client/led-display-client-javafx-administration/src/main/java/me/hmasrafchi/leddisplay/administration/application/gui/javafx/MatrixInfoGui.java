@@ -37,7 +37,7 @@ final class MatrixInfoGui extends VBox {
 	}
 
 	public BigInteger getMatrixId() {
-		return BigInteger.valueOf(Long.valueOf(labelId.getText()));
+		return new BigInteger(labelId.getText());
 	}
 
 	public String getMatrixName() {

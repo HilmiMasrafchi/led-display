@@ -44,7 +44,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 		final List<FrameJpa> mapCompiledFramesFromEventToJpaModel = mapCompiledFramesFromEventToDataModel(
 				matrixUpdatedEvent.getCompiledFrames());
 
-		return new MatrixJpa(matrixId.intValue(), rowCount, columnCount, mapCompiledFramesFromEventToJpaModel);
+		return new MatrixJpa(matrixId, rowCount, columnCount, mapCompiledFramesFromEventToJpaModel);
 	}
 
 	private List<FrameJpa> mapCompiledFramesFromEventToDataModel(final List<List<List<LedView>>> compiledFrames) {
@@ -67,7 +67,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 	}
 
 	@Override
-	public MatrixUpdatedEvent findById(final Integer matrixId) {
+	public MatrixUpdatedEvent findById(final BigInteger matrixId) {
 		final MatrixJpa matrixEntity = matrixRepositorySpring.findOne(matrixId);
 		return mapFromDataModelToEventModel(matrixEntity);
 	}
@@ -77,7 +77,7 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 			return null;
 		}
 
-		final Integer matrixId = matrixJpa.getMatrixId();
+		final BigInteger matrixId = matrixJpa.getId();
 		final int rowCount = matrixJpa.getRowCount();
 		final int columnCount = matrixJpa.getColumnCount();
 		final List<List<List<LedView>>> collect = matrixJpa.getCompiledFrames().stream().map(frame -> {
@@ -90,6 +90,6 @@ public class MatrixRepositoryJpa implements MatrixRepository {
 			}).collect(Collectors.toList());
 		}).collect(Collectors.toList());
 
-		return new MatrixUpdatedEvent(BigInteger.valueOf(matrixId), rowCount, columnCount, collect);
+		return new MatrixUpdatedEvent(matrixId, rowCount, columnCount, collect);
 	}
 }

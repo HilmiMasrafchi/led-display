@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.consumer.infrastructure;
 
+import java.math.BigInteger;
+
 import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
 
 /**
@@ -12,5 +14,5 @@ import me.hmasrafchi.leddisplay.model.event.MatrixUpdatedEvent;
 public interface MatrixRepository {
 	MatrixUpdatedEvent save(MatrixUpdatedEvent matrixEvent);
 
-	MatrixUpdatedEvent findById(Integer matrixId);
+	MatrixUpdatedEvent findById(BigInteger matrixId);
 }

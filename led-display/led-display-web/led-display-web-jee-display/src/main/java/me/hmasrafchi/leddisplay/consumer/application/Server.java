@@ -46,13 +46,14 @@ public class Server implements MessageListener {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final Map<Integer, Session> sessions = new HashMap<>();
+	private final Map<BigInteger, Session> sessions = new HashMap<>();
 
 	@OnOpen
-	public void init(@PathParam("matrixId") int matrixId, final Session session) {
-		sessions.put(matrixId, session);
+	public void init(@PathParam("matrixId") String matrixId, final Session session) {
+		final BigInteger valueOf = new BigInteger(matrixId);
+		sessions.put(valueOf, session);
 
-		final MatrixJpa matrix = entityManager.find(MatrixJpa.class, matrixId);
+		final MatrixJpa matrix = entityManager.find(MatrixJpa.class, valueOf);
 		if (matrix != null) {
 			final MatrixUpdatedEvent event = mapDataModelToEvent(matrix);
 			sendMatrixUpdatedEventToClient(session, event);

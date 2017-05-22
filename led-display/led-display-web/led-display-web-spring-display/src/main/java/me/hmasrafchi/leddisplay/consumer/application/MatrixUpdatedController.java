@@ -3,6 +3,8 @@
  */
 package me.hmasrafchi.leddisplay.consumer.application;
 
+import java.math.BigInteger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -32,7 +34,7 @@ public class MatrixUpdatedController {
 	}
 
 	@SubscribeMapping("/matrix/{matrixId}")
-	public MatrixUpdatedEvent init(@DestinationVariable("matrixId") final Integer matrixId) {
+	public MatrixUpdatedEvent init(@DestinationVariable("matrixId") final BigInteger matrixId) {
 		return matrixRepository.findById(matrixId);
 	}
 }

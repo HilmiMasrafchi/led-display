@@ -3,6 +3,7 @@
  */
 package me.hmasrafchi.leddisplay.consumer.data.jpa;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import lombok.Data;
 @Entity
 public class MatrixJpa {
 	@Id
-	private Integer matrixId;
+	private BigInteger id;
 
 	private int rowCount;
 	private int columnCount;
@@ -33,9 +34,9 @@ public class MatrixJpa {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<FrameJpa> compiledFrames;
 
-	public MatrixJpa(final Integer matrixId, final int rowCount, final int columnCount,
+	public MatrixJpa(final BigInteger id, final int rowCount, final int columnCount,
 			final List<FrameJpa> compiledFrames) {
-		this.matrixId = matrixId;
+		this.id = id;
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.compiledFrames = compiledFrames;

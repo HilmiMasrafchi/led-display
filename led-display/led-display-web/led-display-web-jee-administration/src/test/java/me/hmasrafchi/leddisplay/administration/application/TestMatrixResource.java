@@ -991,7 +991,7 @@ public class TestMatrixResource {
 		final Response getMatrixResponse = webTarget2.path(newlyCreatedMatrixPath).request(APPLICATION_JSON).get();
 		final MatrixView actualMatrix = getMatrixResponse.readEntity(MatrixView.class);
 
-		final BigInteger fooId = actualMatrix.getId().multiply(BigInteger.valueOf(2));
+		final BigInteger fooId = actualMatrix.getId().multiply(new BigInteger("2"));
 		final Response deleteResponse = webTarget3.path("matrices/" + fooId).request().delete();
 
 		assertThat(deleteResponse.getStatus(), equalTo(Response.Status.NOT_FOUND.getStatusCode()));
