@@ -15,8 +15,8 @@ import me.hmasrafchi.leddisplay.administration.application.gui.javafx.PrimaryGui
  * @author michelin
  *
  */
-public final class AdministrationApp extends Application {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationApp.class);
+public final class JavaFxGui extends Application {
+	private static final Logger LOGGER = LoggerFactory.getLogger(JavaFxGui.class);
 
 	private static PrimaryGui gui;
 

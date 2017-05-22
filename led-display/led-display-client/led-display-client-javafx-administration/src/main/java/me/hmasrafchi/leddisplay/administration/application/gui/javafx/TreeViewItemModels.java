@@ -32,7 +32,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
-import me.hmasrafchi.leddisplay.administration.application.AdministrationApp;
+import me.hmasrafchi.leddisplay.administration.application.JavaFxGui;
 import me.hmasrafchi.leddisplay.administration.application.RestClient;
 import me.hmasrafchi.leddisplay.model.view.CreateMatrixCommand;
 import me.hmasrafchi.leddisplay.model.view.LedStateView;
@@ -64,7 +64,7 @@ abstract class TreeItemModel {
 	final InvocationCallback<Response> defaultInvocationCallback = new InvocationCallback<Response>() {
 		@Override
 		public void completed(final Response response) {
-			AdministrationApp.refreshGui();
+			JavaFxGui.refreshGui();
 		}
 
 		@Override
@@ -83,18 +83,18 @@ abstract class TreeItemModel {
 	}
 
 	void onPlusSignAction() {
-		AdministrationApp.showProgressBar();
+		JavaFxGui.showProgressBar();
 	}
 
 	final void onMinusSignAction() {
-		AdministrationApp.showProgressBar();
+		JavaFxGui.showProgressBar();
 
 		final Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure want to delete selected item?");
 		alert.setHeaderText(null);
 		final Optional<ButtonType> showAndWait = alert.showAndWait();
 		showAndWait.ifPresent(buttonType -> {
 			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.CANCEL_CLOSE)) {
-				AdministrationApp.hideProgressBar();
+				JavaFxGui.hideProgressBar();
 			}
 
 			if (buttonType.getButtonData().equals(ButtonBar.ButtonData.OK_DONE)) {
@@ -172,7 +172,7 @@ abstract class TreeItemModel {
 	}
 
 	void onUpdateAction() {
-		AdministrationApp.showProgressBar();
+		JavaFxGui.showProgressBar();
 	}
 }
 
@@ -209,7 +209,7 @@ class MatricesTreeItemModel extends TreeItemModel {
 			final CreateMatrixCommand createMatrixCommand = result.get();
 			RestClient.createMatrix(createMatrixCommand, defaultInvocationCallback);
 		} else {
-			AdministrationApp.hideProgressBar();
+			JavaFxGui.hideProgressBar();
 		}
 	}
 }
