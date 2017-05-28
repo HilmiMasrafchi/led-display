@@ -205,12 +205,9 @@ class MatricesTreeItemModel extends TreeItemModel {
 		});
 
 		final Optional<CreateMatrixCommand> result = dialog.showAndWait();
-		if (result.isPresent()) {
-			final CreateMatrixCommand createMatrixCommand = result.get();
+		result.ifPresent(createMatrixCommand -> {
 			RestClient.createMatrix(createMatrixCommand, defaultInvocationCallback);
-		} else {
-			JavaFxGui.hideProgressBar();
-		}
+		});
 	}
 }
 
