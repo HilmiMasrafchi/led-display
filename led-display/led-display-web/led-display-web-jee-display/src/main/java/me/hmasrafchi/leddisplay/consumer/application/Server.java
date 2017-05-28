@@ -3,27 +3,25 @@
  */
 package me.hmasrafchi.leddisplay.consumer.application;
 
-import java.io.IOException;
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import me.hmasrafchi.leddisplay.consumer.model.jpa.FrameJpa;
 import me.hmasrafchi.leddisplay.consumer.model.jpa.LedJpa;
@@ -46,28 +44,18 @@ public class Server implements MessageListener {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final Map<BigInteger, Session> sessions = new HashMap<>();
+	@Inject
+	private ServerSessionHandler sessionHandler;
 
 	@OnOpen
 	public void init(@PathParam("matrixId") String matrixId, final Session session) {
 		final BigInteger valueOf = new BigInteger(matrixId);
-		sessions.put(valueOf, session);
+		sessionHandler.addSessionForMatrixWithId(valueOf, session);
 
 		final MatrixJpa matrix = entityManager.find(MatrixJpa.class, valueOf);
 		if (matrix != null) {
 			final MatrixUpdatedEvent event = mapDataModelToEvent(matrix);
-			sendMatrixUpdatedEventToClient(session, event);
-		}
-	}
-
-	private void sendMatrixUpdatedEventToClient(final Session session, final MatrixUpdatedEvent matrix) {
-		final ObjectMapper objectMapper = new ObjectMapper();
-
-		try {
-			final String json = objectMapper.writeValueAsString(matrix);
-			session.getBasicRemote().sendText(json);
-		} catch (final IOException ioe) {
-			ioe.printStackTrace();
+			sessionHandler.sendEventToClient(session, event);
 		}
 	}
 
@@ -82,14 +70,20 @@ public class Server implements MessageListener {
 				final MatrixJpa matrix = mapEventToDataModel(matrixUpdatedEvent);
 				entityManager.merge(matrix);
 
-				final Session session = sessions.get(matrixUpdatedEvent.getId());
-				if (session != null) {
-					sendMatrixUpdatedEventToClient(session, matrixUpdatedEvent);
-				}
+				sessionHandler.sendEventToAllClients(matrixUpdatedEvent);
 			}
 		} catch (JMSException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@OnClose
+	public void close(final Session session) {
+		sessionHandler.removeSessionForMatrixWithId(session);
+	}
+
+	@OnError
+	public void onError(final Throwable error) {
 	}
 
 	private MatrixUpdatedEvent mapDataModelToEvent(final MatrixJpa matrixDataModel) {

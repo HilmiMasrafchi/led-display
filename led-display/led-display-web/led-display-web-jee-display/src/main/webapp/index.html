@@ -37,7 +37,7 @@
 				function() {
 					var matrixId = $.QueryString.matrixId
 					var socket = new WebSocket(
-							"ws://localhost:8080/led-display-web-jee-display/live/"
+							"ws://localhost:8080/live/"
 									+ matrixId);
 					socket.onmessage = onMessage;
 
